@@ -1,0 +1,17 @@
+# Core pipeline
+PyMuPDF>=1.24.0
+sympy>=1.13.0
+Pillow>=10.0.0
+nougat-ocr>=0.1.17
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.35.0
+python-dotenv>=1.0.0
+
+# LLM / API clients
+openai>=1.50.0
+google-genai>=1.0.0
+anthropic>=0.40.0
+
+# Web UI (optional: python web_app.py)
+flask>=3.0.0
