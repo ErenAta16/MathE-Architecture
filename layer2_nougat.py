@@ -128,14 +128,37 @@ class Layer2_Nougat:
         return processed
 
     def extract_from_pdf(self, pdf_path: str | Path, verbose: bool = True) -> dict:
-        """Render pages, run Nougat on each PNG, concatenate LaTeX."""
-        self.initialize()
+        """Render pages, run Nougat on each PNG, concatenate LaTeX.
+        Skips inference when a cached .mmd with matching PDF hash exists."""
+        import hashlib
+
         pdf_path = Path(pdf_path)
         fname = pdf_path.stem
-        img_dir = self.img_dir / fname
         out_dir = self.nougat_out / fname
-        img_dir.mkdir(parents=True, exist_ok=True)
         out_dir.mkdir(parents=True, exist_ok=True)
+        mmd_path = out_dir / f"{fname}.mmd"
+        hash_path = out_dir / f"{fname}.sha256"
+
+        pdf_hash = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
+
+        if mmd_path.exists() and hash_path.exists():
+            cached_hash = hash_path.read_text(encoding="utf-8").strip()
+            if cached_hash == pdf_hash:
+                full = mmd_path.read_text(encoding="utf-8")
+                if verbose:
+                    print(f"    Nougat: cached ({len(full)} chars)")
+                return {
+                    "file": fname,
+                    "latex": full,
+                    "char_count": len(full),
+                    "pages": 0,
+                    "output_path": str(mmd_path),
+                    "cached": True,
+                }
+
+        self.initialize()
+        img_dir = self.img_dir / fname
+        img_dir.mkdir(parents=True, exist_ok=True)
 
         if verbose:
             print(f"    Rasterizing PDF pages...")
@@ -164,8 +187,8 @@ class Layer2_Nougat:
                 all_latex.append("")
 
         full = "\n\n".join(all_latex)
-        mmd_path = out_dir / f"{fname}.mmd"
         mmd_path.write_text(full, encoding="utf-8")
+        hash_path.write_text(pdf_hash, encoding="utf-8")
 
         return {
             "file": fname,
@@ -173,6 +196,7 @@ class Layer2_Nougat:
             "char_count": len(full),
             "pages": len(img_paths),
             "output_path": str(mmd_path),
+            "cached": False,
         }
 
     def check_quality(self, latex: str) -> dict:
