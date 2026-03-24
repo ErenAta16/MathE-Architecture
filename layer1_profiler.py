@@ -6,61 +6,63 @@ Keyword lists mix EN/TR spellings so multilingual PDFs still match.
 import re
 
 
+# (pattern, weight) — higher weight = stronger signal for this category
 PROBLEM_CATEGORIES = {
     # --- Surface integral types ---
     "scalar_surface_integral": [
-        r"∬.*dS", r"\\iint.*dS", r"surface integral",
-        r"find the area", r"evaluate.*surface",
+        (r"∬.*dS", 3), (r"\\iint.*dS", 3), (r"surface integral", 3),
+        (r"find the area", 1), (r"evaluate.*surface", 2),
     ],
     "flux_integral": [
-        r"flux", r"F\s*[·⋅]\s*dS", r"F\s*\\cdot\s*dS",
-        r"across.*surface", r"through.*surface",
+        (r"flux", 3), (r"F\s*[·⋅]\s*dS", 3), (r"F\s*\\cdot\s*dS", 3),
+        (r"across.*surface", 2), (r"through.*surface", 2),
     ],
     "divergence_theorem": [
-        r"divergence", r"Gauss", r"\\nabla\s*\\cdot",
-        r"div\s*F", r"outward flux.*closed",
+        (r"divergence", 3), (r"Gauss", 3), (r"\\nabla\s*\\cdot", 3),
+        (r"div\s*F", 3), (r"outward flux.*closed", 2),
     ],
     "stokes_theorem": [
-        r"Stokes", r"curl", r"\\nabla\s*\\times",
-        r"line integral.*surface", r"circulation",
+        (r"Stokes", 3), (r"curl", 2), (r"\\nabla\s*\\times", 3),
+        (r"line integral.*surface", 2), (r"circulation", 2),
     ],
     # --- General math types ---
     "indefinite_integral": [
-        r"\\int(?!\w).*dx", r"∫.*dx", r"∫.*dy", r"∫.*dt", r"∫.*du",
-        r"antiderivative", r"belirsiz integral",
+        (r"\\int(?!\w).*dx", 2), (r"∫.*dx", 2), (r"∫.*dy", 2),
+        (r"∫.*dt", 2), (r"∫.*du", 2),
+        (r"antiderivative", 3), (r"belirsiz integral", 3),
     ],
     "definite_integral": [
-        r"\\int_", r"∫_", r"\\int\\limits",
-        r"evaluate.*integral", r"belirli integral",
+        (r"\\int_", 2), (r"∫_", 2), (r"\\int\\limits", 2),
+        (r"evaluate.*integral", 2), (r"belirli integral", 3),
     ],
     "double_integral": [
-        r"\\iint", r"∬", r"double integral", r"çift integral",
+        (r"\\iint", 3), (r"∬", 3), (r"double integral", 3), (r"çift integral", 3),
     ],
     "triple_integral": [
-        r"\\iiint", r"∭", r"triple integral", r"üçlü integral",
+        (r"\\iiint", 3), (r"∭", 3), (r"triple integral", 3), (r"üçlü integral", 3),
     ],
     "derivative": [
-        r"\\frac\{d", r"\\frac\{\\partial", r"derivative",
-        r"differentiate", r"türev", r"d/dx",
+        (r"\\frac\{d", 2), (r"\\frac\{\\partial", 2), (r"derivative", 3),
+        (r"differentiate", 3), (r"türev", 3), (r"d/dx", 2),
     ],
     "limit": [
-        r"\\lim", r"limit", r"→", r"\\to", r"\\rightarrow",
+        (r"\\lim", 3), (r"limit", 2), (r"→", 1), (r"\\to", 1), (r"\\rightarrow", 1),
     ],
     "series": [
-        r"\\sum", r"∑", r"series", r"convergence",
-        r"Taylor", r"Maclaurin", r"power series", r"seri",
+        (r"\\sum", 2), (r"∑", 2), (r"series", 2), (r"convergence", 2),
+        (r"Taylor", 3), (r"Maclaurin", 3), (r"power series", 3), (r"seri", 2),
     ],
     "differential_equation": [
-        r"differential equation", r"ODE", r"PDE",
-        r"y'", r"y''", r"diferansiyel denklem",
+        (r"differential equation", 3), (r"ODE", 3), (r"PDE", 3),
+        (r"y'", 1), (r"y''", 2), (r"diferansiyel denklem", 3),
     ],
     "linear_algebra": [
-        r"matrix", r"matris", r"eigenvalue", r"determinant",
-        r"\\det", r"rank", r"eigenvector",
+        (r"matrix", 2), (r"matris", 2), (r"eigenvalue", 3), (r"determinant", 2),
+        (r"\\det", 2), (r"rank", 1), (r"eigenvector", 3),
     ],
     "equation": [
-        r"solve.*equation", r"find.*x", r"çöz",
-        r"roots", r"kök", r"denklem",
+        (r"solve.*equation", 2), (r"find.*x", 1), (r"çöz", 2),
+        (r"roots", 2), (r"kök", 2), (r"denklem", 2),
     ],
 }
 
@@ -104,7 +106,7 @@ class Layer1_Profiler:
         combined_lower = combined.lower()
 
         keywords = self._extract_keywords(combined)
-        category = self._classify_problem(combined_lower)
+        category, secondary_categories = self._classify_problem(combined_lower)
         surface = self._detect_surface_type(combined_lower)
         summary = self._generate_summary(fname, category, surface, keywords, metadata)
 
@@ -113,6 +115,7 @@ class Layer1_Profiler:
         return {
             "keywords": keywords,
             "category": category,
+            "secondary_categories": secondary_categories,
             "domain": domain,
             "surface_type": surface,
             "summary": summary,
@@ -144,16 +147,22 @@ class Layer1_Profiler:
                 keywords.append(kw)
         return keywords
 
-    def _classify_problem(self, text_lower: str) -> str:
+    def _classify_problem(self, text_lower: str) -> tuple[str, list[str]]:
+        """Return (primary_category, secondary_categories_list)."""
         scores = {}
-        for cat, patterns in PROBLEM_CATEGORIES.items():
-            score = sum(1 for p in patterns if re.search(p, text_lower))
-            if score > 0:
-                scores[cat] = score
+        for cat, weighted_patterns in PROBLEM_CATEGORIES.items():
+            total = sum(w for p, w in weighted_patterns if re.search(p, text_lower))
+            if total > 0:
+                scores[cat] = total
 
         if not scores:
-            return "unknown"
-        return max(scores, key=scores.get)
+            return "unknown", []
+
+        ranked = sorted(scores, key=scores.get, reverse=True)
+        primary = ranked[0]
+        top_score = scores[primary]
+        secondary = [c for c in ranked[1:] if scores[c] >= top_score * 0.5]
+        return primary, secondary
 
     def _detect_surface_type(self, text_lower: str) -> str:
         for stype, patterns in SURFACE_TYPES.items():
