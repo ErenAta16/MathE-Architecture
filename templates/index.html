@@ -813,14 +813,28 @@ function showResult(data) {
   const domain = data.domain === 'surface_integral' ? 'Surface integral' : 'General math';
   const kws = Array.isArray(data.keywords) ? data.keywords.join(', ') : (data.keywords || '-');
 
+  let l5SystemRow = '';
+  const ls = data.l5_system;
+  if (ls && typeof ls === 'object') {
+    const base = ls.domain === 'surface_integral'
+      ? 'Surface specialist (full surface-integral instructions)'
+      : 'General math (broader calculus/algebra instructions)';
+    const sec = Array.isArray(ls.secondary_categories) && ls.secondary_categories.length
+      ? ' · appended hints: ' + ls.secondary_categories.join(', ')
+      : '';
+    l5SystemRow = `<div class="info-item full"><span class="info-label">LLM system</span><span class="info-value">${esc(base + sec)}</span></div>`;
+  }
+
   $('profilingBody').innerHTML = `
     <div class="info-grid">
       <div class="info-item"><span class="info-label">File</span><span class="info-value">${esc(data.file || '?')}</span></div>
       <div class="info-item"><span class="info-label">Pages</span><span class="info-value">${data.pages || '?'}</span></div>
       <div class="info-item"><span class="info-label">Chars</span><span class="info-value">${data.chars || 0}</span></div>
       <div class="info-item"><span class="info-label">Category</span><span class="info-value">${esc(data.category || 'unknown')}</span></div>
+      ${Array.isArray(data.secondary_categories) && data.secondary_categories.length ? `<div class="info-item full"><span class="info-label">Also signals</span><span class="info-value">${esc(data.secondary_categories.join(', '))}</span></div>` : ''}
       <div class="info-item"><span class="info-label">Surface type</span><span class="info-value">${esc(data.surface_type || 'unknown')}</span></div>
       <div class="info-item"><span class="info-label">Domain</span><span class="info-value">${domain}</span></div>
+      ${l5SystemRow}
       <div class="info-item full"><span class="info-label">Keywords</span><span class="info-value">${esc(kws)}</span></div>
       ${data.summary ? `<div class="info-item full"><span class="info-label">Summary</span><span class="info-value">${esc(data.summary)}</span></div>` : ''}
     </div>

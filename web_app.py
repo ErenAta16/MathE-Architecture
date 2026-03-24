@@ -7,15 +7,26 @@ Run:
     Open http://127.0.0.1:5000
 """
 
+import os
 import threading
 import queue
 import sys
 import time
 import json
 import re
+import webbrowser
 from pathlib import Path
 
-from flask import Flask, render_template, request, jsonify, Response, send_from_directory
+from flask import (
+    Flask,
+    render_template,
+    request,
+    jsonify,
+    Response,
+    send_from_directory,
+    redirect,
+    url_for,
+)
 
 # Windows consoles often default to cp1252; force UTF-8 so box-drawing / checkmarks don't crash.
 try:
@@ -110,9 +121,23 @@ def _classify(line: str) -> dict:
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
-@app.route("/")
+@app.route("/index")
+@app.route("/index.html")
+@app.route("/home")
+def redirect_to_index():
+    """Yanlis veya eski URL'ler ana sayfaya yonlensin."""
+    return redirect(url_for("index"), code=302)
+
+
+@app.route("/", strict_slashes=False)
 def index():
     return render_template("index.html")
+
+
+@app.route("/upload", methods=["GET"])
+def upload_get_redirect():
+    """GET /upload (bookmark) -> ana sayfa; yukleme sadece POST."""
+    return redirect(url_for("index"), code=302)
 
 
 @app.route("/upload", methods=["POST"])
@@ -202,10 +227,27 @@ def _worker(tid: str, filepath: Path):
 
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
+    base = "http://127.0.0.1:5000/"
     print()
     print("  " + "=" * 44)
     print("  STEP Pipeline - Web UI")
-    print("  http://127.0.0.1:5000")
     print("  " + "=" * 44)
     print()
+    print("  Tarayiciya TAM su adresi yapistirin (http:// sart):")
+    print(f"    {base}")
+    print()
+    print("  Not: Sadece 127.0.0.1:5000 yazmak arama yapabilir; http:// ekleyin.")
+    print("  Kapatmak icin: Ctrl+C")
+    print()
+
+    def _open_browser():
+        time.sleep(1.2)
+        try:
+            webbrowser.open(base)
+        except Exception:
+            pass
+
+    if os.environ.get("STEP_NO_BROWSER", "").strip().lower() not in ("1", "true", "yes"):
+        threading.Thread(target=_open_browser, daemon=True).start()
+
     app.run(host="127.0.0.1", port=5000, debug=False, threaded=True)
