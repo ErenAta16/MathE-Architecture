@@ -133,8 +133,13 @@ class Layer6_SymPyVerifier:
                 if len(candidate) > 2 and re.search(r'[0-9\\]', candidate):
                     return self._clean_boxed_content(candidate)
 
+        # Strategies 5-7 only scan the LAST ~30% of the text to avoid
+        # picking intermediate computation steps as the final answer.
+        tail_start = max(0, len(work) - len(work) // 3)
+        tail = work[tail_start:]
+
         # Strategy 5: Last display math ($$...$$) that looks like a result
-        display_blocks = re.findall(r'\$\$\s*(.+?)\s*\$\$', work, re.DOTALL)
+        display_blocks = re.findall(r'\$\$\s*(.+?)\s*\$\$', tail, re.DOTALL)
         if display_blocks:
             for block in reversed(display_blocks):
                 block = block.strip()
@@ -148,7 +153,7 @@ class Layer6_SymPyVerifier:
                         return cleaned
 
         # Strategy 6: Last inline math ($...$) containing a numeric expression
-        inline_blocks = re.findall(r'(?<!\$)\$([^$]+)\$(?!\$)', work)
+        inline_blocks = re.findall(r'(?<!\$)\$([^$]+)\$(?!\$)', tail)
         if inline_blocks:
             for block in reversed(inline_blocks):
                 block = block.strip()
@@ -159,7 +164,7 @@ class Layer6_SymPyVerifier:
                         return self._clean_boxed_content(block)
 
         # Strategy 7: "= value" at end of a line
-        eq_end = re.findall(r'=\s*\$*([^$=\n]{2,60}?)\$*\s*$', work, re.MULTILINE)
+        eq_end = re.findall(r'=\s*\$*([^$=\n]{2,60}?)\$*\s*$', tail, re.MULTILINE)
         if eq_end:
             for candidate in reversed(eq_end):
                 candidate = candidate.strip().strip("$").strip()
@@ -201,7 +206,9 @@ class Layer6_SymPyVerifier:
                 if llm_num is not None:
                     known_num = float(known.evalf())
                     error = abs(llm_num - known_num)
-                    match = error < 0.01
+                    # Relative tolerance for large values, absolute floor for near-zero
+                    denom = max(abs(known_num), 1e-12)
+                    match = (error / denom) < 1e-4 or error < 1e-6
                     return {
                         "status": "match" if match else "mismatch",
                         "known": str(known),
