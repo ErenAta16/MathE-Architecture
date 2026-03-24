@@ -1,5 +1,6 @@
 """
-Layer 3 — vision path: page PNGs → LaTeX via Groq (LLaMA 4 Scout multimodal).
+Layer 3 — vision path: page PNGs -> LaTeX.
+Supports Groq (LLaMA 4 Scout) and Gemini (higher accuracy on math formulas).
 """
 
 import re
@@ -8,9 +9,10 @@ from pathlib import Path
 
 from openai import OpenAI
 
-from config import GROQ_API_KEY, GROQ_BASE_URL
+from config import GROQ_API_KEY, GROQ_BASE_URL, GEMINI_API_KEY
 
 VLM_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
+GEMINI_VLM_MODEL = "gemini-2.5-flash"
 
 VLM_SYSTEM_PROMPT = """You are a precise mathematical OCR tool. Your ONLY job is to read the mathematical problem from the image and output it in LaTeX.
 
@@ -35,19 +37,44 @@ If you include solutions, calculations, or numerical answers, you have FAILED.""
 
 
 class Layer3_VLM:
-    """Groq vision chat client; no-op if `GROQ_API_KEY` is empty."""
+    """Vision extraction client. Tries Gemini first (higher accuracy on math),
+    falls back to Groq LLaMA Scout if Gemini key is missing."""
 
-    def __init__(self):
+    def __init__(self, force_provider: str | None = None):
+        self.provider = None
         self.client = None
-        self.model = VLM_MODEL
+        self.model = None
         self._available = False
-        self._init()
+        self._gemini_client = None
+        self._init(force_provider)
 
-    def _init(self):
+    def _init(self, force_provider: str | None = None):
+        if force_provider == "groq" or (force_provider is None and not GEMINI_API_KEY):
+            self._init_groq()
+        elif force_provider == "gemini" or (force_provider is None and GEMINI_API_KEY):
+            self._init_gemini()
+            if not self._available:
+                self._init_groq()
+
+    def _init_groq(self):
         if not GROQ_API_KEY:
             return
         try:
             self.client = OpenAI(api_key=GROQ_API_KEY, base_url=GROQ_BASE_URL)
+            self.model = VLM_MODEL
+            self.provider = "groq"
+            self._available = True
+        except Exception:
+            pass
+
+    def _init_gemini(self):
+        if not GEMINI_API_KEY:
+            return
+        try:
+            from google import genai
+            self._gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+            self.model = GEMINI_VLM_MODEL
+            self.provider = "gemini"
             self._available = True
         except Exception:
             pass
@@ -62,10 +89,15 @@ class Layer3_VLM:
             return base64.b64encode(f.read()).decode("utf-8")
 
     def extract_from_image(self, image_path: str | Path) -> str:
-        """Single page image → LaTeX problem statement (no solving)."""
+        """Single page image -> LaTeX problem statement (no solving)."""
         if not self._available:
-            raise RuntimeError("VLM unavailable — set GROQ_API_KEY in .env")
+            raise RuntimeError("VLM unavailable — set GEMINI_API_KEY or GROQ_API_KEY")
 
+        if self.provider == "gemini":
+            return self._extract_gemini(image_path)
+        return self._extract_groq(image_path)
+
+    def _extract_groq(self, image_path: str | Path) -> str:
         b64 = self._encode_image(image_path)
         response = self.client.chat.completions.create(
             model=self.model,
@@ -75,12 +107,7 @@ class Layer3_VLM:
                     "role": "user",
                     "content": [
                         {"type": "text", "text": "Extract all mathematical content from this page as LaTeX:"},
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": f"data:image/png;base64,{b64}",
-                            },
-                        },
+                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}},
                     ],
                 },
             ],
@@ -88,6 +115,24 @@ class Layer3_VLM:
             temperature=0.0,
         )
         return response.choices[0].message.content or ""
+
+    def _extract_gemini(self, image_path: str | Path) -> str:
+        from google.genai import types
+        from PIL import Image as PILImage
+
+        img = PILImage.open(str(image_path))
+        response = self._gemini_client.models.generate_content(
+            model=self.model,
+            contents=[
+                VLM_SYSTEM_PROMPT + "\n\nExtract all mathematical content from this page as LaTeX:",
+                img,
+            ],
+            config=types.GenerateContentConfig(
+                max_output_tokens=4096,
+                temperature=0.0,
+            ),
+        )
+        return response.text or ""
 
     def _extract_single_pass(self, img_paths: list[Path], verbose: bool = True) -> str:
         """Run every page in order, concat with blank lines."""
