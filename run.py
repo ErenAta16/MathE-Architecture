@@ -21,7 +21,7 @@ from pathlib import Path
 import torch
 
 from config import (PDF_DIR, IMG_DIR, NOUGAT_OUT, RESULTS_DIR, KNOWN_ANSWERS, NOUGAT_DPI,
-                    LLM_SYSTEM_PROMPT_SURFACE, LLM_SYSTEM_PROMPT_GENERAL)
+                    get_system_prompt)
 from layer0_ingestion import Layer0_PDFIngestion
 from layer1_profiler import Layer1_Profiler
 from layer2_nougat import Layer2_Nougat
@@ -47,12 +47,26 @@ class STEPSolver:
         self.l6 = Layer6_SymPyVerifier()
         self.use_nougat = use_nougat
         self.use_vlm = use_vlm
+        self._result_cache: dict[str, dict] = {}
+
+    @staticmethod
+    def _pdf_hash(pdf_path: Path) -> str:
+        import hashlib
+        return hashlib.sha256(pdf_path.read_bytes()).hexdigest()
 
     def solve(self, pdf_path: str | Path, verbose: bool = True) -> dict:
         """Run the stack on one file; returned dict always includes timings."""
         pdf_path = Path(pdf_path)
         if not pdf_path.exists():
             return {"error": f"File not found: {pdf_path}"}
+
+        h = self._pdf_hash(pdf_path)
+        # Same PDF with different flags (nougat/VLM) must not share cache.
+        cache_key = f"{h}|nougat={int(self.use_nougat)}|vlm={int(self.use_vlm)}"
+        if cache_key in self._result_cache:
+            if verbose:
+                print(f"  [CACHE] Returning previous result for {pdf_path.name}")
+            return self._result_cache[cache_key]
 
         fname = pdf_path.stem
         result = {"file": fname, "pdf_path": str(pdf_path)}
@@ -65,55 +79,85 @@ class STEPSolver:
         raw_pages = self.l0.extract_text(pdf_path)
         self.l0.extract_images(pdf_path, dpi=NOUGAT_DPI)
         raw_text = "\n".join(p["text"] for p in raw_pages).strip()
+        md_text = self.l0.extract_markdown(pdf_path)
+        text_quality = self.l0.analyze_text_quality(raw_pages)
         result["pages"] = metadata.get("pages", 0)
         result["chars"] = sum(len(p["text"]) for p in raw_pages)
+        result["text_quality_score"] = text_quality["score"]
         timings["l0_ingest"] = round(time.time() - t0, 3)
         if verbose:
-            print(f"  [L0] {metadata.get('pages')} pages, {result['chars']} chars ({timings['l0_ingest']:.2f}s)")
+            print(f"  [L0] {metadata.get('pages')} pages, {result['chars']} chars, "
+                  f"quality {text_quality['score']}/{text_quality['max_score']} ({timings['l0_ingest']:.2f}s)")
 
         # --- L1: quick tags from raw text (cheap classifier) ---
         t1 = time.time()
         profile = self.l1.profile(fname, metadata, raw_text)
         timings["l1_profile"] = round(time.time() - t1, 4)
         if verbose:
-            print(f"  [L1] {profile['category']} / {profile['surface_type']} ({timings['l1_profile']:.3f}s)")
+            sec = profile.get("secondary_categories") or []
+            sec_s = f" | also: {', '.join(sec)}" if sec else ""
+            print(f"  [L1] {profile['category']} / {profile['surface_type']}{sec_s} ({timings['l1_profile']:.3f}s)")
 
-        # --- L2: Nougat OCR (optional, heavy) ---
+        # --- L2 + L3: OCR channels (run in parallel when both enabled) ---
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
         nougat_latex = ""
         nougat_score = 0
+        vlm_latex = ""
+        vlm_score = 0
         timings["l2_nougat"] = 0.0
-        if self.use_nougat and self.l2 is not None:
+        timings["l3_vlm"] = 0.0
+
+        def _run_nougat():
             t2 = time.time()
             if verbose:
                 print(f"  [L2] Nougat OCR...")
-            nougat_result = self.l2.extract_from_pdf(pdf_path, verbose=verbose)
-            nougat_latex = nougat_result.get("latex", "")
-            nougat_quality = self.l2.check_quality(nougat_latex)
-            nougat_score = nougat_quality["score"]
-            timings["l2_nougat"] = round(time.time() - t2, 2)
+            res = self.l2.extract_from_pdf(pdf_path, verbose=verbose)
+            q = self.l2.check_quality(res.get("latex", ""))
+            elapsed = round(time.time() - t2, 2)
             if verbose:
-                print(f"       {nougat_result.get('char_count', 0)} chars, quality {nougat_score}/4 ({timings['l2_nougat']:.1f}s)")
+                print(f"       {res.get('char_count', 0)} chars, quality {q['score']}/4 ({elapsed:.1f}s)")
+            return "nougat", res.get("latex", ""), q["score"], elapsed
 
-        # --- L3: VLM ---
-        vlm_latex = ""
-        vlm_score = 0
-        timings["l3_vlm"] = 0.0
-        if self.l3 is not None and self.l3.is_available:
+        def _run_vlm():
             t3 = time.time()
             if verbose:
-                print(f"  [L3] VLM (LLaMA 4 Scout)...")
-            try:
-                vlm_result = self.l3.extract_from_pdf_images(IMG_DIR, fname, verbose=verbose)
-                vlm_latex = vlm_result.get("vlm_latex", "")
-                vlm_quality = self.l3.check_quality(vlm_latex)
-                vlm_score = vlm_quality["score"]
-                timings["l3_vlm"] = round(time.time() - t3, 2)
-                if verbose:
-                    print(f"       {vlm_result.get('char_count', 0)} chars, quality {vlm_score}/4 ({timings['l3_vlm']:.1f}s)")
-            except Exception as e:
-                timings["l3_vlm"] = round(time.time() - t3, 2)
-                if verbose:
-                    print(f"       [FAIL] {str(e)[:60]}")
+                vlm_label = f"{self.l3.provider}/{self.l3.model}" if self.l3 else "VLM"
+                print(f"  [L3] VLM ({vlm_label})...")
+            res = self.l3.extract_from_pdf_images(IMG_DIR, fname, verbose=verbose)
+            q = self.l3.check_quality(res.get("vlm_latex", ""))
+            elapsed = round(time.time() - t3, 2)
+            if verbose:
+                print(f"       {res.get('char_count', 0)} chars, quality {q['score']}/4 ({elapsed:.1f}s)")
+            return "vlm", res.get("vlm_latex", ""), q["score"], elapsed
+
+        # Auto-skip Nougat when native text quality is high (6+ / 7)
+        nougat_needed = self.use_nougat and self.l2 is not None
+        if nougat_needed and text_quality["score"] >= 6 and result["chars"] > 100:
+            nougat_needed = False
+            if verbose:
+                print(f"  [L2] Skipped Nougat (text quality {text_quality['score']}/{text_quality['max_score']})")
+
+        futures = {}
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            if nougat_needed:
+                futures[pool.submit(_run_nougat)] = "nougat"
+            if self.l3 is not None and self.l3.is_available:
+                futures[pool.submit(_run_vlm)] = "vlm"
+
+            for fut in as_completed(futures):
+                try:
+                    tag, latex, score, elapsed = fut.result()
+                    if tag == "nougat":
+                        nougat_latex, nougat_score = latex, score
+                        timings["l2_nougat"] = elapsed
+                    else:
+                        vlm_latex, vlm_score = latex, score
+                        timings["l3_vlm"] = elapsed
+                except Exception as e:
+                    tag = futures[fut]
+                    if verbose:
+                        print(f"       [{tag.upper()} FAIL] {str(e)[:60]}")
 
         # --- L1b: Re-profile with OCR/VLM text if raw was empty ---
         if result["chars"] == 0 and (vlm_latex or nougat_latex):
@@ -126,11 +170,13 @@ class STEPSolver:
         result["surface_type"] = profile["surface_type"]
         result["keywords"] = profile["keywords"]
         result["summary"] = profile["summary"]
+        result["secondary_categories"] = profile.get("secondary_categories", [])
 
         # --- L4: Synthesis ---
         t4 = time.time()
         synthesis = self.l4.synthesize(raw_text, nougat_latex, nougat_score,
-                                        vlm_latex, vlm_score, profile)
+                                        vlm_latex, vlm_score, profile,
+                                        md_text=md_text)
         prompt = synthesis["prompt"]
         domain = synthesis.get("domain", "general_math")
         result["source"] = synthesis["source"]
@@ -144,7 +190,20 @@ class STEPSolver:
             print(f"  [L4] source={synthesis['source']}, domain={domain_label}, prompt_chars={synthesis['prompt_chars']}")
 
         # --- L5: LLM Solve with Consensus (2-3 attempts) ---
-        system_prompt = LLM_SYSTEM_PROMPT_SURFACE if domain == "surface_integral" else LLM_SYSTEM_PROMPT_GENERAL
+        system_prompt = get_system_prompt(
+            domain,
+            secondary_categories=profile.get("secondary_categories"),
+            primary_category=profile.get("category"),
+        )
+        result["l5_system"] = {
+            "domain": domain,
+            "secondary_categories": list(profile.get("secondary_categories") or []),
+        }
+        if verbose:
+            dom_tag = "surface" if domain == "surface_integral" else "general"
+            sec = profile.get("secondary_categories") or []
+            sec_part = f", signals={sec}" if sec else ""
+            print(f"  [L5] system={dom_tag}{sec_part}")
         t5 = time.time()
         answers = self._solve_with_consensus(prompt, system_prompt, verbose=verbose)
         timings["l5_llm"] = round(time.time() - t5, 2)
@@ -187,6 +246,8 @@ class STEPSolver:
         timings["l6_verify"] = round(time.time() - t6, 4)
         result["timings"] = timings
         result["elapsed_s"] = round(time.time() - t_start, 1)
+
+        self._result_cache[cache_key] = result
         return result
 
     def _solve_with_consensus(self, prompt: str, system_prompt: str,
@@ -356,9 +417,18 @@ def solve_single(pdf_path: str, use_nougat: bool = True, use_vlm: bool = True):
         print(f"  Pages:           {result.get('pages', '?')}")
         print(f"  Chars:           {result.get('chars', 0)}")
         print(f"  Category:        {result.get('category', 'unknown')}")
+        sec = result.get("secondary_categories") or []
+        if sec:
+            print(f"  Also signals:    {', '.join(sec)}")
         print(f"  Surface type:    {result.get('surface_type', 'unknown')}")
         domain_label = "surface_integral" if result.get('domain') == "surface_integral" else "general_math"
         print(f"  Domain:          {domain_label}")
+        ls = result.get("l5_system")
+        if ls and isinstance(ls, dict):
+            l5d = ls.get("domain", domain_label)
+            l5sec = ls.get("secondary_categories") or []
+            sec_txt = f" · hints→{', '.join(l5sec)}" if l5sec else ""
+            print(f"  LLM system:      {l5d}{sec_txt}")
         kws = result.get('keywords', [])
         if kws:
             print(f"  Keywords:        {', '.join(kws)}")
@@ -527,6 +597,8 @@ def run_benchmark(
             "verification": r.get("verification"),
             "source": r.get("source"),
             "domain": r.get("domain"),
+            "secondary_categories": r.get("secondary_categories"),
+            "l5_system": r.get("l5_system"),
             "nougat_score": r.get("nougat_score"),
             "vlm_score": r.get("vlm_score"),
             "prompt_chars": r.get("prompt_chars"),
@@ -607,6 +679,14 @@ def run_benchmark(
 
 def check_system():
     """Quick environment snapshot before a long run."""
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
     print()
     print("  " + "=" * 44)
     print("  STEP Pipeline — health check")
@@ -631,13 +711,32 @@ def check_system():
     # VLM
     vlm = Layer3_VLM()
     vlm_st = "OK" if vlm.is_available else "NO"
-    print(f"  [{vlm_st}] VLM (LLaMA 4 Scout): {'ready' if vlm.is_available else 'disabled'}")
+    vlm_name = f"{vlm.provider}/{vlm.model}" if vlm.is_available else "disabled"
+    print(f"  [{vlm_st}] VLM: {vlm_name}")
 
     # PDF count
     pdf_count = len(list(PDF_DIR.glob("*.pdf"))) if PDF_DIR.exists() else 0
     pdf_st = "OK" if pdf_count else "!"
     print(f"  [{pdf_st}] PDF folder: {pdf_count} file(s) ({PDF_DIR})")
     print(f"  [OK] Reference answers: {len(KNOWN_ANSWERS)} problems")
+    print()
+
+    # Yonlendirme: --check sonrasi kullanici ne yapacagini gorsun
+    print("  " + "-" * 44)
+    print("  Sonraki adimlar / Next steps")
+    print("  " + "-" * 44)
+    if pdf_count == 0:
+        print("  [!] Cozecek PDF yok. Ornek dosyalari su klasore koyun:")
+        print(f"      {PDF_DIR.resolve()}")
+        print()
+    print("  Tek PDF:     python run.py <dosya.pdf>")
+    print("  Klasor:      python run.py Surface_Integration/ -n 5")
+    print("  Hizli yol:   python run.py dosya.pdf --no-nougat")
+    print("  Web arayuz:  python web_app.py")
+    print("               -> tarayici: http://127.0.0.1:5000")
+    print("  Eski batch:  python main.py -n 5")
+    print("  Bench JSON:  python run.py --benchmark Surface_Integration/ -n 10")
+    print("  (Windows'ta garip karakterler icin: $env:PYTHONIOENCODING=\"utf-8\")")
     print()
 
 
