@@ -1,5 +1,6 @@
 # Core pipeline
 PyMuPDF>=1.24.0
+pymupdf4llm>=0.0.17
 sympy>=1.13.0
 Pillow>=10.0.0
 nougat-ocr>=0.1.17
