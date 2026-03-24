@@ -1,7 +1,10 @@
 """
 Layer 4 — merge L0 text + L2 Nougat + L3 VLM into one LLM prompt.
 Picks a template from quality scores and `profile["domain"]`.
+Token budget keeps the final prompt under MAX_PROMPT_CHARS.
 """
+
+MAX_PROMPT_CHARS = 24_000  # ~6k tokens at 4 chars/token
 
 
 class Layer4_Synthesis:
@@ -9,23 +12,28 @@ class Layer4_Synthesis:
 
     def synthesize(self, raw_text: str, nougat_latex: str, nougat_score: int,
                    vlm_latex: str, vlm_score: int,
-                   profile: dict = None) -> dict:
-        """Prefer both OCR paths when decent; else fall back to raw PyMuPDF text."""
+                   profile: dict = None, md_text: str = "") -> dict:
+        """Prefer both OCR paths when decent; else fall back to raw PyMuPDF text.
+        `md_text` is the PyMuPDF4LLM structured markdown (richer than raw_text)."""
         nougat_good = nougat_score >= 2
         vlm_good = vlm_score >= 2
 
+        base_text = md_text if len(md_text) > len(raw_text) else raw_text
+
         if nougat_good and vlm_good:
             source = "nougat+vlm+raw"
-            prompt = self._build_triple_source(raw_text, nougat_latex, vlm_latex, profile)
+            prompt = self._build_triple_source(base_text, nougat_latex, vlm_latex, profile)
         elif nougat_good:
             source = "nougat+raw"
-            prompt = self._build_nougat_primary(raw_text, nougat_latex, profile)
+            prompt = self._build_nougat_primary(base_text, nougat_latex, profile)
         elif vlm_good:
             source = "vlm+raw"
-            prompt = self._build_vlm_primary(raw_text, vlm_latex, profile)
+            prompt = self._build_vlm_primary(base_text, vlm_latex, profile)
         else:
             source = "raw_fallback"
-            prompt = self._build_raw_fallback(raw_text, profile)
+            prompt = self._build_raw_fallback(base_text, profile)
+
+        prompt = self._enforce_budget(prompt)
 
         domain = profile.get("domain", "general_math") if profile else "general_math"
 
@@ -37,6 +45,25 @@ class Layer4_Synthesis:
             "vlm_score": vlm_score,
             "prompt_chars": len(prompt),
         }
+
+    @staticmethod
+    def _enforce_budget(prompt: str) -> str:
+        """Hard trim to MAX_PROMPT_CHARS keeping the header and tail intact."""
+        if len(prompt) <= MAX_PROMPT_CHARS:
+            return prompt
+        head = prompt[:2000]
+        tail = prompt[-(MAX_PROMPT_CHARS - 2200):]
+        return head + "\n\n[... content trimmed for token budget ...]\n\n" + tail
+
+    @staticmethod
+    def _secondary_hints_line(profile: dict | None) -> str:
+        if not profile:
+            return ""
+        sec = profile.get("secondary_categories") or []
+        if not sec:
+            return ""
+        joined = ", ".join(str(c) for c in sec[:5])
+        return f"Additional topic signals (secondary): {joined}.\n"
 
     def _problem_header(self, profile: dict) -> str:
         """Pick the opening line of the user prompt from `domain` + `category`."""
@@ -66,7 +93,7 @@ class Layer4_Synthesis:
                     "Convert between line integral and surface integral of curl(F).\n"
                 ),
             }
-            return header + hints.get(cat, "")
+            return header + hints.get(cat, "") + self._secondary_hints_line(profile)
 
         cat_names = {
             "indefinite_integral": "indefinite integral",
@@ -81,14 +108,37 @@ class Layer4_Synthesis:
             "equation": "equation",
         }
         type_name = cat_names.get(cat, "mathematical")
-        return f"Solve the following {type_name} problem.\n"
+        return f"Solve the following {type_name} problem.\n" + self._secondary_hints_line(profile)
+
+    @staticmethod
+    def _detect_conflicts(nougat: str, vlm: str) -> str:
+        """Find exponent/sign/symbol mismatches between two OCR sources."""
+        import re as _re
+        conflicts = []
+        # Compare exponents like x^2 vs x^3
+        n_exps = set(_re.findall(r'[a-zA-Z]\^[\{]?(\d+)', nougat))
+        v_exps = set(_re.findall(r'[a-zA-Z]\^[\{]?(\d+)', vlm))
+        if n_exps != v_exps and n_exps and v_exps:
+            conflicts.append(f"Exponent mismatch: Nougat has {n_exps}, VLM has {v_exps}")
+        # Compare trig functions present
+        trig = ["sin", "cos", "tan"]
+        for fn in trig:
+            n_has = f"\\{fn}" in nougat
+            v_has = f"\\{fn}" in vlm
+            if n_has != v_has:
+                conflicts.append(f"Trig conflict: \\{fn} in {'Nougat' if n_has else 'VLM'} but not the other")
+        if not conflicts:
+            return ""
+        return "CONFLICTS DETECTED between OCR sources:\n" + "\n".join(f"  - {c}" for c in conflicts) + "\nResolve these carefully using context.\n\n"
 
     def _build_triple_source(self, raw: str, nougat: str, vlm: str,
                               profile: dict) -> str:
         header = self._problem_header(profile)
+        conflict_note = self._detect_conflicts(nougat, vlm)
         return (
             header + "\n"
             "Two independent OCR systems extracted the content. Cross-reference them.\n\n"
+            + conflict_note +
             "--- SOURCE 1: Nougat OCR (LaTeX) ---\n" + nougat + "\n\n"
             "--- SOURCE 2: VLM Vision (LaTeX) ---\n" + vlm + "\n\n"
             "--- SOURCE 3: Raw text (plain, for verification) ---\n" + raw + "\n\n"
