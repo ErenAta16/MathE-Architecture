@@ -154,7 +154,45 @@ CRITICAL RULES:
 - Double-check arithmetic at every step before proceeding.
 - ALWAYS include the SUMMARY section after the answer."""
 
-LLM_SYSTEM_PROMPT = LLM_SYSTEM_PROMPT_SURFACE
+_SURFACE_CATEGORY_TAGS = frozenset({
+    "scalar_surface_integral",
+    "flux_integral",
+    "divergence_theorem",
+    "stokes_theorem",
+})
+
+
+def get_system_prompt(
+    domain: str = "surface_integral",
+    *,
+    secondary_categories: list[str] | None = None,
+    primary_category: str | None = None,
+) -> str:
+    """Pick the right system prompt from L1 `domain`; optionally add compact secondary hints."""
+    base = LLM_SYSTEM_PROMPT_SURFACE if domain == "surface_integral" else LLM_SYSTEM_PROMPT_GENERAL
+
+    if not secondary_categories:
+        return base
+
+    prim = (primary_category or "").strip()
+    secs = [str(c).strip() for c in secondary_categories if c and str(c).strip() != prim][:6]
+    if not secs:
+        return base
+
+    readable = ", ".join(s.replace("_", " ") for s in secs)
+    extra = (
+        f"\n\nSecondary heuristic signals (may overlap the primary label): {readable}. "
+        "Use them only if they clearly match the problem statement."
+    )
+    if domain == "general_math" and any(t in _SURFACE_CATEGORY_TAGS for t in secs):
+        extra += (
+            " If the task is actually a surface or flux integral, apply standard multivariable methods "
+            "(parametrization, dS vs F·dS, orientation, divergence/Stokes when appropriate)."
+        )
+
+    return base + extra
+
+LLM_SYSTEM_PROMPT = LLM_SYSTEM_PROMPT_SURFACE  # legacy default
 
 # Reference answers for SymPy verification in L6.
 # Sources: "At the end you should get:" hints in PDFs, manual checks, LLM consensus.
