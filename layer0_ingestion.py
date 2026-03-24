@@ -44,6 +44,16 @@ class Layer0_PDFIngestion:
         doc.close()
         return pages
 
+    def extract_markdown(self, pdf_path: str | Path) -> str:
+        """Structure-aware markdown via PyMuPDF4LLM — preserves headings,
+        tables, and basic layout better than plain get_text."""
+        try:
+            import pymupdf4llm
+            return pymupdf4llm.to_markdown(str(pdf_path))
+        except Exception:
+            pages = self.extract_text(pdf_path)
+            return "\n\n".join(p["text"] for p in pages)
+
     def extract_images(self, pdf_path: str | Path, dpi: int = 300) -> list[dict]:
         """Rasterize each page to PNG under `img_dir/<stem>/` for Nougat/VLM."""
         pdf_path = Path(pdf_path)
