@@ -49,7 +49,8 @@ class PipelineLogger:
         }
         self._pdf_start = time.time()
 
-    def log_layer0(self, metadata: dict, text_pages: list, elapsed_s: float):
+    def log_layer0(self, metadata: dict, text_pages: list, elapsed_s: float,
+                   text_quality: dict | None = None):
         self._current_pdf["file_metadata"] = {
             "file_size_bytes": int(metadata.get("file_size_kb", 0) * 1024),
             "pages_count": metadata.get("pages"),
@@ -60,21 +61,27 @@ class PipelineLogger:
             "modification_date": metadata.get("modification_date", ""),
         }
         total_chars = sum(len(p.get("text", "")) for p in text_pages)
+        metrics = {
+            "pages_extracted": len(text_pages),
+            "total_chars": total_chars,
+            "avg_chars_per_page": round(total_chars / len(text_pages)) if text_pages else 0,
+        }
+        if text_quality:
+            metrics["text_quality_score"] = (
+                f"{text_quality.get('score', 0)}/{text_quality.get('max_score', 0)}"
+            )
         self._current_pdf["layers"]["L0_ingestion"] = {
-            "technology": "PyMuPDF (fitz)",
+            "technology": "PyMuPDF (fitz) + page PNG raster",
             "status": "OK",
             "elapsed_s": round(elapsed_s, 3),
-            "metrics": {
-                "pages_extracted": len(text_pages),
-                "total_chars": total_chars,
-                "avg_chars_per_page": round(total_chars / len(text_pages)) if text_pages else 0,
-            },
+            "metrics": metrics,
         }
 
     def log_layer1(self, profile: dict, elapsed_s: float):
         self._current_pdf["profiling"] = {
             "keywords": profile.get("keywords", []),
             "category": profile.get("category", "unknown"),
+            "secondary_categories": profile.get("secondary_categories", []),
             "surface_type": profile.get("surface_type", "unknown"),
             "summary": profile.get("summary", ""),
         }
@@ -94,17 +101,25 @@ class PipelineLogger:
             "metrics": {
                 "keywords_found": len(profile.get("keywords", [])),
                 "category": profile.get("category", "unknown"),
+                "secondary_categories": profile.get("secondary_categories", []),
                 "surface_type": profile.get("surface_type", "unknown"),
             },
         }
 
-    def log_layer2(self, nougat_result: dict, quality: dict, elapsed_s: float):
+    def log_layer2(self, nougat_result: dict, quality: dict, elapsed_s: float,
+                   skipped: bool = False):
         char_count = nougat_result.get("char_count", 0)
         score = quality.get("score", 0)
         max_score = quality.get("max_score", 4)
+        if skipped:
+            status = "SKIP"
+        elif score >= 2:
+            status = "OK"
+        else:
+            status = "FAIL"
         self._current_pdf["layers"]["L2_ocr"] = {
             "technology": "Nougat-OCR",
-            "status": "OK" if score >= 2 else "FAIL",
+            "status": status,
             "elapsed_s": round(elapsed_s, 3),
             "metrics": {
                 "latex_chars": char_count,
@@ -112,15 +127,18 @@ class PipelineLogger:
                 "quality_checks": quality.get("checks", {}),
                 "pages_processed": nougat_result.get("pages", 0),
                 "output_path": nougat_result.get("output_path", ""),
+                "skipped": skipped,
             },
         }
 
-    def log_layer3(self, vlm_result: dict, quality: dict, elapsed_s: float):
+    def log_layer3(self, vlm_result: dict, quality: dict, elapsed_s: float,
+                   technology: str | None = None):
         char_count = vlm_result.get("char_count", 0)
         score = quality.get("score", 0)
         max_score = quality.get("max_score", 4)
+        tech = technology or "VLM vision"
         self._current_pdf["layers"]["L3_vlm"] = {
-            "technology": "LLaMA 4 Scout 17B (Groq Vision)",
+            "technology": tech,
             "status": "OK" if score >= 2 else "FAIL",
             "elapsed_s": round(elapsed_s, 3),
             "metrics": {
@@ -131,17 +149,25 @@ class PipelineLogger:
             },
         }
 
-    def log_layer4(self, synthesis: dict, elapsed_s: float):
+    def log_layer4(self, synthesis: dict, elapsed_s: float,
+                   l5_system: dict | None = None):
+        metrics = {
+            "source_strategy": synthesis.get("source", "unknown"),
+            "domain": synthesis.get("domain", "general_math"),
+            "nougat_score": synthesis.get("nougat_score", 0),
+            "vlm_score": synthesis.get("vlm_score", 0),
+            "prompt_chars": synthesis.get("prompt_chars", 0),
+        }
+        if l5_system:
+            metrics["l5_system_domain"] = l5_system.get("domain")
+            metrics["l5_system_secondary_categories"] = l5_system.get(
+                "secondary_categories", []
+            )
         self._current_pdf["layers"]["L4_synthesis"] = {
             "technology": "Multi-Source Fusion",
             "status": "OK",
             "elapsed_s": round(elapsed_s, 3),
-            "metrics": {
-                "source_strategy": synthesis.get("source", "unknown"),
-                "nougat_score": synthesis.get("nougat_score", 0),
-                "vlm_score": synthesis.get("vlm_score", 0),
-                "prompt_chars": synthesis.get("prompt_chars", 0),
-            },
+            "metrics": metrics,
         }
 
     def log_layer5_attempt(self, provider: str, model: str, solution_chars: int,

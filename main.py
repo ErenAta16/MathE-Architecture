@@ -11,6 +11,8 @@ Usage:
     python main.py --full
     python main.py --check-gpu
     python main.py --list-pdfs
+    python main.py --no-nougat         # full run: VLM + text only
+    python main.py --no-vlm            # full run: Nougat + text only
 """
 
 import argparse
@@ -112,6 +114,16 @@ def main():
         action="store_true",
         help="Run every configured LLM and pick best (experimental)",
     )
+    parser.add_argument(
+        "--no-nougat",
+        action="store_true",
+        help="Full pipeline: skip Nougat (VLM + raw/markdown only)",
+    )
+    parser.add_argument(
+        "--no-vlm",
+        action="store_true",
+        help="Full pipeline: skip vision model (Nougat + raw only)",
+    )
 
     args = parser.parse_args()
     pdf_dir = Path(args.pdf_dir) if args.pdf_dir else PDF_DIR
@@ -131,8 +143,13 @@ def main():
         return
 
     from pipeline import STEPPipeline
-    pipeline = STEPPipeline(pdf_dir=pdf_dir, provider=args.provider,
-                            ensemble=args.ensemble)
+    pipeline = STEPPipeline(
+        pdf_dir=pdf_dir,
+        provider=args.provider,
+        ensemble=args.ensemble,
+        use_nougat=not args.no_nougat,
+        use_vlm=not args.no_vlm,
+    )
 
     no_specific_layer = not (args.layer0 or args.layer2 or args.layer6 or args.full)
 

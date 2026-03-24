@@ -6,11 +6,20 @@ Prefer `run.py` / `STEPSolver` for new work; `main.py` still imports this.
 import json
 import time
 import platform
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 import torch
 
-from config import PDF_DIR, IMG_DIR, NOUGAT_OUT, RESULTS_DIR, KNOWN_ANSWERS, NOUGAT_DPI
+from config import (
+    PDF_DIR,
+    IMG_DIR,
+    NOUGAT_OUT,
+    RESULTS_DIR,
+    KNOWN_ANSWERS,
+    NOUGAT_DPI,
+    get_system_prompt,
+)
 from layer0_ingestion import Layer0_PDFIngestion
 from layer1_profiler import Layer1_Profiler
 from layer2_nougat import Layer2_Nougat
@@ -25,8 +34,10 @@ class STEPPipeline:
     """Wires layers together for `main.py` batch demos."""
 
     def __init__(self, pdf_dir: str | Path = None, provider: str | None = None,
-                 ensemble: bool = False):
+                 ensemble: bool = False, use_nougat: bool = True, use_vlm: bool = True):
         self.pdf_dir = Path(pdf_dir) if pdf_dir else PDF_DIR
+        self.use_nougat = use_nougat
+        self.use_vlm = use_vlm
         self.layer0 = Layer0_PDFIngestion(self.pdf_dir, IMG_DIR)
         self.layer1 = Layer1_Profiler()
         self.layer2 = Layer2_Nougat(IMG_DIR, NOUGAT_OUT)
@@ -134,6 +145,8 @@ class STEPPipeline:
             "nougat_dpi": NOUGAT_DPI,
             "total_pdfs": test_count,
             "pdf_dir": str(self.pdf_dir),
+            "use_nougat": self.use_nougat,
+            "use_vlm": self.use_vlm,
         })
         gpu_name = torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"
         gpu_vram = f"{torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB" if torch.cuda.is_available() else "N/A"
@@ -147,11 +160,12 @@ class STEPPipeline:
         })
         models = [{"provider": s.provider, "model": s.model_name}
                   for s in self.solvers.values()]
-        if self.layer3.is_available:
-            models.insert(0, {"provider": "groq_vlm", "model": self.layer3.model})
+        if self.use_vlm and self.layer3.is_available:
+            vp = (self.layer3.provider or "groq") + "_vlm"
+            models.insert(0, {"provider": vp, "model": self.layer3.model})
         logger.log_models(models)
 
-        vlm_status = "on" if self.layer3.is_available else "off"
+        vlm_status = "on" if (self.use_vlm and self.layer3.is_available) else "off"
 
         if self.ensemble:
             llm_name = "Ensemble(" + "+".join(s.capitalize() for s in self.solvers) + ")"
@@ -159,10 +173,20 @@ class STEPPipeline:
             provider_names = {"groq": "Groq", "gemini": "Gemini", "claude": "Claude", "openai": "GPT-4o"}
             llm_name = provider_names.get(self.layer5.provider, "LLM") if self.layer5.is_available else "LLM(none)"
 
+        want_l2 = self.use_nougat
+        want_l3 = self.use_vlm and self.layer3.is_available
+        if want_l2 and want_l3:
+            ocr_desc = "L2+L3 (parallel)"
+        elif want_l2:
+            ocr_desc = "L2 only"
+        elif want_l3:
+            ocr_desc = "L3 only"
+        else:
+            ocr_desc = "no OCR"
         print("=" * 66)
         print(f"  FULL PIPELINE — {test_count} PDF(s)")
-        print(f"  L0(PyMuPDF) -> L1(Profiler) -> L2(Nougat) -> L3(VLM) -> L4(Synthesis) -> L5({llm_name}) -> L6(SymPy)")
-        print(f"  GPU: {gpu_name} | VLM: {vlm_status}")
+        print(f"  L0(PyMuPDF+PNG) -> L1 -> {ocr_desc} -> L4 -> L5({llm_name}) -> L6(SymPy)")
+        print(f"  GPU: {gpu_name} | Nougat: {'on' if self.use_nougat else 'off'} | VLM: {vlm_status}")
         print("=" * 66)
 
         for pdf in pdfs[:test_count]:
@@ -174,15 +198,21 @@ class STEPPipeline:
             logger.start_pdf(pdf.name)
             result = {"file": fname, "layers": {}}
 
-            # === LAYER 0: Metadata + Text ===
+            # === LAYER 0: Metadata + Text + PNGs (align with STEPSolver) ===
             t0 = time.time()
             metadata = self.layer0.extract_metadata(pdf)
             raw_pages = self.layer0.extract_text(pdf)
-            t0_elapsed = time.time() - t0
-            logger.log_layer0(metadata, raw_pages, t0_elapsed)
+            self.layer0.extract_images(pdf, dpi=NOUGAT_DPI)
             raw_text = "\n".join(p["text"] for p in raw_pages).strip()
+            md_text = self.layer0.extract_markdown(pdf)
+            text_quality = self.layer0.analyze_text_quality(raw_pages)
+            t0_elapsed = time.time() - t0
+            logger.log_layer0(metadata, raw_pages, t0_elapsed, text_quality=text_quality)
             total_chars = sum(len(p["text"]) for p in raw_pages)
-            print(f"  [L0] PyMuPDF: {metadata.get('pages')} pages, {total_chars} chars ({t0_elapsed:.2f}s)")
+            print(
+                f"  [L0] PyMuPDF: {metadata.get('pages')} pages, {total_chars} chars, "
+                f"quality {text_quality['score']}/{text_quality['max_score']} ({t0_elapsed:.2f}s)"
+            )
 
             # === LAYER 1: Profiling ===
             t1 = time.time()
@@ -191,71 +221,195 @@ class STEPPipeline:
             logger.log_layer1(profile, t1_elapsed)
             result["layers"]["L1"] = {
                 "category": profile["category"],
+                "secondary_categories": profile.get("secondary_categories", []),
                 "surface": profile["surface_type"],
                 "keywords": len(profile["keywords"]),
                 "status": "OK",
             }
-            print(f"  [L1] Profiler: {profile['category']}/{profile['surface_type']}, {len(profile['keywords'])} keywords ({t1_elapsed:.3f}s)")
+            sec = profile.get("secondary_categories") or []
+            sec_s = f" | also: {', '.join(sec)}" if sec else ""
+            print(f"  [L1] Profiler: {profile['category']}/{profile['surface_type']}{sec_s}, {len(profile['keywords'])} keywords ({t1_elapsed:.3f}s)")
 
-            # === LAYER 2: Nougat OCR ===
-            t2 = time.time()
-            print(f"  [L2] Nougat OCR...")
-            nougat = self.layer2.extract_from_pdf(pdf, verbose=True)
-            latex = nougat.get("latex", "")
-            nougat_quality = self.layer2.check_quality(latex)
-            nougat_score = nougat_quality["score"]
-            t2_elapsed = time.time() - t2
-            logger.log_layer2(nougat, nougat_quality, t2_elapsed)
-            result["layers"]["L2"] = {
-                "chars": nougat.get("char_count", 0),
-                "score": f"{nougat_score}/{nougat_quality['max_score']}",
-                "status": "OK" if nougat_score >= 2 else "FAIL",
-            }
-            print(f"       Nougat: {nougat.get('char_count', 0)} chars, quality {nougat_score}/{nougat_quality['max_score']} ({t2_elapsed:.1f}s)")
-
-            # === LAYER 3: VLM (LLaMA 4 Scout) ===
+            # === LAYER 2 + 3: Nougat + VLM (parallel when both enabled) ===
+            latex = ""
+            nougat_score = 0
+            nougat: dict = {}
             vlm_latex = ""
             vlm_score = 0
-            if self.layer3.is_available:
+            vlm_result: dict = {}
+            t2_elapsed = 0.0
+            t3_elapsed = 0.0
+            nougat_pkg = None
+            vlm_pkg = None
+
+            nougat_needed = self.use_nougat
+            if nougat_needed and text_quality["score"] >= 6 and total_chars > 100:
+                nougat_needed = False
+                print(
+                    f"  [L2] Skipped Nougat (text quality {text_quality['score']}/"
+                    f"{text_quality['max_score']})"
+                )
+
+            def _run_nougat():
+                t2 = time.time()
+                print("  [L2] Nougat OCR...")
+                res = self.layer2.extract_from_pdf(pdf, verbose=True)
+                q = self.layer2.check_quality(res.get("latex", ""))
+                elapsed = round(time.time() - t2, 2)
+                print(
+                    f"       {res.get('char_count', 0)} chars, quality {q['score']}/"
+                    f"{q['max_score']} ({elapsed:.1f}s)"
+                )
+                return "nougat", res, q, elapsed
+
+            def _run_vlm():
                 t3 = time.time()
-                print(f"  [L3] VLM (LLaMA 4 Scout)...")
-                try:
-                    vlm_result = self.layer3.extract_from_pdf_images(IMG_DIR, fname, verbose=True)
-                    vlm_latex = vlm_result.get("vlm_latex", "")
-                    vlm_quality = self.layer3.check_quality(vlm_latex)
-                    vlm_score = vlm_quality["score"]
-                    t3_elapsed = time.time() - t3
-                    logger.log_layer3(vlm_result, vlm_quality, t3_elapsed)
-                    result["layers"]["L3"] = {
-                        "chars": vlm_result.get("char_count", 0),
-                        "score": f"{vlm_score}/{vlm_quality['max_score']}",
-                        "status": "OK" if vlm_score >= 2 else "FAIL",
-                    }
-                    print(f"       VLM: {vlm_result.get('char_count', 0)} chars, quality {vlm_score}/{vlm_quality['max_score']} ({t3_elapsed:.1f}s)")
-                except Exception as e:
-                    t3_elapsed = time.time() - t3
-                    print(f"       VLM: [FAIL] {str(e)[:60]} ({t3_elapsed:.1f}s)")
-                    logger.log_layer3({"char_count": 0, "pages": 0},
-                                       {"score": 0, "max_score": 4, "checks": {}}, t3_elapsed)
-                    result["layers"]["L3"] = {"status": "FAIL", "chars": 0}
+                vlm_label = f"{self.layer3.provider or 'groq'}/{self.layer3.model}"
+                print(f"  [L3] VLM ({vlm_label})...")
+                res = self.layer3.extract_from_pdf_images(IMG_DIR, fname, verbose=True)
+                q = self.layer3.check_quality(res.get("vlm_latex", ""))
+                elapsed = round(time.time() - t3, 2)
+                print(
+                    f"       {res.get('char_count', 0)} chars, quality {q['score']}/"
+                    f"{q['max_score']} ({elapsed:.1f}s)"
+                )
+                return "vlm", res, q, elapsed
+
+            futures = {}
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                if nougat_needed:
+                    futures[pool.submit(_run_nougat)] = "nougat"
+                if self.use_vlm and self.layer3.is_available:
+                    futures[pool.submit(_run_vlm)] = "vlm"
+
+                for fut in as_completed(futures):
+                    try:
+                        tag, res, q, elapsed = fut.result()
+                        if tag == "nougat":
+                            nougat_pkg = (res, q, elapsed)
+                        else:
+                            vlm_pkg = (res, q, elapsed)
+                    except Exception as e:
+                        tag = futures[fut]
+                        print(f"       [{tag.upper()} FAIL] {str(e)[:60]}")
+
+            if not nougat_needed:
+                stub_q = self.layer2.check_quality("")
+                stub_n = {"latex": "", "char_count": 0, "pages": 0, "output_path": ""}
+                logger.log_layer2(stub_n, stub_q, 0.0, skipped=True)
+                latex, nougat_score = "", 0
+                nougat = stub_n
+                nougat_quality = stub_q
+                result["layers"]["L2"] = {
+                    "chars": 0,
+                    "score": f"{nougat_score}/{stub_q['max_score']}",
+                    "status": "SKIP",
+                }
+            elif nougat_pkg:
+                nougat, nougat_quality, t2_elapsed = nougat_pkg
+                latex = nougat.get("latex", "")
+                nougat_score = nougat_quality["score"]
+                logger.log_layer2(nougat, nougat_quality, t2_elapsed)
+                result["layers"]["L2"] = {
+                    "chars": nougat.get("char_count", 0),
+                    "score": f"{nougat_score}/{nougat_quality['max_score']}",
+                    "status": "OK" if nougat_score >= 2 else "FAIL",
+                }
             else:
+                fail_q = self.layer2.check_quality("")
+                stub_n = {"latex": "", "char_count": 0, "pages": 0, "output_path": ""}
+                logger.log_layer2(stub_n, fail_q, t2_elapsed)
+                latex, nougat_score = "", 0
+                nougat = stub_n
+                nougat_quality = fail_q
+                result["layers"]["L2"] = {
+                    "chars": 0,
+                    "score": f"{nougat_score}/{fail_q['max_score']}",
+                    "status": "FAIL",
+                }
+
+            vlm_tech = "VLM"
+            if self.layer3.is_available:
+                vlm_tech = (
+                    f"Gemini ({self.layer3.model})"
+                    if self.layer3.provider == "gemini"
+                    else f"Groq VLM ({self.layer3.model})"
+                )
+
+            if not self.use_vlm or not self.layer3.is_available:
                 result["layers"]["L3"] = {"status": "SKIP"}
+            elif vlm_pkg:
+                vlm_result, vlm_quality, t3_elapsed = vlm_pkg
+                vlm_latex = vlm_result.get("vlm_latex", "")
+                vlm_score = vlm_quality["score"]
+                logger.log_layer3(vlm_result, vlm_quality, t3_elapsed, technology=vlm_tech)
+                result["layers"]["L3"] = {
+                    "chars": vlm_result.get("char_count", 0),
+                    "score": f"{vlm_score}/{vlm_quality['max_score']}",
+                    "status": "OK" if vlm_score >= 2 else "FAIL",
+                }
+            else:
+                logger.log_layer3(
+                    {"char_count": 0, "pages": 0},
+                    {"score": 0, "max_score": 4, "checks": {}},
+                    t3_elapsed,
+                    technology=vlm_tech,
+                )
+                result["layers"]["L3"] = {"status": "FAIL", "chars": 0}
+
+            if total_chars == 0 and (vlm_latex or latex):
+                t1b = time.time()
+                ocr_text = vlm_latex or latex
+                profile = self.layer1.profile(fname, metadata, raw_text, latex_text=ocr_text)
+                t1b_elapsed = time.time() - t1b
+                logger.log_layer1(profile, t1b_elapsed)
+                result["layers"]["L1"].update({
+                    "category": profile["category"],
+                    "secondary_categories": profile.get("secondary_categories", []),
+                    "surface": profile["surface_type"],
+                    "keywords": len(profile["keywords"]),
+                })
+                print(
+                    f"  [L1b] Re-profiled: {profile['category']} / {profile['surface_type']} "
+                    f"({t1b_elapsed:.3f}s)"
+                )
 
             # === LAYER 4: Input Synthesis ===
             t4 = time.time()
             synthesis = self.layer4.synthesize(
-                raw_text, latex, nougat_score, vlm_latex, vlm_score, profile
+                raw_text, latex, nougat_score, vlm_latex, vlm_score, profile,
+                md_text=md_text,
             )
             prompt = synthesis["prompt"]
             source = synthesis["source"]
+            domain = synthesis.get("domain", "general_math")
+            l5_system = {
+                "domain": domain,
+                "secondary_categories": list(profile.get("secondary_categories") or []),
+            }
+            system_prompt = get_system_prompt(
+                domain,
+                secondary_categories=profile.get("secondary_categories"),
+                primary_category=profile.get("category"),
+            )
             t4_elapsed = time.time() - t4
-            logger.log_layer4(synthesis, t4_elapsed)
+            logger.log_layer4(synthesis, t4_elapsed, l5_system=l5_system)
+            result["l5_system"] = l5_system
             result["layers"]["L4"] = {
                 "source": source,
+                "domain": domain,
                 "prompt_chars": synthesis["prompt_chars"],
                 "status": "OK",
             }
-            print(f"  [L4] Synthesis: source={source}, {synthesis['prompt_chars']} chars ({t4_elapsed:.3f}s)")
+            dom_lbl = "surface_integral" if domain == "surface_integral" else "general_math"
+            print(
+                f"  [L4] Synthesis: source={source}, domain={dom_lbl}, "
+                f"{synthesis['prompt_chars']} chars ({t4_elapsed:.3f}s)"
+            )
+            dom_tag = "surface" if domain == "surface_integral" else "general"
+            sec_l5 = profile.get("secondary_categories") or []
+            sec_l5_s = f", signals={sec_l5}" if sec_l5 else ""
+            print(f"  [L5] system={dom_tag}{sec_l5_s} (per attempt below)")
 
             best_solution = ""
             best_verification = None
@@ -269,7 +423,7 @@ class STEPPipeline:
                 print(f"  [L5] {solver_name.capitalize()} ({solver.model_name}) …")
                 t5 = time.time()
                 try:
-                    solution = solver.solve(prompt)
+                    solution = solver.solve(prompt, system_prompt=system_prompt)
                     t5_elapsed = time.time() - t5
                     print(f"       {len(solution)} char ({t5_elapsed:.1f}s)")
 
@@ -333,7 +487,7 @@ class STEPPipeline:
                     print(f"  [L5] Retry {retry_idx+1}: {rname.capitalize()}...")
                     t5r = time.time()
                     try:
-                        retry_sol = rslvr.solve(retry_prompt)
+                        retry_sol = rslvr.solve(retry_prompt, system_prompt=system_prompt)
                         t5r_elapsed = time.time() - t5r
                         print(f"       {len(retry_sol)} char ({t5r_elapsed:.1f}s)")
                         retry_ver = self.layer6.verify_llm_answer(fname, retry_sol)
