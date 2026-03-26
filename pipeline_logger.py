@@ -6,9 +6,12 @@ computes roll-up stats (layer success counts, per-provider attempt counts).
 """
 
 import json
+import logging
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+
+_log = logging.getLogger(__name__)
 
 
 class PipelineLogger:
@@ -288,16 +291,17 @@ class PipelineLogger:
             json.dump(self.run_log, f, indent=2, default=str, ensure_ascii=False)
         return log_path
 
-    def print_summary(self):
+    def print_summary(self) -> None:
+        """Emit a human-readable roll-up of ``compute_summary()`` via the root logger."""
         s = self.run_log["summary"]
-        print(f"\n{'='*66}")
-        print(f"  PIPELINE LOG SUMMARY  (run_id: {self.run_id})")
-        print(f"{'='*66}")
-        print(f"\n  PDFs: {s['total_pdfs']}")
-        print(f"  Wall time: {s['total_elapsed_s']}s ({s['total_elapsed_s']/60:.1f} min)")
-        print(f"  Avg / PDF: {s['avg_per_pdf_s']}s")
+        _log.info(f"\n{'='*66}")
+        _log.info(f"  PIPELINE LOG SUMMARY  (run_id: {self.run_id})")
+        _log.info(f"{'='*66}")
+        _log.info(f"\n  PDFs: {s['total_pdfs']}")
+        _log.info(f"  Wall time: {s['total_elapsed_s']}s ({s['total_elapsed_s']/60:.1f} min)")
+        _log.info(f"  Avg / PDF: {s['avg_per_pdf_s']}s")
 
-        print(f"\n  --- Layer stats ---")
+        _log.info("\n  --- Layer stats ---")
         for layer_name, layer_info in s["layer_performance"].items():
             tech = layer_info.get("technology", "")
             rate = layer_info.get("success_rate", "")
@@ -306,14 +310,14 @@ class PipelineLogger:
                 extra = f" | {layer_info['total_time_s']}s"
             if "accuracy_pct" in layer_info:
                 extra += f" | %{layer_info['accuracy_pct']}"
-            print(f"    {layer_name:<20} {tech:<15} {rate}{extra}")
+            _log.info(f"    {layer_name:<20} {tech:<15} {rate}{extra}")
 
-        print(f"\n  --- LLM attempts ---")
-        print(f"    {'Provider':<25} {'OK':>10} {'Avg s':>10} {'Total s':>10}")
-        print(f"    {'─'*55}")
+        _log.info("\n  --- LLM attempts ---")
+        _log.info(f"    {'Provider':<25} {'OK':>10} {'Avg s':>10} {'Total s':>10}")
+        _log.info(f"    {'─'*55}")
         for prov, stats in s.get("model_comparison", {}).items():
             acc = f"{stats['match']}/{stats['total']}" if stats["total"] else "N/A"
-            print(f"    {prov:<25} {acc:>10} {stats['avg_time_s']:>9}s {stats['total_time_s']:>9}s")
+            _log.info(f"    {prov:<25} {acc:>10} {stats['avg_time_s']:>9}s {stats['total_time_s']:>9}s")
 
         ro = s.get("run_outcomes", {})
-        print(f"\n  ═══ Completed: {ro.get('completed_ok', 0)}/{ro.get('total_pdfs', 0)} ═══")
+        _log.info(f"\n  ═══ Completed: {ro.get('completed_ok', 0)}/{ro.get('total_pdfs', 0)} ═══")
