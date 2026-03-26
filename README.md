@@ -1,6 +1,6 @@
 # STEP — runnable app
 
-This folder holds **only what you need to run** the pipeline locally (code + templates). **Most pipeline logs and code comments are in English**; a few CLI/web hints stay **Turkish** for local users (`run.py --check`, `web_app.py` startup banner). The **Project report** subsection below keeps **three narrative languages** (English, Portuguese, Turkish) on purpose. Quick start is at the **bottom**.
+This directory is the runnable slice of the project (application code and templates). Pipeline logs and comments are mostly **English**; a few CLI and web strings stay **Turkish** for local use (`run.py --check`, `web_app.py` banner). The **Project report** below is intentionally repeated in **English, Portuguese, and Turkish**. Quick start is at the end.
 
 ---
 
@@ -51,7 +51,7 @@ Prompt design matters: the VLM is instructed to **read only, not solve**—an ei
 
 #### Technology choices
 
-**PyMuPDF** — speed and reliability (much faster than typical pure-Python PDF libs). **Nougat** — academic PDFs and direct LaTeX, but 72.4% alone was insufficient. **LLaMA 4 Scout 17B** — DocVQA score, MoE efficiency, Groq Vision access. **Gemini 2.5 Flash** — strong math reasoning (“thinking”). **Groq LLaMA 3.3 70B** — very fast fallback with free tier. **SymPy** — full Python CAS for verification. **Flask** — lightweight web UI with SSE. **MathJax 3** — high-quality LaTeX in the browser.
+**PyMuPDF** — fast, reliable PDF text and raster output. **Nougat** — pixels to LaTeX for academic layouts; on its own it missed too many of our PDFs. **LLaMA 4 Scout 17B** — vision model on Groq, good DocVQA-style scores. **Gemini 2.5 Flash** — primary text solver (“thinking” mode). **Groq LLaMA 3.3 70B** — quick fallback when Gemini is busy or errors. **SymPy** (via `latex_parser`) — turns short LaTeX fragments into numbers so repeated solver attempts can agree. **Flask** — small web UI with SSE. **MathJax 3** — render LaTeX in the browser.
 
 ---
 
@@ -72,11 +72,11 @@ A primeira versão foi um notebook Google Colab monolítico com PDF, OCR, LLM e 
 
 O pipeline tem **sete camadas**. **Camada 0** (PyMuPDF) extrai texto, metadados e imagens de página (~0,02 s em média; 58/58 PDFs sem falha). O texto passa por **sete verificações de qualidade**; a resolução das imagens subiu de 300 para **400 DPI**.
 
-**Camada 1** usa um classificador heurístico com regex: 17 palavras-chave, quatro categorias principais (integral de superfície escalar, fluxo, teorema da divergência, Stokes) e tipo de superfície. Fase 6 adicionou dez categorias de matemática geral; o domínio passa a `surface_integral` ou `general_math`.
+**Camada 1** usa um classificador heurístico com regex: palavras-chave, categoria **primária** (família de integrais de superfície ou tipos de matemática geral), sinais **secundários** opcionais e tipo de superfície quando aplicável. O **domínio** derivado (`surface_integral` ou `general_math`) escolhe o *system prompt* da Camada 5.
 
-**Camada 2 (Nougat-OCR):** arquitetura Swin + mBART, LaTeX a partir de pixeis. Integração difícil: conflito com Albumentations → `_setup_albumentations_bypass()`; validação do `generate()` → monkey-patch. Sucesso em **42/58 PDFs (72,4%)**; 17 com saída vazia ou `[repetition]`; ~10,7 s/PDF. **Camada 3 (VLM)** — LLaMA 4 Scout 17B via **Groq Vision**, MoE, contexto longo, **94,4 ANLS** no DocVQA; **100%** nos 58 PDFs; ~2,4 s/PDF (~4,5× mais rápido que Nougat local neste hardware); custo total ~**0,01 USD**. Prompt “só ler, não resolver”; **dupla passagem** por página; `clean_output()` remove passos de solução.
+**Camada 2 (Nougat-OCR):** arquitetura Swin + mBART, LaTeX a partir de pixeis. Integração difícil: conflito com Albumentations → `_setup_albumentations_bypass()`; validação do `generate()` → monkey-patch. Sucesso em **42/58 PDFs (72,4%)**; 17 com saída vazia ou `[repetition]`; ~10,7 s/PDF. **Camada 3 (VLM)** — LLaMA 4 Scout 17B via **Groq Vision**, MoE, contexto longo, **94,4 ANLS** no DocVQA; **100%** nos 58 PDFs; ~2,4 s/PDF (~4,5× mais rápido que Nougat local neste hardware); custo total ~**0,01 USD**. Prompt “só ler, não resolver”; **duas passagens** quando a primeira não atinge o máximo da rubrica; `clean_output()` remove passos de solução.
 
-**Camada 4** funde fontes (tripla, VLM+prioridade, Nougat+prioridade, só texto) e *hints* por classe de problema. **Camada 5:** testados Claude, Groq Llama 3.3 70B, GPT-4o, Gemini 2.5 Flash; **Gemini primário**, **Groq fallback**. **Camada 6 (SymPy):** numérico, simbólico e *string search*; parser LaTeX evoluiu até **58/58** parses.
+**Camada 4** funde fontes (tripla, VLM+prioridade, Nougat+prioridade, só texto) e *hints* por classe de problema. **Camada 5:** testados Claude, Groq Llama 3.3 70B, GPT-4o, Gemini 2.5 Flash; **Gemini primário**, **Groq fallback**. **Camada 6** extrai uma linha final para a UI (`\boxed{}`, `FINAL_ANSWER:`, heurísticas no fim do texto); o nome da classe ainda remete a SymPy por histórico. A **comparação numérica entre tentativas** do solver usa `latex_parser` em `run.STEPSolver._solve_with_consensus`.
 
 ---
 
@@ -88,7 +88,7 @@ Nougat: módulo falso + *patch* do `generate` + VLM quando há `[repetition]`. V
 
 #### Escolhas tecnológicas
 
-PyMuPDF pela velocidade; Nougat para PDFs académicos mas insuficiente sozinho; LLaMA 4 Scout na Groq para visão; Gemini para raciocínio matemático; Groq como *fallback* rápido; SymPy para CAS; Flask + SSE na UI; MathJax 3 no browser.
+PyMuPDF pela velocidade; Nougat para LaTeX a partir de imagens; LLaMA 4 Scout na Groq para visão; Gemini como solver principal; Groq como *fallback*; SymPy (via `latex_parser`) para alinhar respostas numéricas entre tentativas; Flask + SSE; MathJax 3 no browser.
 
 ---
 
@@ -109,15 +109,15 @@ Sistemin ilk versiyonu bir Google Colab notu olarak geliştirilmiştir; PDF işl
 
 **Katman 0 (PDF ingestion):** PyMuPDF ile ham metin, metadata ve yüksek çözünürlüklü görseller; ortalama ~0,02 s; 58 PDF’de hatasız çalışma. Metin 7 kontrol noktasından geçer; görüntü DPI başlangıçta 300, OCR için **400**’e çıkarılmıştır.
 
-**Katman 1 (Profiling):** Heuristik regex sınıflandırıcı; 17 anahtar kelime havuzu, dört ana kategori (skaler yüzey integrali, akı integrali, diverjans teoremi, Stokes) ve yüzey tipi. Faz 6’da 10 ek genel matematik kategorisi; çözüm stratejisi `surface_integral` veya `general_math`.
+**Katman 1 (Profiling):** Heuristik regex; anahtar kelimeler, **birincil** kategori (yüzey integrali ailesi veya genel matematik türleri), isteğe bağlı **ikincil** sinyaller ve uygunsa yüzey tipi. Türetilen **domain** (`surface_integral` / `general_math`) Katman 5 sistem promptunu seçer.
 
-**Katman 2 (Nougat-OCR):** Swin Transformer + mBART; pikselden LaTeX. Albumentations çakışması → `_setup_albumentations_bypass()`; transformers `generate()` doğrulaması → monkey-patch. **42/58 PDF (%72,4)** başarı; 17 PDF’de boş çıktı veya `[repetition]`; ortalama ~10,7 s/PDF. **Katman 3 (VLM):** Groq Vision üzerinden **LLaMA 4 Scout 17B**, MoE, DocVQA’da **94,4 ANLS**; **58/58 PDF (%100)**; Nougat’ın düştüğü 16 PDF’yi kurtarır; ortalama ~2,4 s/PDF (Nougat’a göre ~4,5× daha hızlı); toplam maliyet ~**0,01 USD**. Prompt: “sadece oku, çözme”; sayfa başına **çift geçiş**; `clean_output()` çözüm cümlelerini budar.
+**Katman 2 (Nougat-OCR):** Swin Transformer + mBART; pikselden LaTeX. Albumentations çakışması → `_setup_albumentations_bypass()`; transformers `generate()` doğrulaması → monkey-patch. **42/58 PDF (%72,4)** başarı; 17 PDF’de boş çıktı veya `[repetition]`; ortalama ~10,7 s/PDF. **Katman 3 (VLM):** Groq Vision üzerinden **LLaMA 4 Scout 17B**, MoE, DocVQA’da **94,4 ANLS**; **58/58 PDF (%100)**; Nougat’ın düştüğü 16 PDF’yi kurtarır; ortalama ~2,4 s/PDF (Nougat’a göre ~4,5× daha hızlı); toplam maliyet ~**0,01 USD**. Prompt: “sadece oku, çözme”; birinci geçiş zaten tam puan değilse **ikinci VLM geçişi**; `clean_output()` çözüm cümlelerini budar.
 
 **Katman 4 (Synthesis):** Nougat + VLM + ham metin stratejileri; akı gibi problemlerde otomatik ipuçları; yüzey integrali için 8 adımlı prosedür, genel matematik için esnek prompt; ortalama ~3200 karakter.
 
 **Katman 5 (LLM):** Claude (gecikme/kalite) → Groq Llama 3.3 70B (hızlı, retry ile yüksek doğruluk ama bazı problemlerde tutarsız) → GPT-4o (sınırlı test) → **Gemini 2.5 Flash** (%100 test seti, daha yavaş). **Birincil: Gemini, yedek: Groq.**
 
-**Katman 6 (Verification):** SymPy ile sayısal (48 problem, 0,01 tolerans), sembolik (5 parametrik) ve string yedek. LaTeX parser v1’den v4’e: **58/58** parse.
+**Katman 6:** LLM çıktısından arayüz için tek bir **final satır** çıkarımı (`\boxed{}`, `FINAL_ANSWER:`, kuyruk heuristikleri). Sınıf adı geçmişten “SymPyVerifier” olsa da bu katmanda referans cevap doğrulaması yok. **Yinelemeli denemelerde sayısal örtüşme** `run.STEPSolver._solve_with_consensus` içinde `latex_parser.parse_latex_to_value` ile yapılır.
 
 ---
 
@@ -129,7 +129,7 @@ Nougat: sahte modül + `generate` yaması + VLM yedek. VLM: `clean_output()` en 
 
 #### Teknoloji seçimleri
 
-PyMuPDF (hız); Nougat (akademik LaTeX, tek başına yetersiz); LLaMA 4 Scout + Groq (VLM); Gemini (düşünme / matematik); Groq 70B (hızlı fallback); SymPy (CAS); Flask + SSE (web); MathJax 3 (tarayıcı).
+PyMuPDF (hız); Nougat (görüntüden LaTeX); LLaMA 4 Scout + Groq (VLM); Gemini (ana metin çözücü); Groq 70B (yedek); SymPy tabanlı `latex_parser` (denemeler arası sayısal karşılaştırma); Flask + SSE; MathJax 3.
 
 ---
 
