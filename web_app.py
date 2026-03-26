@@ -1,12 +1,16 @@
 """
-STEP Pipeline — Web UI
-Flask backend with SSE streaming for real-time pipeline output.
+STEP Pipeline — Web UI.
+
+Flask backend with Server-Sent Events (SSE) for live log lines while a PDF is
+solved. Solver output uses the same ``logging`` format as the CLI so
+``_classify`` can tag ``[L0]`` … ``[L6]`` lines for the front end.
 
 Run:
     python web_app.py
     Open http://127.0.0.1:5000
 """
 
+import logging
 import os
 import threading
 import queue
@@ -27,6 +31,7 @@ from flask import (
     redirect,
     url_for,
 )
+from werkzeug.utils import secure_filename
 
 # Windows consoles often default to cp1252; force UTF-8 so box-drawing / checkmarks don't crash.
 try:
@@ -43,17 +48,53 @@ UPLOAD_DIR = Path(__file__).parent / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 _tasks: dict = {}
+_tasks_lock = threading.Lock()
+# Drop finished tasks after this many seconds (SSE client usually attaches immediately).
+_TASK_RETENTION_SEC = 15 * 60
+# Hard cap so _tasks cannot grow without bound if retention is misconfigured.
+_TASK_MAX = 256
+
 _thread_local = threading.local()
 _original_stdout = sys.stdout
 _solve_lock = threading.Lock()
+
+
+def _prune_tasks() -> None:
+    """Remove completed tasks past TTL and enforce a max entry count."""
+    now = time.time()
+    with _tasks_lock:
+        for tid in list(_tasks.keys()):
+            t = _tasks[tid]
+            if not t.get("done"):
+                continue
+            finished = t.get("finished_at")
+            if finished is None:
+                continue
+            if now - finished > _TASK_RETENTION_SEC:
+                _tasks.pop(tid, None)
+
+        if len(_tasks) <= _TASK_MAX:
+            return
+        done = [
+            (tid, t["finished_at"])
+            for tid, t in _tasks.items()
+            if t.get("done") and t.get("finished_at") is not None
+        ]
+        done.sort(key=lambda x: x[1])
+        for tid, _ in done[: max(0, len(_tasks) - _TASK_MAX)]:
+            _tasks.pop(tid, None)
 
 
 # ---------------------------------------------------------------------------
 # Thread-safe stdout capture → SSE queue
 # ---------------------------------------------------------------------------
 class _SmartStdout:
-    """Captures solver thread's stdout to a per-thread queue while
-    preserving normal output on other threads."""
+    """ Tee stdout: mirror to the real console and buffer line-based events for SSE.
+
+    When ``_thread_local.queue`` is set (worker thread), complete lines are
+    classified and pushed for the event stream. ``logging`` uses the same
+    ``sys.stdout``, so log records follow the same path as legacy prints.
+    """
 
     def write(self, text):
         try:
@@ -86,6 +127,15 @@ class _SmartStdout:
 
 
 sys.stdout = _SmartStdout()
+
+# Import after stdout swap so ``configure_logging`` attaches to ``_SmartStdout``.
+from config import ensure_dirs
+from step_logging import configure_logging
+
+ensure_dirs()
+configure_logging()
+
+_log = logging.getLogger(__name__)
 
 
 @app.after_request
@@ -146,13 +196,17 @@ def upload():
     if not f or not f.filename:
         return jsonify(error="PDF file required"), 400
 
-    safe = f.filename.replace("/", "_").replace("\\", "_")
+    safe = secure_filename(f.filename)
+    if not safe:
+        return jsonify(error="Invalid filename"), 400
     fp = UPLOAD_DIR / safe
     f.save(fp)
 
+    _prune_tasks()
     tid = f"t{int(time.time() * 1000)}"
     q = queue.Queue()
-    _tasks[tid] = {"queue": q, "done": False, "result": None}
+    with _tasks_lock:
+        _tasks[tid] = {"queue": q, "done": False, "result": None, "finished_at": None}
 
     threading.Thread(target=_worker, args=(tid, fp), daemon=True).start()
     return jsonify(task_id=tid, filename=safe)
@@ -160,7 +214,9 @@ def upload():
 
 @app.route("/stream/<tid>")
 def stream(tid):
-    task = _tasks.get(tid)
+    _prune_tasks()
+    with _tasks_lock:
+        task = _tasks.get(tid)
     if not task:
         return jsonify(error="not found"), 404
 
@@ -190,13 +246,18 @@ def serve_pdf(name):
 # Background solver
 # ---------------------------------------------------------------------------
 def _worker(tid: str, filepath: Path):
-    task = _tasks[tid]
+    """Solve one uploaded PDF under a lock; push log lines to the task queue, then ``done``/``error``."""
+    with _tasks_lock:
+        task = _tasks.get(tid)
+    if task is None:
+        return
     q = task["queue"]
     _thread_local.queue = q
     _thread_local.buf = ""
 
     with _solve_lock:
         try:
+            ensure_dirs()
             from run import STEPSolver
 
             solver = STEPSolver(use_nougat=False, use_vlm=True)
@@ -221,24 +282,26 @@ def _worker(tid: str, filepath: Path):
 
         finally:
             _thread_local.queue = None
-            task["done"] = True
             q.put(None)
+            with _tasks_lock:
+                task["done"] = True
+                task["finished_at"] = time.time()
 
 
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     base = "http://127.0.0.1:5000/"
-    print()
-    print("  " + "=" * 44)
-    print("  STEP Pipeline - Web UI")
-    print("  " + "=" * 44)
-    print()
-    print("  Tarayiciya TAM su adresi yapistirin (http:// sart):")
-    print(f"    {base}")
-    print()
-    print("  Not: Sadece 127.0.0.1:5000 yazmak arama yapabilir; http:// ekleyin.")
-    print("  Kapatmak icin: Ctrl+C")
-    print()
+    _log.info("")
+    _log.info("  " + "=" * 44)
+    _log.info("  STEP Pipeline - Web UI")
+    _log.info("  " + "=" * 44)
+    _log.info("")
+    _log.info("  Tarayiciya TAM su adresi yapistirin (http:// sart):")
+    _log.info(f"    {base}")
+    _log.info("")
+    _log.info("  Not: Sadece 127.0.0.1:5000 yazmak arama yapabilir; http:// ekleyin.")
+    _log.info("  Kapatmak icin: Ctrl+C")
+    _log.info("")
 
     def _open_browser():
         time.sleep(1.2)
