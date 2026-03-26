@@ -1,22 +1,19 @@
 """
-STEP Pipeline — older CLI (`pipeline.STEPPipeline`).
+Alternate entry point: runs ``pipeline.STEPPipeline`` on a folder with JSON logging.
+
+``run.py`` is preferred for one-off PDFs; this script is for batch + ``pipeline_log_*.json``.
 
 Usage:
-    python main.py                     # full pipeline, first 5 PDFs
-    python main.py --count 10
+    python main.py
+    python main.py -n 10
     python main.py --pdf-dir ./my_pdfs
-    python main.py --layer0            # Layer 0 only
-    python main.py --layer2            # Nougat only
-    python main.py --layer6            # SymPy tests only
-    python main.py --full
     python main.py --check-gpu
     python main.py --list-pdfs
-    python main.py --no-nougat         # full run: VLM + text only
-    python main.py --no-vlm            # full run: Nougat + text only
+    python main.py --no-nougat
+    python main.py --no-vlm
 """
 
 import argparse
-import sys
 from pathlib import Path
 
 import torch
@@ -25,7 +22,7 @@ from config import PDF_DIR
 
 
 def check_gpu():
-    """Print whether CUDA is available (Nougat cares a lot)."""
+    """Show CUDA device name/VRAM if present (Nougat is slow without a GPU)."""
     print("=" * 50)
     print("  GPU CHECK")
     print("=" * 50)
@@ -41,7 +38,7 @@ def check_gpu():
 
 
 def list_pdfs(pdf_dir: Path):
-    """List first few PDFs in a folder."""
+    """Print a short listing (up to 10 files) for the given directory."""
     pdf_files = sorted(pdf_dir.glob("*.pdf"))
     print(f"\n  {pdf_dir}: {len(pdf_files)} PDF(s)")
     for f in pdf_files[:10]:
@@ -71,26 +68,6 @@ def main():
         type=int,
         default=5,
         help="How many PDFs to process (default: 5)",
-    )
-    parser.add_argument(
-        "--layer0",
-        action="store_true",
-        help="Run Layer 0 (ingest) test only",
-    )
-    parser.add_argument(
-        "--layer2",
-        action="store_true",
-        help="Run Layer 2 (Nougat) test only",
-    )
-    parser.add_argument(
-        "--layer6",
-        action="store_true",
-        help="Run Layer 6 (SymPy) standalone tests only",
-    )
-    parser.add_argument(
-        "--full",
-        action="store_true",
-        help="Full pipeline: Nougat → LLM → SymPy",
     )
     parser.add_argument(
         "--check-gpu",
@@ -151,23 +128,10 @@ def main():
         use_vlm=not args.no_vlm,
     )
 
-    no_specific_layer = not (args.layer0 or args.layer2 or args.layer6 or args.full)
-
-    if args.layer0:
-        pipeline.run_layer0_test(count=args.count)
-
-    if args.layer2:
-        pipeline.run_layer2_test(count=args.count)
-
-    if args.layer6:
-        from layer6_verifier import run_standalone_tests
-        run_standalone_tests()
-
-    if args.full or no_specific_layer:
-        check_gpu()
-        list_pdfs(pdf_dir)
-        print()
-        pipeline.run_full_pipeline(count=args.count)
+    check_gpu()
+    list_pdfs(pdf_dir)
+    print()
+    pipeline.run_full_pipeline(count=args.count)
 
 
 if __name__ == "__main__":
