@@ -6,9 +6,9 @@ exists for multi-PDF runs and structured ``pipeline_log_*.json`` output.
 """
 
 import json
+import logging
 import time
 import platform
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 import torch
@@ -20,7 +20,10 @@ from config import (
     RESULTS_DIR,
     NOUGAT_DPI,
     get_system_prompt,
+    ensure_dirs,
 )
+from parallel_ocr import run_parallel_nougat_vlm
+from step_logging import configure_logging
 from layer0_ingestion import Layer0_PDFIngestion
 from layer1_profiler import Layer1_Profiler
 from layer2_nougat import Layer2_Nougat
@@ -29,6 +32,8 @@ from layer4_synthesis import Layer4_Synthesis
 from layer5_llm_solver import Layer5_LLMSolver
 from layer6_verifier import Layer6_SymPyVerifier
 from pipeline_logger import PipelineLogger
+
+_log = logging.getLogger(__name__)
 
 
 class STEPPipeline:
@@ -39,7 +44,7 @@ class STEPPipeline:
         self.pdf_dir = Path(pdf_dir) if pdf_dir else PDF_DIR
         self.use_nougat = use_nougat
         self.use_vlm = use_vlm
-        self.layer0 = Layer0_PDFIngestion(self.pdf_dir, IMG_DIR)
+        self.layer0 = Layer0_PDFIngestion(IMG_DIR)
         self.layer1 = Layer1_Profiler()
         self.layer2 = Layer2_Nougat(IMG_DIR, NOUGAT_OUT)
         self.layer3 = Layer3_VLM()
@@ -58,14 +63,19 @@ class STEPPipeline:
         self.layer6 = Layer6_SymPyVerifier()
 
     def get_pdf_files(self) -> list[Path]:
-        """Return PDFs sorted by name; prints a warning when the folder has none."""
+        """Return PDFs sorted by name; logs a warning when the folder has none."""
         pdfs = sorted(self.pdf_dir.glob("*.pdf"))
         if not pdfs:
-            print(f"  [!] No PDFs in {self.pdf_dir}")
+            _log.info(f"  [!] No PDFs in {self.pdf_dir}")
         return pdfs
 
     def run_full_pipeline(self, count: int = 5):
-        """Process up to ``count`` PDFs and append one JSON log file under ``RESULTS_DIR``."""
+        """Process up to ``count`` PDFs and write one JSON log under ``RESULTS_DIR``.
+
+        Ensures pipeline directories exist and configures logging before the run.
+        """
+        ensure_dirs()
+        configure_logging()
         pdfs = self.get_pdf_files()
         if not pdfs:
             return
@@ -117,17 +127,21 @@ class STEPPipeline:
             ocr_desc = "L3 only"
         else:
             ocr_desc = "no OCR"
-        print("=" * 66)
-        print(f"  FULL PIPELINE — {test_count} PDF(s)")
-        print(f"  L0(PyMuPDF+PNG) -> L1 -> {ocr_desc} -> L4 -> L5({llm_name}) -> L6(extract)")
-        print(f"  GPU: {gpu_name} | Nougat: {'on' if self.use_nougat else 'off'} | VLM: {vlm_status}")
-        print("=" * 66)
+        _log.info("=" * 66)
+        _log.info(f"  FULL PIPELINE — {test_count} PDF(s)")
+        _log.info(
+            f"  L0(PyMuPDF+PNG) -> L1 -> {ocr_desc} -> L4 -> L5({llm_name}) -> L6(extract)"
+        )
+        _log.info(
+            f"  GPU: {gpu_name} | Nougat: {'on' if self.use_nougat else 'off'} | VLM: {vlm_status}"
+        )
+        _log.info("=" * 66)
 
         for pdf in pdfs[:test_count]:
             fname = pdf.stem
-            print(f"\n  {'━'*60}")
-            print(f"  [{pdfs.index(pdf)+1}/{test_count}] {pdf.name}")
-            print(f"  {'━'*60}")
+            _log.info(f"\n  {'━'*60}")
+            _log.info(f"  [{pdfs.index(pdf)+1}/{test_count}] {pdf.name}")
+            _log.info(f"  {'━'*60}")
 
             logger.start_pdf(pdf.name)
             result = {"file": fname, "layers": {}}
@@ -143,7 +157,7 @@ class STEPPipeline:
             t0_elapsed = time.time() - t0
             logger.log_layer0(metadata, raw_pages, t0_elapsed, text_quality=text_quality)
             total_chars = sum(len(p["text"]) for p in raw_pages)
-            print(
+            _log.info(
                 f"  [L0] PyMuPDF: {metadata.get('pages')} pages, {total_chars} chars, "
                 f"quality {text_quality['score']}/{text_quality['max_score']} ({t0_elapsed:.2f}s)"
             )
@@ -162,9 +176,12 @@ class STEPPipeline:
             }
             sec = profile.get("secondary_categories") or []
             sec_s = f" | also: {', '.join(sec)}" if sec else ""
-            print(f"  [L1] Profiler: {profile['category']}/{profile['surface_type']}{sec_s}, {len(profile['keywords'])} keywords ({t1_elapsed:.3f}s)")
+            _log.info(
+                f"  [L1] Profiler: {profile['category']}/{profile['surface_type']}{sec_s}, "
+                f"{len(profile['keywords'])} keywords ({t1_elapsed:.3f}s)"
+            )
 
-            # === LAYER 2 + 3: Nougat + VLM (parallel when both enabled) ===
+            # === LAYER 2 + 3: Nougat + VLM (``parallel_ocr.run_parallel_nougat_vlm``) ===
             latex = ""
             nougat_score = 0
             nougat: dict = {}
@@ -176,56 +193,25 @@ class STEPPipeline:
             nougat_pkg = None
             vlm_pkg = None
 
-            nougat_needed = self.use_nougat
-            if nougat_needed and text_quality["score"] >= 6 and total_chars > 100:
-                nougat_needed = False
-                print(
-                    f"  [L2] Skipped Nougat (text quality {text_quality['score']}/"
-                    f"{text_quality['max_score']})"
-                )
-
-            def _run_nougat():
-                t2 = time.time()
-                print("  [L2] Nougat OCR...")
-                res = self.layer2.extract_from_pdf(pdf, verbose=True)
-                q = self.layer2.check_quality(res.get("latex", ""))
-                elapsed = round(time.time() - t2, 2)
-                print(
-                    f"       {res.get('char_count', 0)} chars, quality {q['score']}/"
-                    f"{q['max_score']} ({elapsed:.1f}s)"
-                )
-                return "nougat", res, q, elapsed
-
-            def _run_vlm():
-                t3 = time.time()
-                vlm_label = f"{self.layer3.provider or 'groq'}/{self.layer3.model}"
-                print(f"  [L3] VLM ({vlm_label})...")
-                res = self.layer3.extract_from_pdf_images(IMG_DIR, fname, verbose=True)
-                q = self.layer3.check_quality(res.get("vlm_latex", ""))
-                elapsed = round(time.time() - t3, 2)
-                print(
-                    f"       {res.get('char_count', 0)} chars, quality {q['score']}/"
-                    f"{q['max_score']} ({elapsed:.1f}s)"
-                )
-                return "vlm", res, q, elapsed
-
-            futures = {}
-            with ThreadPoolExecutor(max_workers=2) as pool:
-                if nougat_needed:
-                    futures[pool.submit(_run_nougat)] = "nougat"
-                if self.use_vlm and self.layer3.is_available:
-                    futures[pool.submit(_run_vlm)] = "vlm"
-
-                for fut in as_completed(futures):
-                    try:
-                        tag, res, q, elapsed = fut.result()
-                        if tag == "nougat":
-                            nougat_pkg = (res, q, elapsed)
-                        else:
-                            vlm_pkg = (res, q, elapsed)
-                    except Exception as e:
-                        tag = futures[fut]
-                        print(f"       [{tag.upper()} FAIL] {str(e)[:60]}")
+            ocr = run_parallel_nougat_vlm(
+                pdf_path=pdf,
+                fname=fname,
+                img_dir=IMG_DIR,
+                nougat_layer=self.layer2 if self.use_nougat else None,
+                vlm_layer=self.layer3 if self.use_vlm else None,
+                use_nougat=self.use_nougat,
+                use_vlm=self.use_vlm,
+                vlm_available=self.layer3.is_available,
+                text_quality=text_quality,
+                total_chars=total_chars,
+                verbose=True,
+                nougat_verbose=True,
+            )
+            nougat_needed = ocr["nougat_needed"]
+            nougat_pkg = ocr["nougat_pkg"]
+            vlm_pkg = ocr["vlm_pkg"]
+            t2_elapsed = ocr["t2_elapsed"]
+            t3_elapsed = ocr["t3_elapsed"]
 
             if not nougat_needed:
                 stub_q = self.layer2.check_quality("")
@@ -283,9 +269,10 @@ class STEPPipeline:
                     "status": "OK" if vlm_score >= 2 else "FAIL",
                 }
             else:
+                vlm_fail_q = self.layer3.check_quality("")
                 logger.log_layer3(
                     {"char_count": 0, "pages": 0},
-                    {"score": 0, "max_score": 4, "checks": {}},
+                    vlm_fail_q,
                     t3_elapsed,
                     technology=vlm_tech,
                 )
@@ -303,7 +290,7 @@ class STEPPipeline:
                     "surface": profile["surface_type"],
                     "keywords": len(profile["keywords"]),
                 })
-                print(
+                _log.info(
                     f"  [L1b] Re-profiled: {profile['category']} / {profile['surface_type']} "
                     f"({t1b_elapsed:.3f}s)"
                 )
@@ -336,14 +323,14 @@ class STEPPipeline:
                 "status": "OK",
             }
             dom_lbl = "surface_integral" if domain == "surface_integral" else "general_math"
-            print(
+            _log.info(
                 f"  [L4] Synthesis: source={source}, domain={dom_lbl}, "
                 f"{synthesis['prompt_chars']} chars ({t4_elapsed:.3f}s)"
             )
             dom_tag = "surface" if domain == "surface_integral" else "general"
             sec_l5 = profile.get("secondary_categories") or []
             sec_l5_s = f", signals={sec_l5}" if sec_l5 else ""
-            print(f"  [L5] system={dom_tag}{sec_l5_s} (per attempt below)")
+            _log.info(f"  [L5] system={dom_tag}{sec_l5_s} (per attempt below)")
 
             best_solution = ""
             best_provider = None
@@ -355,12 +342,12 @@ class STEPPipeline:
             for solver_name, solver in self.solvers.items():
                 if solver_name in disabled_providers:
                     continue
-                print(f"  [L5] {solver_name.capitalize()} ({solver.model_name}) …")
+                _log.info(f"  [L5] {solver_name.capitalize()} ({solver.model_name}) …")
                 t5 = time.time()
                 try:
                     solution = solver.solve(prompt, system_prompt=system_prompt)
                     t5_elapsed = time.time() - t5
-                    print(f"       {len(solution)} char ({t5_elapsed:.1f}s)")
+                    _log.info(f"       {len(solution)} char ({t5_elapsed:.1f}s)")
 
                     logger.log_layer5_attempt(solver_name, solver.model_name,
                                               len(solution), t5_elapsed, "ok")
@@ -375,11 +362,11 @@ class STEPPipeline:
                 except Exception as e:
                     t5_elapsed = time.time() - t5
                     err_str = str(e)
-                    print(f"       [FAIL] {err_str[:80]} ({t5_elapsed:.1f}s)")
+                    _log.info(f"       [FAIL] {err_str[:80]} ({t5_elapsed:.1f}s)")
                     logger.log_layer5_attempt(solver_name, solver.model_name,
                                               0, t5_elapsed, "error", err_str[:200])
                     if any(k in err_str.lower() for k in ["credit", "quota", "insufficient", "billing"]):
-                        print(f"       [WARN] {solver_name} skipped for this PDF (quota)")
+                        _log.info(f"       [WARN] {solver_name} skipped for this PDF (quota)")
                         disabled_providers.add(solver_name)
 
             final_status = "error"
@@ -399,7 +386,7 @@ class STEPPipeline:
                     "display_status": disp,
                 }
                 tag = "[OK]" if extracted else "[?]"
-                print(f"  [L6] {tag} extracted final line for display ({t6_elapsed:.3f}s)")
+                _log.info(f"  [L6] {tag} extracted final line for display ({t6_elapsed:.3f}s)")
                 final_status = "ok"
             else:
                 result["layers"]["L5"] = {"status": "SKIP"}
@@ -413,7 +400,7 @@ class STEPPipeline:
 
         log_path = logger.save()
         logger.print_summary()
-        print(f"\n  Log JSON: {log_path}")
+        _log.info(f"\n  Log JSON: {log_path}")
 
         return logger.run_log
 
@@ -435,17 +422,17 @@ class STEPPipeline:
 
     def _print_pipeline_summary(self, pipeline_results: list[dict], stats: dict):
         """Stdout table mirroring per-PDF layer status (complements the JSON log)."""
-        print(f"\n\n{'='*58}")
-        print("  BATCH RESULTS")
-        print(f"{'='*58}")
+        _log.info(f"\n\n{'='*58}")
+        _log.info("  BATCH RESULTS")
+        _log.info(f"{'='*58}")
 
         l2_ok = stats["nougat_ok"]
         l5_ok = stats["llm_ok"]
         l6_ok = stats["extract_ok"]
 
         header = f"  {'File':<12} {'Nougat':<8} {'VLM':<8} {'Source':<16} {'LLM':<8} {'Answer':<8}"
-        print(f"\n{header}")
-        print(f"  {'─'*62}")
+        _log.info(f"\n{header}")
+        _log.info(f"  {'─'*62}")
         for r in pipeline_results:
             f = r["file"]
             l2 = r["layers"]["L2"]["status"]
@@ -453,11 +440,11 @@ class STEPPipeline:
             l4_src = r["layers"].get("L4", {}).get("source", "-")
             l5 = r["layers"].get("L5", {}).get("status", "SKIP")
             l6 = r["layers"].get("L6", {}).get("display_status", "SKIP")
-            print(f"  {f:<12} {l2:<8} {l3:<8} {l4_src:<16} {l5:<8} {l6:<8}")
+            _log.info(f"  {f:<12} {l2:<8} {l3:<8} {l4_src:<16} {l5:<8} {l6:<8}")
 
         total = len(pipeline_results)
         l3_ok = stats.get("vlm_ok", 0)
-        print(f"\n  Nougat OK:       {l2_ok}/{total}")
-        print(f"  VLM OK:          {l3_ok}/{total}")
-        print(f"  LLM OK:          {l5_ok}/{total}")
-        print(f"  Answer extracted:{l6_ok}/{total} (non-empty parsed final line)")
+        _log.info(f"\n  Nougat OK:       {l2_ok}/{total}")
+        _log.info(f"  VLM OK:          {l3_ok}/{total}")
+        _log.info(f"  LLM OK:          {l5_ok}/{total}")
+        _log.info(f"  Answer extracted:{l6_ok}/{total} (non-empty parsed final line)")
