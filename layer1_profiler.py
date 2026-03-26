@@ -5,6 +5,15 @@ Keyword lists mix EN/TR spellings so multilingual PDFs still match.
 
 import re
 
+from config import SURFACE_INTEGRAL_PRIMARY_CATEGORIES
+
+
+def _get_domain_for_category(category: str) -> str:
+    """``surface_integral`` iff primary label is in ``SURFACE_INTEGRAL_PRIMARY_CATEGORIES``."""
+    if category in SURFACE_INTEGRAL_PRIMARY_CATEGORIES:
+        return "surface_integral"
+    return "general_math"
+
 
 # (pattern, weight) — higher weight = stronger signal for this category
 PROBLEM_CATEGORIES = {
@@ -110,7 +119,7 @@ class Layer1_Profiler:
         surface = self._detect_surface_type(combined_lower)
         summary = self._generate_summary(fname, category, surface, keywords, metadata)
 
-        domain = self._get_domain(category)
+        domain = _get_domain_for_category(category)
 
         return {
             "keywords": keywords,
@@ -127,18 +136,6 @@ class Layer1_Profiler:
             "creation_date": metadata.get("creation_date", ""),
             "modification_date": metadata.get("modification_date", ""),
         }
-
-    SURFACE_CATEGORIES = {
-        "scalar_surface_integral", "flux_integral",
-        "divergence_theorem", "stokes_theorem",
-    }
-
-    def _get_domain(self, category: str) -> str:
-        if category in self.SURFACE_CATEGORIES:
-            return "surface_integral"
-        if category == "unknown":
-            return "general_math"
-        return "general_math"
 
     def _extract_keywords(self, text: str) -> list[str]:
         keywords = []
@@ -173,12 +170,24 @@ class Layer1_Profiler:
 
     def _generate_summary(self, fname: str, category: str, surface: str,
                           keywords: list[str], metadata: dict) -> str:
+        """One-line English blurb for UI/CLI; maps ``PROBLEM_CATEGORIES`` keys to readable phrases."""
         cat_names = {
             "scalar_surface_integral": "scalar surface integral",
             "flux_integral": "flux (vector surface) integral",
             "divergence_theorem": "volume integral via Divergence Theorem",
             "stokes_theorem": "line/surface integral via Stokes' Theorem",
-            "unknown": "surface integral problem",
+            "indefinite_integral": "indefinite integral",
+            "definite_integral": "definite integral",
+            "double_integral": "double integral",
+            "triple_integral": "triple integral",
+            "derivative": "derivative",
+            "limit": "limit",
+            "series": "series",
+            "differential_equation": "differential equation",
+            "linear_algebra": "linear algebra",
+            "equation": "equation solving",
+            # Primary classifier found no strong signal — not necessarily a surface integral.
+            "unknown": "mathematical problem",
         }
         cat_name = cat_names.get(category, category)
 
