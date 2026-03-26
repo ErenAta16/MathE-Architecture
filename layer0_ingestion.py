@@ -4,16 +4,66 @@ Layer 0: PyMuPDF (``fitz``) for metadata, per-page text, PNG tiles, and optional
 Raster output feeds Nougat/VLM; text + markdown feed profiling and the LLM prompt.
 """
 
+import logging
 import fitz  # PyMuPDF
 from pathlib import Path
 
+_log = logging.getLogger(__name__)
+
 
 class Layer0_PDFIngestion:
-    """Holds default PDF and image directories; methods accept explicit ``pdf_path``."""
+    """Rasterize pages under ``img_dir/<pdf_stem>/`` and read text/metadata via explicit ``pdf_path``."""
 
-    def __init__(self, pdf_dir: str | Path, img_dir: str | Path):
-        self.pdf_dir = Path(pdf_dir)
+    def __init__(self, img_dir: str | Path):
         self.img_dir = Path(img_dir)
+
+    @staticmethod
+    def _file_info(pdf_path: Path, doc: fitz.Document) -> dict:
+        """Build the metadata dict (pages, author, on-disk size) for one open document."""
+        meta = doc.metadata
+        return {
+            "file": pdf_path.name,
+            "pages": doc.page_count,
+            "author": meta.get("author", ""),
+            "creator": meta.get("creator", ""),
+            "producer": meta.get("producer", ""),
+            "file_size_kb": round(pdf_path.stat().st_size / 1024, 1),
+        }
+
+    @staticmethod
+    def _pages_text(doc: fitz.Document) -> list[dict]:
+        """Extract plain ``get_text`` for each page (``page``, ``text``, ``char_count``)."""
+        pages: list[dict] = []
+        for i, page in enumerate(doc):
+            text = page.get_text("text")
+            pages.append({
+                "page": i + 1,
+                "text": text,
+                "char_count": len(text),
+            })
+        return pages
+
+    def _rasterize_pages(
+        self, doc: fitz.Document, out_dir: Path, dpi: int
+    ) -> list[dict]:
+        """Write ``page_N.png`` under ``out_dir``; return image metadata rows."""
+        out_dir.mkdir(parents=True, exist_ok=True)
+        images: list[dict] = []
+        for i, page in enumerate(doc):
+            pix = page.get_pixmap(dpi=dpi, alpha=False)
+            try:
+                img_path = out_dir / f"page_{i + 1}.png"
+                pix.save(str(img_path))
+                images.append({
+                    "page": i + 1,
+                    "path": str(img_path),
+                    "width": pix.width,
+                    "height": pix.height,
+                    "size_kb": round(img_path.stat().st_size / 1024, 1),
+                })
+            finally:
+                pix = None
+        return images
 
     def extract_metadata_text_and_images(
         self, pdf_path: str | Path, dpi: int = 300
@@ -23,73 +73,18 @@ class Layer0_PDFIngestion:
         Uses ``alpha=False`` pixmaps (smaller files; fine for OCR/VLM).
         """
         pdf_path = Path(pdf_path)
-        doc = fitz.open(str(pdf_path))
-        try:
-            meta = doc.metadata
-            info = {
-                "file": pdf_path.name,
-                "pages": doc.page_count,
-                "author": meta.get("author", ""),
-                "creator": meta.get("creator", ""),
-                "producer": meta.get("producer", ""),
-                "file_size_kb": round(pdf_path.stat().st_size / 1024, 1),
-            }
-            name = pdf_path.stem
-            out_dir = self.img_dir / name
-            out_dir.mkdir(parents=True, exist_ok=True)
-
-            pages: list[dict] = []
-            images: list[dict] = []
-            for i, page in enumerate(doc):
-                text = page.get_text("text")
-                pages.append({
-                    "page": i + 1,
-                    "text": text,
-                    "char_count": len(text),
-                })
-                pix = page.get_pixmap(dpi=dpi, alpha=False)
-                try:
-                    img_path = out_dir / f"page_{i + 1}.png"
-                    pix.save(str(img_path))
-                    images.append({
-                        "page": i + 1,
-                        "path": str(img_path),
-                        "width": pix.width,
-                        "height": pix.height,
-                        "size_kb": round(img_path.stat().st_size / 1024, 1),
-                    })
-                finally:
-                    # Drop reference so the pixmap buffer can be freed before the next page.
-                    pix = None
+        out_dir = self.img_dir / pdf_path.stem
+        with fitz.open(str(pdf_path)) as doc:
+            info = self._file_info(pdf_path, doc)
+            pages = self._pages_text(doc)
+            images = self._rasterize_pages(doc, out_dir, dpi)
             return info, pages, images
-        finally:
-            doc.close()
 
     def extract_metadata_and_text(self, pdf_path: str | Path) -> tuple[dict, list[dict]]:
         """Metadata plus ``get_text`` per page without writing images."""
         pdf_path = Path(pdf_path)
-        doc = fitz.open(str(pdf_path))
-        try:
-            meta = doc.metadata
-            info = {
-                "file": pdf_path.name,
-                "pages": doc.page_count,
-                "author": meta.get("author", ""),
-                "creator": meta.get("creator", ""),
-                "producer": meta.get("producer", ""),
-                "file_size_kb": round(pdf_path.stat().st_size / 1024, 1),
-            }
-            pages = []
-            for i, page in enumerate(doc):
-                text = page.get_text("text")
-                pages.append({
-                    "page": i + 1,
-                    "text": text,
-                    "char_count": len(text),
-                })
-            return info, pages
-        finally:
-            doc.close()
+        with fitz.open(str(pdf_path)) as doc:
+            return self._file_info(pdf_path, doc), self._pages_text(doc)
 
     def extract_metadata(self, pdf_path: str | Path) -> dict:
         """Lightweight metadata PyMuPDF exposes (pages, producer, size)."""
@@ -104,10 +99,13 @@ class Layer0_PDFIngestion:
     def extract_markdown(
         self, pdf_path: str | Path, text_pages: list[dict] | None = None
     ) -> str:
-        """Structure-aware markdown via PyMuPDF4LLM — preserves headings,
-        tables, and basic layout better than plain get_text.
-        Pass `text_pages` from a prior `extract_metadata_and_text` to avoid a
-        third PDF open when pymupdf4llm fails."""
+        """Structure-aware markdown via PyMuPDF4LLM (headings/tables/layout).
+
+        If ``pymupdf4llm`` is unavailable or raises, fall back to joining page
+        texts. When ``text_pages`` is supplied (e.g. from the same run as L0
+        ingest), that fallback needs no extra ``fitz.open``. If it is omitted,
+        ``extract_text`` opens the PDF again to build the fallback string.
+        """
         try:
             import pymupdf4llm
             return pymupdf4llm.to_markdown(str(pdf_path))
@@ -122,29 +120,9 @@ class Layer0_PDFIngestion:
         Prefer `extract_metadata_text_and_images` in hot paths to avoid a second
         PDF open when text is also needed."""
         pdf_path = Path(pdf_path)
-        doc = fitz.open(str(pdf_path))
-        name = pdf_path.stem
-        out_dir = self.img_dir / name
-        out_dir.mkdir(parents=True, exist_ok=True)
-        images = []
-        try:
-            for i, page in enumerate(doc):
-                pix = page.get_pixmap(dpi=dpi, alpha=False)
-                try:
-                    img_path = out_dir / f"page_{i + 1}.png"
-                    pix.save(str(img_path))
-                    images.append({
-                        "page": i + 1,
-                        "path": str(img_path),
-                        "width": pix.width,
-                        "height": pix.height,
-                        "size_kb": round(img_path.stat().st_size / 1024, 1),
-                    })
-                finally:
-                    pix = None
-        finally:
-            doc.close()
-        return images
+        out_dir = self.img_dir / pdf_path.stem
+        with fitz.open(str(pdf_path)) as doc:
+            return self._rasterize_pages(doc, out_dir, dpi)
 
     def analyze_text_quality(self, pages: list[dict]) -> dict:
         """Cheap heuristics: did we lose integrals, superscripts, greek letters?
@@ -207,35 +185,37 @@ class Layer0_PDFIngestion:
         fname = pdf_path.name
 
         if verbose:
-            print(f"\n{'='*60}")
-            print(f"  {fname}")
-            print(f"{'='*60}")
+            _log.info(f"\n{'='*60}")
+            _log.info(f"  {fname}")
+            _log.info(f"{'='*60}")
 
         meta, pages, images = self.extract_metadata_text_and_images(pdf_path)
         if verbose:
-            print(f"\n  Metadata: {meta['pages']} pages, {meta['file_size_kb']} KB")
-            print(f"  Creator: {meta['creator']}")
+            _log.info(f"\n  Metadata: {meta['pages']} pages, {meta['file_size_kb']} KB")
+            _log.info(f"  Creator: {meta['creator']}")
 
         quality = self.analyze_text_quality(pages)
 
         if verbose:
-            print(f"\n  Baseline text extraction:")
+            _log.info(f"\n  Baseline text extraction:")
             for pg in pages:
                 preview = pg["text"][:120].replace("\n", " ").strip()
-                print(f"    Page {pg['page']}: {pg['char_count']} chars")
-                print(f"    Preview: '{preview}...'")
+                _log.info(f"    Page {pg['page']}: {pg['char_count']} chars")
+                _log.info(f"    Preview: '{preview}...'")
 
-            print(f"\n  Quality score: {quality['score']}/{quality['max_score']}")
+            _log.info(f"\n  Quality score: {quality['score']}/{quality['max_score']}")
             for key, val in quality["checks"].items():
                 icon = "[OK]" if val else "[FAIL]"
-                print(f"    {icon} {key}")
+                _log.info(f"    {icon} {key}")
             for issue in quality["issues"]:
-                print(f"    [!] {issue}")
+                _log.info(f"    [!] {issue}")
 
         if verbose:
-            print(f"\n  Page images:")
+            _log.info(f"\n  Page images:")
             for img in images:
-                print(f"    Page {img['page']}: {img['width']}x{img['height']}px, {img['size_kb']} KB")
+                _log.info(
+                    f"    Page {img['page']}: {img['width']}x{img['height']}px, {img['size_kb']} KB"
+                )
 
         return {
             "file": fname,
