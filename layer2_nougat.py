@@ -1,8 +1,11 @@
 """
 Layer 2 — Nougat: rasterized pages → LaTeX-ish markdown.
-Ships a tiny fake `nougat.transforms` so we don't need albumentations.
+
+Registers a lightweight fake ``nougat.transforms`` so the real package does not
+require ``albumentations``. Progress and readiness lines use ``logging``.
 """
 
+import logging
 import sys
 import types
 from pathlib import Path
@@ -13,6 +16,8 @@ from PIL import Image
 from torchvision import transforms as T
 
 from config import NOUGAT_DPI
+
+_log = logging.getLogger(__name__)
 
 
 def _setup_albumentations_bypass():
@@ -105,8 +110,8 @@ class Layer2_Nougat:
         gpu_info = ""
         if torch.cuda.is_available():
             gpu_info = f" ({torch.cuda.get_device_name(0)})"
-        print(f"  Nougat ready on {self.device}{gpu_info}")
-        print(f"  Input size: {input_size[0]}x{input_size[1]}")
+        _log.info(f"  [L2] Nougat ready on {self.device}{gpu_info}")
+        _log.info(f"  [L2] Input size: {input_size[0]}x{input_size[1]}")
 
     def predict(self, img_path: str | Path) -> str:
         """Run inference on one PNG; returns markdown-ish LaTeX."""
@@ -146,7 +151,7 @@ class Layer2_Nougat:
             if cached_hash == pdf_hash:
                 full = mmd_path.read_text(encoding="utf-8")
                 if verbose:
-                    print(f"    Nougat: cached ({len(full)} chars)")
+                    _log.info(f"  [L2] Nougat: cached ({len(full)} chars)")
                 return {
                     "file": fname,
                     "latex": full,
@@ -161,7 +166,7 @@ class Layer2_Nougat:
         img_dir.mkdir(parents=True, exist_ok=True)
 
         if verbose:
-            print(f"    Rasterizing PDF pages...")
+            _log.info("  [L2] Rasterizing PDF pages...")
         doc = fitz.open(str(pdf_path))
         img_paths = []
         for i, page in enumerate(doc):
@@ -174,16 +179,14 @@ class Layer2_Nougat:
         all_latex = []
         for p in img_paths:
             pg = p.name
-            if verbose:
-                print(f"    Nougat: {pg}...", end=" ")
             try:
                 latex = self.predict(p)
                 all_latex.append(latex)
                 if verbose:
-                    print(f"[OK] {len(latex)} chars")
+                    _log.info(f"  [L2] Nougat: {pg}... [OK] {len(latex)} chars")
             except Exception as e:
                 if verbose:
-                    print(f"[FAIL] {e}")
+                    _log.info(f"  [L2] Nougat: {pg}... [FAIL] {e}")
                 all_latex.append("")
 
         full = "\n\n".join(all_latex)
