@@ -1,8 +1,12 @@
 """
-Layer 3 — vision path: page PNGs -> LaTeX.
-Supports Groq (LLaMA 4 Scout) and Gemini (higher accuracy on math formulas).
+Layer 3 — vision path: page PNGs (from L0) → LaTeX.
+
+Supports Groq (LLaMA 4 Scout) and Gemini. ``extract_from_pdf_images`` may run
+two independent VLM passes and pick the higher-quality output, unless the first
+pass already achieves the maximum ``check_quality`` score (then pass 2 is skipped).
 """
 
+import logging
 import re
 import base64
 from pathlib import Path
@@ -10,6 +14,8 @@ from pathlib import Path
 from openai import OpenAI
 
 from config import GROQ_API_KEY, GROQ_BASE_URL, GEMINI_API_KEY
+
+_log = logging.getLogger(__name__)
 
 VLM_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
 GEMINI_VLM_MODEL = "gemini-2.5-flash"
@@ -143,13 +149,18 @@ class Layer3_VLM:
                 all_latex.append(latex)
             except Exception as e:
                 if verbose:
-                    print(f"[FAIL] {str(e)[:50]}")
+                    _log.info(f"  [L3] [FAIL] {str(e)[:50]}")
                 all_latex.append("")
         return "\n\n".join(all_latex)
 
     def extract_from_pdf_images(self, img_dir: Path, fname: str,
                                 verbose: bool = True) -> dict:
-        """Two independent passes; keep the one that scores higher on our quality rubric."""
+        """Run one or two VLM passes over page PNGs and pick the best LaTeX by quality score.
+
+        Pass 2 is skipped when pass 1 already reaches ``max_score`` on
+        ``check_quality`` (saves latency and API cost). Otherwise both passes
+        run; the higher-scoring (or longer, on tie) cleaned string wins.
+        """
         page_dir = img_dir / fname
         if not page_dir.exists():
             return {"file": fname, "vlm_latex": "", "char_count": 0, "pages": 0}
@@ -159,18 +170,36 @@ class Layer3_VLM:
             return {"file": fname, "vlm_latex": "", "char_count": 0, "pages": 0}
 
         if verbose:
-            print(f"    VLM pass 1...", end=" ")
+            _log.info("  [L3] VLM pass 1...")
         raw1 = self._extract_single_pass(img_paths, verbose=False)
         clean1 = self.clean_output(raw1)
+        q1 = self.check_quality(clean1)
         if verbose:
-            print(f"{len(clean1)} char", end="")
+            _log.info(
+                f"  [L3]    pass 1: {len(clean1)} char (quality {q1['score']}/{q1['max_score']})"
+            )
+
+        if q1["score"] == q1["max_score"] and clean1:
+            if verbose:
+                _log.info(f"  [L3]    Using pass1 (max quality, {len(clean1)} chars)")
+            return {
+                "file": fname,
+                "vlm_latex": clean1,
+                "char_count": len(clean1),
+                "raw_chars": [len(raw1), 0],
+                "clean_chars": [len(clean1), 0],
+                "pages": len(img_paths),
+            }
 
         if verbose:
-            print(f" | pass 2...", end=" ")
+            _log.info("  [L3] VLM pass 2...")
         raw2 = self._extract_single_pass(img_paths, verbose=False)
         clean2 = self.clean_output(raw2)
         if verbose:
-            print(f"{len(clean2)} char")
+            q2p = self.check_quality(clean2)
+            _log.info(
+                f"  [L3]    pass 2: {len(clean2)} char (quality {q2p['score']}/{q2p['max_score']})"
+            )
 
         if not clean1 and not clean2:
             full = ""
@@ -179,18 +208,18 @@ class Layer3_VLM:
         elif not clean2:
             full = clean1
         else:
-            q1 = self.check_quality(clean1)["score"]
-            q2 = self.check_quality(clean2)["score"]
-            if q1 > q2:
+            s1 = q1["score"]
+            s2 = self.check_quality(clean2)["score"]
+            if s1 > s2:
                 full = clean1
-            elif q2 > q1:
+            elif s2 > s1:
                 full = clean2
             else:
                 full = clean1 if len(clean1) >= len(clean2) else clean2
 
         if verbose:
             chosen = "pass1" if full == clean1 else "pass2"
-            print(f"       Using {chosen} ({len(full)} chars)")
+            _log.info(f"  [L3]    Using {chosen} ({len(full)} chars)")
 
         return {
             "file": fname,
