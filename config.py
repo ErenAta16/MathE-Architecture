@@ -18,8 +18,18 @@ IMG_DIR = WORK_DIR / "images"
 NOUGAT_OUT = WORK_DIR / "nougat_output"
 RESULTS_DIR = WORK_DIR / "results"
 
-for d in [WORK_DIR, PDF_DIR, IMG_DIR, NOUGAT_OUT, RESULTS_DIR]:
-    d.mkdir(parents=True, exist_ok=True)
+# Folders created by ``ensure_dirs()`` (not at import time—keeps tests and tooling predictable).
+_PIPELINE_DIRS = (WORK_DIR, PDF_DIR, IMG_DIR, NOUGAT_OUT, RESULTS_DIR)
+
+
+def ensure_dirs() -> None:
+    """Create default pipeline directories if missing.
+
+    Call from ``run``/``main``/``web_app``/``STEPSolver.solve``/``STEPPipeline.run_full_pipeline``
+    instead of creating paths as a side effect of importing this module.
+    """
+    for d in _PIPELINE_DIRS:
+        d.mkdir(parents=True, exist_ok=True)
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
@@ -154,12 +164,16 @@ CRITICAL RULES:
 - Double-check arithmetic at every step before proceeding.
 - ALWAYS include the SUMMARY section after the answer."""
 
-_SURFACE_CATEGORY_TAGS = frozenset({
+# Primary L1 labels that map to the surface-integral system prompt (single source of truth).
+SURFACE_INTEGRAL_PRIMARY_CATEGORIES = frozenset({
     "scalar_surface_integral",
     "flux_integral",
     "divergence_theorem",
     "stokes_theorem",
 })
+
+# Backward-compatible alias used inside ``get_system_prompt``.
+_SURFACE_CATEGORY_TAGS = SURFACE_INTEGRAL_PRIMARY_CATEGORIES
 
 
 def get_system_prompt(
