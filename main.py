@@ -52,12 +52,12 @@ def list_pdfs(pdf_dir: Path):
     if len(pdf_files) > 10:
         _log.info(f"    ... and {len(pdf_files) - 10} more")
     if not pdf_files:
-        _log.info(f"  [!] No PDFs — drop files into {pdf_dir}")
+        _log.info(f"  [!] No PDFs - drop files into {pdf_dir}")
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="STEP Pipeline — surface integral PDF solver",
+        description="STEP Pipeline - surface integral PDF solver",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
@@ -114,9 +114,9 @@ def main():
     configure_logging()
 
     _log.info("")
-    _log.info("  ╔══════════════════════════════════════╗")
-    _log.info("  ║   STEP Pipeline — local run          ║")
-    _log.info("  ╚══════════════════════════════════════╝")
+    _log.info("  ======================================")
+    _log.info("  STEP Pipeline - local run")
+    _log.info("  ======================================")
     _log.info("")
 
     if args.check_gpu:
