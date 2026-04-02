@@ -49,6 +49,18 @@ Prompt design matters: the VLM is instructed to **read only, not solve**—an ei
 
 ---
 
+#### Runtime and reliability updates
+
+**Layers 0 and 2 — raster reuse:** When `dpi` is not passed in, Layer 0 rasterizes page images at **`NOUGAT_DPI`** from config so output matches what Nougat expects. Each folder of `page_*.png` files carries a small **`.step_raster_meta`** file (DPI on the first line, SHA-256 of the PDF on the second). Layer 2 only reuses those PNGs when that sidecar, the on-disk page names, and the current PDF all agree; otherwise it renders again and refreshes the sidecar. **`page_*.png` paths are sorted numerically** so order stays correct past page nine.
+
+**Layer 3 — VLM concurrency:** Per-page vision calls can run through a **bounded worker pool**. Set **`STEP_VLM_PAGE_WORKERS`** if you need fewer parallel requests (rate limits) or fully serial calls (`1`). Gemini remains available **via the API** in addition to the Groq vision path described above.
+
+**Web UI:** Several solves at once are limited with a **semaphore**; the cap is **`STEP_WEB_MAX_CONCURRENT_SOLVES`** (defaults to 2). Uploading the same sanitized filename again while the first job is still running returns **HTTP 409**. Lower the cap when Nougat-heavy GPU work risks contention.
+
+**Layer 6 — answer cleanup:** Extracting a short final string no longer splits on `=` blindly. The code tracks **brace depth** and only uses the last top-level equals, so groups such as `\text{...}` and similar LaTeX do not get chopped apart.
+
+---
+
 #### Technology choices
 
 **PyMuPDF** — fast, reliable PDF text and raster output. **Nougat** — pixels to LaTeX for academic layouts; on its own it missed too many of our PDFs. **LLaMA 4 Scout 17B** — vision model on Groq, good DocVQA-style scores. **Gemini 2.5 Flash** — primary text solver (“thinking” mode). **Groq LLaMA 3.3 70B** — quick fallback when Gemini is busy or errors. **SymPy** (via `latex_parser`) — turns short LaTeX fragments into numbers so repeated solver attempts can agree. **Flask** — small web UI with SSE. **MathJax 3** — render LaTeX in the browser.
