@@ -188,6 +188,11 @@ copy .env.example .env
 
 Put at least `GEMINI_API_KEY` and `GROQ_API_KEY` in `.env`.
 
+Optional tuning (all optional; defaults work for a typical single-user setup):
+
+- `STEP_VLM_PAGE_WORKERS` — cap parallel per-page vision calls (use `1` if you prefer serial VLM or need to stay under strict API rate limits).
+- `STEP_WEB_MAX_CONCURRENT_SOLVES` — cap overlapping PDF solves in the Flask app (lower it when GPU-backed Nougat runs alongside the web UI).
+
 ### Run
 
 **Web UI (upload a PDF):**
