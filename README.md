@@ -98,6 +98,18 @@ Nougat: módulo falso + *patch* do `generate` + VLM quando há `[repetition]`. V
 
 ---
 
+#### Atualizações de execução e fiabilidade
+
+**Camadas 0 e 2 — reutilização de raster:** Sem argumento `dpi`, a camada 0 rasteriza à **`NOUGAT_DPI`** definida em configuração, alinhando com o Nougat. Cada pasta de `page_*.png` inclui **`.step_raster_meta`** (linha 1: DPI; linha 2: SHA-256 do PDF). A camada 2 só reutiliza esses PNGs quando o *sidecar*, os nomes das páginas e o ficheiro PDF atual coincidem; caso contrário volta a rasterizar e atualiza o *sidecar*. **`page_*.png`** é ordenado **numericamente** para manter a ordem correta após a página 9.
+
+**Camada 3 — paralelismo VLM:** Chamadas por página podem usar um **conjunto limitado de *workers***. **`STEP_VLM_PAGE_WORKERS`** controla o paralelismo (use `1` para chamadas totalmente sérias ou para limitar pedidos por minuto).
+
+**Interface web:** Várias resoluções em simultâneo ficam limitadas por um **semáforo** (**`STEP_WEB_MAX_CONCURRENT_SOLVES`**, por omissão 2). Um segundo *upload* com o **mesmo nome sanitizado** enquanto a primeira tarefa corre devolve **HTTP 409**. Reduza o limite quando o Nougat e a GPU estiverem sob pressão.
+
+**Camada 6 — limpeza da resposta:** A extração deixa de partir a cadeia em `=` de forma ingénua. O código respeita a **profundidade de chavetas** e só considera o último `=` ao nível superior, evitando cortar texto dentro de `\text{...}` e construções semelhantes.
+
+---
+
 #### Escolhas tecnológicas
 
 PyMuPDF pela velocidade; Nougat para LaTeX a partir de imagens; LLaMA 4 Scout na Groq para visão; Gemini como solver principal; Groq como *fallback*; SymPy (via `latex_parser`) para alinhar respostas numéricas entre tentativas; Flask + SSE; MathJax 3 no browser.
