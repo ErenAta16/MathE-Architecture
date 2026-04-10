@@ -112,7 +112,7 @@ def run_parallel_nougat_vlm(
 
     def _run_vlm():
         t3 = time.time()
-        vlm_label = f"{vlm_layer.provider or 'groq'}/{vlm_layer.model}"
+        vlm_label = f"{vlm_layer.provider or 'vlm'}/{vlm_layer.model}"
         if verbose:
             _log.info(f"  [L3] VLM ({vlm_label})...")
         res = vlm_layer.extract_from_pdf_images(img_dir, fname, verbose=verbose)
