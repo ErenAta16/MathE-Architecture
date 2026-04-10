@@ -1,29 +1,38 @@
 """
 Layer 3 — vision path: page PNGs (from L0) → LaTeX.
 
-Supports Groq (LLaMA 4 Scout) and Gemini. ``extract_from_pdf_images`` may run
-two independent VLM passes and pick the higher-quality output, unless the first
-pass already achieves the maximum ``check_quality`` score (then pass 2 is skipped).
+Uses Gemini or Together Vision for image extraction. ``extract_from_pdf_images``
+may run two independent VLM passes and pick the higher-quality output, unless
+the first pass already achieves the maximum ``check_quality`` score (then pass 2
+is skipped).
 """
 
 import logging
 import os
 import re
 import base64
+import io
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from openai import OpenAI
 
-from config import GROQ_API_KEY, GROQ_BASE_URL, GEMINI_API_KEY
+from config import (
+    GEMINI_API_KEY,
+    TOGETHER_API_KEY,
+    TOGETHER_BASE_URL,
+    TOGETHER_VLM_MODEL,
+    TOGETHER_VLM_FALLBACK_MODEL,
+    VLM_PROVIDER,
+)
 
 _log = logging.getLogger(__name__)
 
 # Conservative default: two passes × N workers can burst the API (RPM limits).
 # Set STEP_VLM_PAGE_WORKERS=1 if you see 429s or Gemini thread issues.
 VLM_PAGE_WORKERS_DEFAULT = 2
-VLM_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
 GEMINI_VLM_MODEL = "gemini-2.5-flash"
+VLM_NORMALIZE_LONG_EDGE = 2048
 
 VLM_SYSTEM_PROMPT = """You are a precise mathematical OCR tool. Your ONLY job is to read the mathematical problem from the image and output it in LaTeX.
 
@@ -59,8 +68,7 @@ def _sorted_page_pngs(page_dir: Path) -> list[Path]:
 
 
 class Layer3_VLM:
-    """Vision extraction client. Tries Gemini first (higher accuracy on math),
-    falls back to Groq LLaMA Scout if Gemini key is missing."""
+    """Vision extraction client (Gemini or Together)."""
 
     def __init__(self, force_provider: str | None = None):
         self.provider = None
@@ -71,20 +79,24 @@ class Layer3_VLM:
         self._init(force_provider)
 
     def _init(self, force_provider: str | None = None):
-        if force_provider == "groq" or (force_provider is None and not GEMINI_API_KEY):
-            self._init_groq()
-        elif force_provider == "gemini" or (force_provider is None and GEMINI_API_KEY):
-            self._init_gemini()
+        provider = (force_provider or VLM_PROVIDER or "gemini").strip().lower()
+        if provider == "together":
+            self._init_together()
             if not self._available:
-                self._init_groq()
+                self._init_gemini()
+            return
+        # default / explicit gemini path
+        self._init_gemini()
+        if not self._available and provider != "gemini":
+            self._init_together()
 
-    def _init_groq(self):
-        if not GROQ_API_KEY:
+    def _init_together(self):
+        if not TOGETHER_API_KEY:
             return
         try:
-            self.client = OpenAI(api_key=GROQ_API_KEY, base_url=GROQ_BASE_URL)
-            self.model = VLM_MODEL
-            self.provider = "groq"
+            self.client = OpenAI(api_key=TOGETHER_API_KEY, base_url=TOGETHER_BASE_URL)
+            self.model = TOGETHER_VLM_MODEL
+            self.provider = "together"
             self._available = True
         except Exception:
             pass
@@ -95,31 +107,70 @@ class Layer3_VLM:
         try:
             from google import genai
             self._gemini_client = genai.Client(api_key=GEMINI_API_KEY)
-            self.model = GEMINI_VLM_MODEL
-            self.provider = "gemini"
-            self._available = True
+            if not self._available:
+                self.model = GEMINI_VLM_MODEL
+                self.provider = "gemini"
+                self._available = True
         except Exception:
             pass
+
+    def _ensure_gemini_client(self) -> bool:
+        if self._gemini_client is not None:
+            return True
+        self._init_gemini()
+        return self._gemini_client is not None
 
     @property
     def is_available(self) -> bool:
         return self._available
 
     @staticmethod
-    def _encode_image(image_path: str | Path) -> str:
-        with open(str(image_path), "rb") as f:
-            return base64.b64encode(f.read()).decode("utf-8")
+    def _prepare_image_bytes(image_path: str | Path) -> bytes:
+        """Normalize scanned page images to reduce OCR variance across different PDF renders."""
+        from PIL import Image as PILImage, ImageOps, ImageFilter
+
+        img = PILImage.open(str(image_path)).convert("L")
+        img = ImageOps.autocontrast(img)
+        img = img.filter(ImageFilter.SHARPEN)
+
+        w, h = img.size
+        long_edge = max(w, h)
+        if long_edge > 0 and long_edge != VLM_NORMALIZE_LONG_EDGE:
+            scale = VLM_NORMALIZE_LONG_EDGE / float(long_edge)
+            nw = max(1, int(round(w * scale)))
+            nh = max(1, int(round(h * scale)))
+            img = img.resize((nw, nh), PILImage.Resampling.LANCZOS)
+
+        buf = io.BytesIO()
+        img.save(buf, format="PNG", optimize=True)
+        return buf.getvalue()
+
+    @classmethod
+    def _encode_image(cls, image_path: str | Path) -> str:
+        return base64.b64encode(cls._prepare_image_bytes(image_path)).decode("utf-8")
 
     def extract_from_image(self, image_path: str | Path) -> str:
         """Single page image -> LaTeX problem statement (no solving)."""
         if not self._available:
-            raise RuntimeError("VLM unavailable — set GEMINI_API_KEY or GROQ_API_KEY")
+            raise RuntimeError("VLM unavailable — set GEMINI_API_KEY or TOGETHER_API_KEY")
+        if self.provider == "together":
+            try:
+                text = self._extract_together_with_model_fallback(image_path)
+                if text and len(text.strip()) >= 40:
+                    return text
+                # Together Vision can return very short/empty text for unsupported or weak outputs.
+                if self._ensure_gemini_client():
+                    _log.info("  [L3] [WARN] Together VLM output too weak; falling back to Gemini VLM")
+                    return self._extract_gemini(image_path)
+                return ""
+            except Exception as e:
+                if self._ensure_gemini_client():
+                    _log.info(f"  [L3] [WARN] Together VLM failed ({str(e)[:70]}); falling back to Gemini VLM")
+                    return self._extract_gemini(image_path)
+                raise
+        return self._extract_gemini(image_path)
 
-        if self.provider == "gemini":
-            return self._extract_gemini(image_path)
-        return self._extract_groq(image_path)
-
-    def _extract_groq(self, image_path: str | Path) -> str:
+    def _extract_together(self, image_path: str | Path) -> str:
         b64 = self._encode_image(image_path)
         response = self.client.chat.completions.create(
             model=self.model,
@@ -138,11 +189,30 @@ class Layer3_VLM:
         )
         return response.choices[0].message.content or ""
 
+    def _extract_together_with_model_fallback(self, image_path: str | Path) -> str:
+        try:
+            return self._extract_together(image_path)
+        except Exception as e:
+            msg = str(e).lower()
+            if (
+                ("non-serverless model" in msg or "model_not_available" in msg)
+                and TOGETHER_VLM_FALLBACK_MODEL
+                and TOGETHER_VLM_FALLBACK_MODEL != self.model
+            ):
+                old = self.model
+                self.model = TOGETHER_VLM_FALLBACK_MODEL
+                _log.info(
+                    f"  [L3] [WARN] Together model '{old}' unavailable; "
+                    f"retrying with '{self.model}'"
+                )
+                return self._extract_together(image_path)
+            raise
+
     def _extract_gemini(self, image_path: str | Path) -> str:
         from google.genai import types
         from PIL import Image as PILImage
 
-        img = PILImage.open(str(image_path))
+        img = PILImage.open(io.BytesIO(self._prepare_image_bytes(image_path)))
         response = self._gemini_client.models.generate_content(
             model=self.model,
             contents=[
