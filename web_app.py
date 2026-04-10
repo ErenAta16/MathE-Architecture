@@ -64,6 +64,9 @@ except ValueError:
     _MAX_CONCURRENT_SOLVES = 2
 _solve_semaphore = threading.BoundedSemaphore(_MAX_CONCURRENT_SOLVES)
 
+_WEB_USE_NOUGAT = os.environ.get("STEP_WEB_USE_NOUGAT", "").strip().lower() in ("1", "true", "yes")
+_WEB_USE_VLM = os.environ.get("STEP_WEB_USE_VLM", "1").strip().lower() not in ("0", "false", "no")
+
 
 def _prune_tasks() -> None:
     """Remove completed tasks past TTL and enforce a max entry count."""
@@ -284,7 +287,7 @@ def _worker(tid: str, filepath: Path):
             ensure_dirs()
             from run import STEPSolver
 
-            solver = STEPSolver(use_nougat=False, use_vlm=True)
+            solver = STEPSolver(use_nougat=_WEB_USE_NOUGAT, use_vlm=_WEB_USE_VLM)
             result = solver.solve(filepath, verbose=True)
             sys.stdout.flush()
 
@@ -319,6 +322,7 @@ if __name__ == "__main__":
     _log.info("  " + "=" * 44)
     _log.info("  STEP Pipeline - Web UI")
     _log.info(f"  Max concurrent solves: {_MAX_CONCURRENT_SOLVES}")
+    _log.info(f"  Web solver config: nougat={_WEB_USE_NOUGAT}, vlm={_WEB_USE_VLM}")
     _log.info("  " + "=" * 44)
     _log.info("")
     _log.info("  Tarayiciya TAM su adresi yapistirin (http:// sart):")
