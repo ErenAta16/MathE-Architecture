@@ -67,6 +67,26 @@ _solve_semaphore = threading.BoundedSemaphore(_MAX_CONCURRENT_SOLVES)
 _WEB_USE_NOUGAT = os.environ.get("STEP_WEB_USE_NOUGAT", "").strip().lower() in ("1", "true", "yes")
 _WEB_USE_VLM = os.environ.get("STEP_WEB_USE_VLM", "1").strip().lower() not in ("0", "false", "no")
 
+# One ``STEPSolver`` is reused across requests so API clients (Gemini, Together,
+# VLM) and the per-solver result cache are shared. Building a new solver per
+# upload paid for repeated client handshakes and discarded every cache hit.
+_shared_solver = None
+_shared_solver_lock = threading.Lock()
+
+
+def _get_shared_solver():
+    """Lazily build one process-wide ``STEPSolver`` and return it."""
+    global _shared_solver
+    if _shared_solver is None:
+        with _shared_solver_lock:
+            if _shared_solver is None:
+                from run import STEPSolver
+                _shared_solver = STEPSolver(
+                    use_nougat=_WEB_USE_NOUGAT,
+                    use_vlm=_WEB_USE_VLM,
+                )
+    return _shared_solver
+
 
 def _prune_tasks() -> None:
     """Remove completed tasks past TTL and enforce a max entry count."""
@@ -224,6 +244,12 @@ def upload():
     fp = UPLOAD_DIR / safe
     f.save(fp)
 
+    # Optional free-form instruction to the solver LLM. Kept short so prompt
+    # budgets stay predictable; longer notes are truncated rather than rejected.
+    user_query = (request.form.get("user_query") or "").strip()
+    if len(user_query) > 600:
+        user_query = user_query[:600].rstrip() + "..."
+
     tid = f"t{int(time.time() * 1000)}"
     q = queue.Queue()
     with _tasks_lock:
@@ -235,7 +261,7 @@ def upload():
             "filename": safe,
         }
 
-    threading.Thread(target=_worker, args=(tid, fp), daemon=True).start()
+    threading.Thread(target=_worker, args=(tid, fp, user_query), daemon=True).start()
     return jsonify(task_id=tid, filename=safe)
 
 
@@ -269,10 +295,53 @@ def serve_pdf(name):
     return send_from_directory(UPLOAD_DIR, name)
 
 
+@app.route("/followup", methods=["POST"])
+def followup():
+    """Ask a follow-up about an already-solved task.
+
+    Runs one LLM round using the same shared solver and returns JSON.
+    Kept synchronous because follow-ups are single passes (no OCR, no consensus).
+    """
+    payload = request.get_json(silent=True) or request.form
+    tid = (payload.get("task_id") or "").strip()
+    user_query = (payload.get("user_query") or "").strip()
+
+    if not tid or not user_query:
+        return jsonify(error="task_id and user_query are required"), 400
+    if len(user_query) > 600:
+        user_query = user_query[:600].rstrip() + "..."
+
+    with _tasks_lock:
+        task = _tasks.get(tid)
+    if task is None:
+        return jsonify(error="Unknown task_id"), 404
+    if not task.get("done"):
+        return jsonify(error="The solve is still running"), 409
+    ctx = task.get("followup_context") or {}
+    if not ctx.get("prompt") or not ctx.get("solution"):
+        return jsonify(error="No follow-up context for this task"), 409
+
+    try:
+        solver = _get_shared_solver()
+        reply = solver.ask_followup(
+            prompt=ctx.get("prompt", ""),
+            prior_solution=ctx.get("solution", ""),
+            system_prompt=ctx.get("system_prompt", "") or None,
+            user_query=user_query,
+        )
+    except Exception as e:
+        return jsonify(error=str(e)[:200]), 500
+
+    if reply.get("error"):
+        return jsonify(error=reply["error"]), 500
+
+    return jsonify(reply)
+
+
 # ---------------------------------------------------------------------------
 # Background solver
 # ---------------------------------------------------------------------------
-def _worker(tid: str, filepath: Path):
+def _worker(tid: str, filepath: Path, user_query: str = ""):
     """Solve one uploaded PDF (bounded by ``_solve_semaphore``); push log lines to the task queue."""
     with _tasks_lock:
         task = _tasks.get(tid)
@@ -285,11 +354,18 @@ def _worker(tid: str, filepath: Path):
     with _solve_semaphore:
         try:
             ensure_dirs()
-            from run import STEPSolver
-
-            solver = STEPSolver(use_nougat=_WEB_USE_NOUGAT, use_vlm=_WEB_USE_VLM)
-            result = solver.solve(filepath, verbose=True)
+            solver = _get_shared_solver()
+            result = solver.solve(filepath, verbose=True, user_query=user_query or None)
             sys.stdout.flush()
+
+            # Follow-up context lives server-side only. Strip it from the
+            # payload the UI receives, but cache it on the task so /followup
+            # calls can reuse the prior prompt and solution.
+            follow_ctx = {
+                "prompt": result.pop("_prompt", "") if isinstance(result, dict) else "",
+                "system_prompt": result.pop("_system_prompt", "") if isinstance(result, dict) else "",
+                "solution": result.get("solution", "") if isinstance(result, dict) else "",
+            }
 
             clean = {}
             for k, v in result.items():
@@ -302,6 +378,7 @@ def _worker(tid: str, filepath: Path):
 
             q.put({"type": "done", "data": clean})
             task["result"] = clean
+            task["followup_context"] = follow_ctx
 
         except Exception as e:
             sys.stdout.flush()
