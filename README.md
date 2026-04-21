@@ -69,6 +69,24 @@ Prompt design matters: the VLM is instructed to **read only, not solve**—an ei
 
 **Web UI:** The layout **prioritizes profiling and the answer** over the PDF column. A compact **Simple explanation** strip summarizes problem type, method, and key idea; full solution remains expanded by default for readability. Optional **`STEP_WEB_USE_NOUGAT`** / **`STEP_WEB_USE_VLM`** toggle pipeline stages from the Flask worker.
 
+**Adaptive rasterization:** When Nougat is disabled the pipeline rasterizes pages at **`VLM_ONLY_DPI`** (220 by default, override with `STEP_VLM_ONLY_DPI`) instead of 400 DPI. The VLM normalizes images internally anyway, so the high DPI was wasted work on the common VLM-only path. PyMuPDF4LLM markdown extraction is also gated on a thin native text layer, avoiding a second PDF open otherwise.
+
+**Layer 3 — targeted retries and on-disk cache:** Pass 2 only re-runs pages whose individual output is empty or too short rather than repeating the whole document. The cleaned VLM output is persisted under **`step_pipeline/vlm_output/<pdf>/<pdf>.vlm.mmd`** with a SHA-256 fingerprint of all page PNGs; identical pixel input short-circuits the VLM stage entirely on later runs.
+
+**Layer 5 — skip the extra boxed call:** When a response lacks `\boxed{}` but Layer 6 can already extract a final line (via `FINAL_ANSWER:`, display math, or tail heuristics), the follow-up LLM call is skipped, saving one round trip per solve in the common case.
+
+**Gemini 2.5 Pro speed profile:** With `gemini-2.5-pro` as the primary, consensus runs a single strong attempt instead of stacking two long calls. Other providers keep the previous consensus budget.
+
+**Shared solver in the web app:** A single process-wide `STEPSolver` is now built lazily and reused for every upload, so Gemini/Together clients and the Layer 3 cache persist across requests. The in-memory result cache is protected by a dedicated lock so concurrent solves do not race on the `OrderedDict`.
+
+**Classification taxonomy (MathE-style):** A new `taxonomy.py` maps each problem to a **Topic** (Integration, Differentiation, Limits and Continuity, Series, Differential Equations, Linear Algebra, Vector Calculus, Algebra), a **Subtopic** (Indefinite Integrals, Definite Integrals, Surface Integrals, …), and up to five controlled **Keywords** (Substitution, Integration by parts, Power rule, Sum rule, Logarithmic integration, …). After the LLM finishes, its own solution and summary are rescanned against the chosen subtopic pool so the keywords reflect techniques the model actually used. Exposed in the API as `result.taxonomy = {topic, subtopic, keywords}`.
+
+**User question on upload:** `/upload` accepts an optional **`user_query`** (up to 600 characters) which is appended to the Layer 4 prompt under an explicit marker and echoed back in the result. Its digest is part of the cache key so different notes produce different runs.
+
+**Follow-up chat:** `/followup` is a synchronous JSON endpoint that calls `STEPSolver.ask_followup` with the task's stored prompt, prior solution, and system prompt. Each call is a single LLM pass (no consensus) and returns `{solution, final_answer, elapsed_s, model_used}`. The web UI turns the composer into a follow-up chat once a solve completes, appending each question and reply as its own card.
+
+**Web UI — auto-solve and answer-first layout:** Uploading a PDF now starts the solver immediately; the composer is inactive until the solve completes and then switches to follow-up mode. The right panel leads with the answer, followed by a dedicated **Classification** card (Topic, Subtopic, Keywords), an echo of the user's instruction when provided, the model summary, and a collapsible **Pipeline details** table for the technical fields that used to clutter the profiling card. Full-solution rendering strips trailing `\boxed{...}` lines (the answer is already shown on top) and wraps any remaining bare boxed blocks in display-math delimiters so MathJax typesets them.
+
 ---
 
 #### Technology choices
@@ -127,6 +145,24 @@ Nougat: módulo falso + *patch* do `generate` + VLM quando há `[repetition]`. V
 **Texto Gemini — modelo de recurso opcional:** Defina **`GEMINI_FALLBACK_MODEL`** (por exemplo `gemini-2.5-flash`) para repetir o mesmo conteúdo noutro ID Gemini se a chamada principal falhar.
 
 **Interface web:** O *layout* **dá prioridade ao perfil e à resposta** em relação à coluna do PDF. Uma faixa **Simple explanation** resume tipo de problema, método e ideia-chave; a solução completa fica expandida por defeito. **`STEP_WEB_USE_NOUGAT`** / **`STEP_WEB_USE_VLM`** ativam ou desativam etapas no *worker* Flask.
+
+**Rasterização adaptativa:** Quando o Nougat está desativado, as páginas são rasterizadas a **`VLM_ONLY_DPI`** (220 por defeito, ajustável com `STEP_VLM_ONLY_DPI`) em vez de 400 DPI. O VLM normaliza as imagens internamente, por isso o DPI alto era trabalho desperdiçado no caminho habitual só com VLM. A extração em Markdown via PyMuPDF4LLM também passa a correr apenas quando o texto nativo é escasso, evitando uma segunda abertura do PDF nos restantes casos.
+
+**Camada 3 — reexecuções dirigidas e cache em disco:** A segunda passagem repete apenas as páginas cuja saída individual esteja vazia ou demasiado curta, em vez de voltar a processar todo o documento. O resultado limpo é guardado em **`step_pipeline/vlm_output/<pdf>/<pdf>.vlm.mmd`** com um *fingerprint* SHA-256 de todos os PNG de página; entradas idênticas em pixel saltam por completo a etapa VLM em execuções seguintes.
+
+**Camada 5 — evitar a chamada extra do *boxed*:** Se a resposta não trouxer `\boxed{}` mas a Camada 6 já conseguir extrair a linha final (`FINAL_ANSWER:`, blocos de matemática no fim, heurísticas de cauda), a chamada adicional ao LLM deixa de ser feita, poupando uma ida ao modelo em cada resolução.
+
+**Perfil de velocidade para Gemini 2.5 Pro:** Com `gemini-2.5-pro` como primário, o consenso executa apenas uma tentativa forte em vez de empilhar duas chamadas longas. Os restantes fornecedores mantêm o orçamento de consenso anterior.
+
+**Solver partilhado na aplicação web:** Agora é construído um único `STEPSolver` por processo e reutilizado em cada *upload*, pelo que os clientes Gemini/Together e a cache da Camada 3 persistem entre pedidos. A cache em memória de resultados está protegida por um *lock* dedicado para que resoluções concorrentes não causem corrida no `OrderedDict`.
+
+**Taxonomia de classificação (estilo MathE):** Um novo módulo `taxonomy.py` mapeia cada problema para um **Tópico** (Integração, Derivação, Limites e Continuidade, Séries, Equações Diferenciais, Álgebra Linear, Cálculo Vetorial, Álgebra), um **Subtópico** (Integrais Indefinidos, Integrais Definidos, Integrais de Superfície, …) e até cinco **Palavras-chave** controladas (Substituição, Integração por partes, Regra da potência, Regra da soma, Integração logarítmica, …). Depois do LLM responder, a sua solução e resumo são re-analisados contra o conjunto do subtópico escolhido, para que as palavras-chave reflitam as técnicas realmente usadas. Exposto na API como `result.taxonomy = {topic, subtopic, keywords}`.
+
+**Pergunta do utilizador no *upload*:** O endpoint `/upload` aceita um campo opcional **`user_query`** (até 600 caracteres), que é acrescentado ao *prompt* da Camada 4 com um marcador explícito e devolvido no resultado. O *digest* da pergunta entra na chave da cache, pelo que perguntas diferentes produzem execuções diferentes.
+
+**Conversa de seguimento:** `/followup` é um endpoint JSON síncrono que chama `STEPSolver.ask_followup` com o *prompt* original, a solução anterior e o *system prompt* guardados para a tarefa. Cada chamada é uma só passagem ao LLM (sem consenso) e devolve `{solution, final_answer, elapsed_s, model_used}`. A interface transforma o *composer* num *chat* de seguimento assim que uma resolução termina, adicionando cada pergunta e resposta como um cartão próprio.
+
+**Interface web — resolução automática e foco na resposta:** O *upload* de um PDF arranca imediatamente o *solver*; o *composer* fica inativo até o processo terminar e só depois entra em modo de seguimento. O painel direito passa a começar pela resposta, seguida de um cartão dedicado à **Classificação** (Tópico, Subtópico, Palavras-chave), um eco da instrução do utilizador (quando existe), o resumo do modelo e uma tabela **Pipeline details** recolhível para os campos técnicos que antes sobrecarregavam o cartão de perfil. A renderização da solução completa remove uma linha final isolada com `\boxed{...}` (a resposta já está destacada em cima) e envolve os restantes blocos `\boxed{}` soltos em delimitadores de matemática em bloco para o MathJax os compor corretamente.
 
 ---
 
@@ -190,6 +226,24 @@ Nougat: sahte modül + `generate` yaması + VLM yedek. VLM: `clean_output()` en 
 **Gemini metin — isteğe bağlı yedek model:** Birincil `GEMINI_MODEL` çağrısı düşerse aynı içeriği başka bir kimlikte denemek için **`GEMINI_FALLBACK_MODEL`** (ör. `gemini-2.5-flash`) ayarlanabilir.
 
 **Web arayüzü:** Yerleşim **profilleme ve cevabı** PDF sütununa göre öne alır. **Simple explanation** şeridi problem türü, yöntem ve ana fikri özetler; tam çözüm okunabilirlik için varsayılan olarak açıktır. **`STEP_WEB_USE_NOUGAT`** / **`STEP_WEB_USE_VLM`** Flask işçisinde katmanları açıp kapatır.
+
+**Uyarlanabilir rasterize:** Nougat kapalı olduğunda sayfalar 400 DPI yerine **`VLM_ONLY_DPI`** (varsayılan 220, `STEP_VLM_ONLY_DPI` ile değiştirilebilir) ile raster edilir. VLM görüntüyü zaten iç ölçeklendirmeden geçirdiği için, yalnızca VLM kullanılan akışta 400 DPI gereksizdi. PyMuPDF4LLM markdown çıkarımı da yalnızca yerel metin katmanı zayıfsa çağrılır; aksi halde ikinci PDF açılışı ortadan kalkar.
+
+**Katman 3 — hedefli yeniden deneme ve disk cache:** İkinci geçiş tüm sayfaları değil, çıktısı boş veya çok kısa olan sayfaları yeniden işler. Temizlenmiş VLM çıktısı **`step_pipeline/vlm_output/<pdf>/<pdf>.vlm.mmd`** altında, tüm sayfa PNG’lerinin SHA-256 parmak iziyle saklanır; aynı piksel girdi geldiğinde VLM aşaması tümüyle atlanır.
+
+**Katman 5 — gereksiz boxed turunu atla:** Cevap `\boxed{}` içermese bile Katman 6 son satırı (`FINAL_ANSWER:`, display math, kuyruk heuristikleri) çıkarabiliyorsa ek LLM çağrısı yapılmaz; her çözümde bir model turu tasarrufu sağlanır.
+
+**Gemini 2.5 Pro hız profili:** Birincil `gemini-2.5-pro` olduğunda konsensüs iki uzun çağrı yerine tek güçlü deneme ile koşar. Diğer sağlayıcılarda önceki konsensüs bütçesi korunur.
+
+**Web arayüzünde paylaşılan çözücü:** Artık süreç başına tek bir `STEPSolver` gerektiğinde kurulur ve her yükleme için yeniden kullanılır; Gemini/Together istemcileri ve Katman 3 kaynakları istekler arasında kalır. Bellek içindeki sonuç cache’i özel bir kilitle korunur, böylece eşzamanlı çözümler `OrderedDict` üzerinde yarışmaz.
+
+**Sınıflandırma taksonomisi (MathE tarzı):** Yeni `taxonomy.py` modülü her problemi bir **Topic**’e (Integration, Differentiation, Limits and Continuity, Series, Differential Equations, Linear Algebra, Vector Calculus, Algebra), bir **Subtopic**’e (Indefinite Integrals, Definite Integrals, Surface Integrals, …) ve en fazla beş kontrollü **Keyword**’e (Substitution, Integration by parts, Power rule, Sum rule, Logarithmic integration, …) eşler. LLM cevabı geldikten sonra kendi çözümü ve özeti seçilen alt başlığın havuzuyla yeniden taranır; böylece anahtar kelimeler modelin gerçekten kullandığı teknikleri yansıtır. API’de `result.taxonomy = {topic, subtopic, keywords}` olarak sunulur.
+
+**Yüklemede kullanıcı sorusu:** `/upload` isteğe bağlı bir **`user_query`** alanı kabul eder (en fazla 600 karakter). Bu metin, Katman 4 promptunun sonuna açık bir etiketle eklenir ve cevapla birlikte geri döner. Metnin özeti cache anahtarına dahil edilir; farklı talimatlar farklı çalıştırmalar üretir.
+
+**Takip sohbeti:** `/followup` senkron bir JSON uç noktasıdır; görevin saklanan orijinal promptunu, önceki çözümünü ve sistem promptunu kullanarak `STEPSolver.ask_followup`’i çağırır. Her çağrı tek LLM turudur (konsensüs yok) ve `{solution, final_answer, elapsed_s, model_used}` döner. Web arayüzü, bir çözüm tamamlandığında composer’ı follow-up sohbetine çevirir ve her soru/cevap çiftini kendi kartı olarak ekler.
+
+**Web arayüzü — otomatik çözüm ve cevap öncelikli düzen:** PDF yükler yüklemez çözüm başlar; composer, çözüm tamamlanana kadar pasif kalır ve ardından takip moduna geçer. Sağ panel önce cevabı, ardından MathE sorusuna benzeyen bir **Classification** kartını (Topic, Subtopic, Keywords), varsa kullanıcının talimatını yansıtan kartı, model özetini ve teknik alanların toplandığı katlanabilir **Pipeline details** tablosunu gösterir. Tam çözüm render’ında sonda yalnız başına duran `\boxed{...}` satırı (cevap yukarıda büyük panelde zaten görünüyor) kaldırılır; gövdede kalan `\boxed{}` blokları ise display-math delimiter’larına sarılarak MathJax tarafından düzgünce dizilir.
 
 ---
 
