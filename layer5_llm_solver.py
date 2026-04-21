@@ -125,7 +125,11 @@ class Layer5_LLMSolver:
 
     def solve(self, problem_latex: str, system_prompt: str | None = None) -> str:
         """Run the model on `problem_latex`; optional `system_prompt` overrides the default.
-        If the answer lacks \\boxed{}, a cheap follow-up asks for one (all providers)."""
+
+        If the answer lacks ``\\boxed{}`` but Layer 6 can still recover a final
+        line (``FINAL_ANSWER:``, tail display math, etc.), the follow-up call is
+        skipped. That saves one LLM round-trip per solve in the common case
+        where the model emits a clear final line without the macro."""
         if not self.is_available:
             raise RuntimeError("No LLM client configured. Check your API keys in .env")
 
@@ -140,9 +144,21 @@ class Layer5_LLMSolver:
         else:
             raise RuntimeError(f"Unknown LLM provider: {self.provider}")
 
-        if "\\boxed" not in text:
+        if "\\boxed" not in text and not self._has_recoverable_final_line(text):
             text = self._boxed_followup(text)
         return text
+
+    @staticmethod
+    def _has_recoverable_final_line(text: str) -> bool:
+        """Quick check: can Layer 6 extract a final line without another LLM call?"""
+        if not text:
+            return False
+        try:
+            from layer6_verifier import Layer6_SymPyVerifier
+            fa = Layer6_SymPyVerifier()._extract_final_answer(text)
+            return bool(fa) and len(fa) >= 2
+        except Exception:
+            return False
 
     def _boxed_followup(self, text: str) -> str:
         """Cheap second call: ask the same provider to emit \\boxed{} only."""
