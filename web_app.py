@@ -88,6 +88,25 @@ def _get_shared_solver():
     return _shared_solver
 
 
+def _short_problem_text(prompt: str) -> str:
+    """Best short form of the problem statement for downstream tooling.
+
+    Prefers the cleaned Layer 4 prompt section that directly describes the
+    problem. Falls back to the original prompt the solver received.
+    """
+    if not prompt:
+        return ""
+    marker = "--- SOURCE"
+    if marker in prompt:
+        # Take the header plus the first source block; keeps the model focused
+        # on the statement without the supplementary notes.
+        head, _, rest = prompt.partition(marker)
+        first_source = marker + rest.split("--- SOURCE", 1)[0]
+        return (head + first_source).strip()
+    # No multi-source block: the full prompt already reads as one statement.
+    return prompt.strip()
+
+
 def _prune_tasks() -> None:
     """Remove completed tasks past TTL and enforce a max entry count."""
     now = time.time()
@@ -295,6 +314,58 @@ def serve_pdf(name):
     return send_from_directory(UPLOAD_DIR, name)
 
 
+@app.route("/keyword-eval", methods=["POST"])
+def keyword_eval():
+    """Run Task 1 (free keywords) and Task 2 (closed pool) for a solved task.
+
+    Body accepts ``task_id`` (required), optional ``pool`` (list of strings or
+    comma-separated string) and optional ``model`` override (e.g.
+    ``gemini-2.5-pro``). Returns JSON with ``task1``, ``task2``, ``model_used``,
+    ``elapsed_s`` and the pool that was used.
+    """
+    from keyword_eval import evaluate_keywords, DEFAULT_KEYWORD_POOL
+
+    payload = request.get_json(silent=True) or request.form
+    tid = (payload.get("task_id") or "").strip()
+    if not tid:
+        return jsonify(error="task_id is required"), 400
+
+    with _tasks_lock:
+        task = _tasks.get(tid)
+    if task is None:
+        return jsonify(error="Unknown task_id"), 404
+    if not task.get("done"):
+        return jsonify(error="The solve is still running"), 409
+
+    ctx = task.get("followup_context") or {}
+    problem_text = (ctx.get("problem_text") or ctx.get("prompt") or "").strip()
+    if not problem_text:
+        return jsonify(error="No problem text stored for this task"), 409
+
+    pool_raw = payload.get("pool")
+    pool: list[str] | None
+    if isinstance(pool_raw, list):
+        pool = [str(x).strip() for x in pool_raw if str(x).strip()]
+    elif isinstance(pool_raw, str) and pool_raw.strip():
+        pool = [s.strip() for s in pool_raw.split(",") if s.strip()]
+    else:
+        pool = list(DEFAULT_KEYWORD_POOL)
+
+    model = (payload.get("model") or "").strip() or None
+
+    try:
+        result = evaluate_keywords(problem_text, pool=pool, model=model)
+    except Exception as e:
+        return jsonify(error=str(e)[:200]), 500
+
+    if result.get("error"):
+        return jsonify(error=result["error"]), 500
+
+    # Cache the last run on the task so the UI can fetch it on page reload.
+    task["keyword_eval"] = result
+    return jsonify(result)
+
+
 @app.route("/followup", methods=["POST"])
 def followup():
     """Ask a follow-up about an already-solved task.
@@ -358,17 +429,25 @@ def _worker(tid: str, filepath: Path, user_query: str = ""):
             result = solver.solve(filepath, verbose=True, user_query=user_query or None)
             sys.stdout.flush()
 
-            # Follow-up context lives server-side only. Strip it from the
-            # payload the UI receives, but cache it on the task so /followup
-            # calls can reuse the prior prompt and solution.
+            # Follow-up context lives server-side only. Read the keys without
+            # mutating ``result`` — it is the same dict the solver caches, so
+            # popping would erase the prompt from subsequent cache hits.
+            full_prompt = result.get("_prompt", "") if isinstance(result, dict) else ""
+            full_system = result.get("_system_prompt", "") if isinstance(result, dict) else ""
             follow_ctx = {
-                "prompt": result.pop("_prompt", "") if isinstance(result, dict) else "",
-                "system_prompt": result.pop("_system_prompt", "") if isinstance(result, dict) else "",
+                "prompt": full_prompt,
+                "system_prompt": full_system,
                 "solution": result.get("solution", "") if isinstance(result, dict) else "",
+                # Best-effort short problem text for downstream tools (e.g. the
+                # keyword evaluator) that do not need the full L4 prompt wrapper.
+                "problem_text": _short_problem_text(full_prompt),
             }
 
+            # Build the payload for the UI, filtering server-only keys.
             clean = {}
             for k, v in result.items():
+                if isinstance(k, str) and k.startswith("_"):
+                    continue
                 if isinstance(v, Path):
                     clean[k] = str(v)
                 elif isinstance(v, list):
