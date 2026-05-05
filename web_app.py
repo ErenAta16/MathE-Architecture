@@ -46,6 +46,11 @@ app = Flask(__name__)
 
 UPLOAD_DIR = Path(__file__).parent / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
+VIDEO_UPLOAD_DIR = Path(__file__).parent / "uploads_video"
+VIDEO_UPLOAD_DIR.mkdir(exist_ok=True)
+
+# Keep uploads reasonable; Gemini's own limit is 2GB.
+app.config["MAX_CONTENT_LENGTH"] = 512 * 1024 * 1024  # 512 MB
 
 _tasks: dict = {}
 _tasks_lock = threading.Lock()
@@ -86,6 +91,21 @@ def _get_shared_solver():
                     use_vlm=_WEB_USE_VLM,
                 )
     return _shared_solver
+
+
+_shared_video_analyzer = None
+_shared_video_lock = threading.Lock()
+
+
+def _get_shared_video_analyzer():
+    """Lazily build one process-wide ``VideoAnalyzer`` (shares the disk cache)."""
+    global _shared_video_analyzer
+    if _shared_video_analyzer is None:
+        with _shared_video_lock:
+            if _shared_video_analyzer is None:
+                from run_video import VideoAnalyzer
+                _shared_video_analyzer = VideoAnalyzer()
+    return _shared_video_analyzer
 
 
 def _short_problem_text(prompt: str) -> str:
@@ -314,6 +334,60 @@ def serve_pdf(name):
     return send_from_directory(UPLOAD_DIR, name)
 
 
+@app.route("/video/<path:name>")
+def serve_video(name):
+    return send_from_directory(VIDEO_UPLOAD_DIR, name)
+
+
+@app.route("/analyze-video", methods=["POST"])
+def analyze_video():
+    """Kick off a video analysis: YouTube URL or uploaded file."""
+    url = (request.form.get("youtube_url") or "").strip()
+    upload = request.files.get("video")
+    mode = (request.form.get("mode") or "quick").strip().lower()
+    if mode not in ("quick", "deep"):
+        mode = "quick"
+
+    if not url and not upload:
+        return jsonify(error="Provide youtube_url or a video file"), 400
+
+    tid = f"v{int(time.time() * 1000)}"
+    q = queue.Queue()
+    with _tasks_lock:
+        _tasks[tid] = {
+            "queue": q,
+            "done": False,
+            "result": None,
+            "finished_at": None,
+            "media": "video",
+        }
+
+    if url:
+        threading.Thread(
+            target=_video_worker,
+            args=(tid, "youtube", url, None, mode),
+            daemon=True,
+        ).start()
+        return jsonify(task_id=tid, source="youtube", url=url, mode=mode)
+
+    safe = secure_filename(upload.filename or "video.mp4")
+    if not safe:
+        with _tasks_lock:
+            _tasks.pop(tid, None)
+        return jsonify(error="Invalid filename"), 400
+    fp = VIDEO_UPLOAD_DIR / safe
+    upload.save(fp)
+    with _tasks_lock:
+        _tasks[tid]["filename"] = safe
+
+    threading.Thread(
+        target=_video_worker,
+        args=(tid, "upload", None, fp, mode),
+        daemon=True,
+    ).start()
+    return jsonify(task_id=tid, source="upload", filename=safe, mode=mode)
+
+
 @app.route("/keyword-eval", methods=["POST"])
 def keyword_eval():
     """Run Task 1 (free keywords) and Task 2 (closed pool) for a solved task.
@@ -463,6 +537,45 @@ def _worker(tid: str, filepath: Path, user_query: str = ""):
             sys.stdout.flush()
             q.put({"type": "error", "text": str(e)})
 
+        finally:
+            _thread_local.queue = None
+            q.put(None)
+            with _tasks_lock:
+                task["done"] = True
+                task["finished_at"] = time.time()
+
+
+def _video_worker(tid: str, kind: str, url: str | None, filepath: Path | None,
+                   mode: str = "quick"):
+    """Run a single video analysis (YouTube URL or uploaded file)."""
+    with _tasks_lock:
+        task = _tasks.get(tid)
+    if task is None:
+        return
+    q = task["queue"]
+    _thread_local.queue = q
+    _thread_local.buf = ""
+
+    with _solve_semaphore:
+        try:
+            ensure_dirs()
+            analyzer = _get_shared_video_analyzer()
+            if kind == "youtube":
+                result = analyzer.analyze_youtube(url or "", mode=mode)
+            elif kind == "upload" and filepath is not None:
+                result = analyzer.analyze_file(filepath, mode=mode)
+            else:
+                result = {"media": "video", "error": "Invalid analysis request"}
+            sys.stdout.flush()
+
+            if result.get("error"):
+                q.put({"type": "error", "text": result["error"]})
+            else:
+                q.put({"type": "done", "data": result})
+                task["result"] = result
+        except Exception as e:
+            sys.stdout.flush()
+            q.put({"type": "error", "text": str(e)})
         finally:
             _thread_local.queue = None
             q.put(None)
