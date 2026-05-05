@@ -16,3 +16,7 @@ anthropic>=0.40.0
 
 # Web UI (optional: python web_app.py)
 flask>=3.0.0
+
+# Video Deep-mode (optional: frame sampling + YouTube download)
+opencv-python-headless>=4.8.0
+yt-dlp>=2024.1.0
