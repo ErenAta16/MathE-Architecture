@@ -34,16 +34,22 @@ _log = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 _FRAME_SYSTEM = (
-    "You are a careful visual OCR for mathematics. Look at a single video "
-    "frame and extract ONLY the mathematical problem statement(s) currently "
-    "visible on screen, returned in LaTeX. Do NOT solve or narrate. If the "
-    "frame shows nothing math-related (transition, speaker, blank), output "
-    "the single word NONE."
+    "You are a careful visual OCR for mathematics education videos. Look at a "
+    "single frame and extract the math-relevant content currently visible on "
+    "screen. Include formulas/equations as clean LaTeX, and also include short "
+    "visible concept labels, theorem names, axis labels, or slide/board text "
+    "when they are mathematically meaningful (for example: KKT conditions, "
+    "corner solution, feasible set, critical point). Do not solve, infer, or "
+    "explain beyond what is visible. If no math-relevant formula or concept "
+    "text is visible, output exactly NONE."
 )
 
 _FRAME_PROMPT = (
-    "Extract the visible math problem(s) in this frame. Return one LaTeX "
-    "expression per line, with no commentary."
+    "Return only the visible math-relevant content. Use one concise line per "
+    "formula, concept label, or board/slide phrase. Use LaTeX for formulas, "
+    "plain text for visible concept labels. No commentary, no invented steps, "
+    "and no dollar-sign wrappers unless they appear as part of the on-screen "
+    "math."
 )
 
 
@@ -121,6 +127,48 @@ def _normalize_latex(s: str) -> str:
     return s
 
 
+_LATEX_ERROR_CUES: tuple[str, ...] = (
+    "missing argument",
+    "missing superscript",
+    "missing subscript",
+    "undefined control sequence",
+    "extra }, or forgotten",
+    "missing }",
+    "math processing error",
+)
+
+
+def _clean_scene_text(text: str) -> str:
+    """Normalize frame OCR before grouping/rendering scene snippets."""
+    cleaned = (text or "").strip()
+    cleaned = cleaned.replace("`", " ")
+    cleaned = cleaned.replace("$$", " ")
+    cleaned = cleaned.replace("$", " ")
+    cleaned = cleaned.replace("\\displaystyle", " ")
+    cleaned = re.sub(r"\\textcircled\s*\{([^}]*)\}", r"\1", cleaned)
+    cleaned = re.sub(r"\\textcircled\s*([A-Za-z0-9])", r"\1", cleaned)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip()
+    return cleaned
+
+
+def _balanced_braces(text: str) -> bool:
+    depth = 0
+    for ch in text:
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth < 0:
+                return False
+    return depth == 0
+
+
+def _has_dangling_script(text: str) -> bool:
+    """Return True for TeX snippets ending with a bare ^ or _ script marker."""
+    s = re.sub(r"\s+", "", text or "")
+    return bool(re.search(r"[\^_](?:$|[+\-*/=,.;:|)\]}])", s))
+
+
 def _trigram_set(s: str) -> set[str]:
     s = f"  {s}  "
     return {s[i:i + 3] for i in range(len(s) - 2)}
@@ -133,8 +181,34 @@ def _similarity(a: str, b: str) -> float:
     return len(ta & tb) / len(ta | tb)
 
 
+def _scene_text_meaningful(text: str, *, min_norm: int = 18) -> bool:
+    """Drop OCR junk such as a lone dollar sign or ultra-short fragments."""
+    raw = (text or "").strip()
+    if not raw:
+        return False
+    lower = raw.lower()
+    if any(cue in lower for cue in _LATEX_ERROR_CUES):
+        return False
+    cleaned = _clean_scene_text(raw)
+    if not cleaned:
+        return False
+    if not _balanced_braces(cleaned):
+        return False
+    if _has_dangling_script(cleaned):
+        return False
+    if re.search(r"\\(?:text|operatorname)\b(?!\s*\{)", cleaned):
+        return False
+    norm = _normalize_latex(cleaned)
+    if len(norm) < min_norm:
+        return False
+    stripped = norm.replace("$", "").replace("\\", "").strip()
+    if len(stripped) < 8:
+        return False
+    return True
+
+
 def group_scenes(frame_texts: list[dict], *,
-                  min_chars: int = 12,
+                  min_chars: int = 20,
                   merge_threshold: float = 0.65) -> list[dict]:
     """Merge near-duplicate frame captures into scenes, keyed by earliest time.
 
@@ -147,8 +221,8 @@ def group_scenes(frame_texts: list[dict], *,
         if not text or text.upper() == "NONE":
             continue
         # Drop obvious filler / short OCR noise.
-        cleaned = text.strip()
-        if len(cleaned) < min_chars:
+        cleaned = _clean_scene_text(text)
+        if len(cleaned) < min_chars or not _scene_text_meaningful(cleaned):
             continue
         items.append((row["t"], cleaned))
 
@@ -189,6 +263,7 @@ def group_scenes(frame_texts: list[dict], *,
             "text": s["text"],
         }
         for s in scenes
+        if _scene_text_meaningful(s["text"])
     ]
 
 
@@ -270,10 +345,33 @@ def batch_evaluate_keywords(scenes: list[dict], *,
 # Public orchestrator: scenes + per-scene taxonomy + per-scene keywords
 # ---------------------------------------------------------------------------
 
+def _scene_taxonomy_with_video_hints(
+    scene_text: str, title: str, summary: str, tax: dict,
+) -> dict:
+    """Nudge per-scene taxonomy when OCR picks ``\\int`` without limits but the
+    video context clearly describes volumes of revolution or definite integrals.
+    """
+    if not isinstance(tax, dict):
+        return tax
+    blob = " ".join(
+        (scene_text or "", title or "", summary or ""),
+    ).lower()
+    cues = (
+        "volume", "washer", "disk", "shell", "revolution", "rotate",
+        "solid of", "definite integral", "axis of rotation",
+    )
+    if any(c in blob for c in cues):
+        if tax.get("topic") == "Integration" and tax.get("subtopic") == "Indefinite Integrals":
+            return {**tax, "subtopic": "Definite Integrals"}
+    return tax
+
+
 def analyze_frames_deep(frames: list[tuple[float, bytes]], *,
                           frame_model: str = "gemini-2.5-flash",
                           batch_model: str = "gemini-2.5-pro",
                           pool: list[str] | None = None,
+                          title_hint: str = "",
+                          summary_hint: str = "",
                           verbose: bool = True) -> dict:
     """Run the full Deep pipeline on a list of sampled frames.
 
@@ -293,6 +391,9 @@ def analyze_frames_deep(frames: list[tuple[float, bytes]], *,
     problems: list[dict] = []
     for i, sc in enumerate(scenes):
         tax = classify_taxonomy(sc["text"])
+        tax = _scene_taxonomy_with_video_hints(
+            sc["text"], title_hint, summary_hint, tax,
+        )
         kws = keywords_per_scene[i] if i < len(keywords_per_scene) else []
         problems.append({
             "earliest_t": sc["earliest_t"],

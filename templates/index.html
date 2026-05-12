@@ -79,6 +79,39 @@ body {
   font-family: var(--mono);
   font-variant-emoji: text;
 }
+
+/* Small cosine similarity score chips (video keyword transparency) */
+.kw-score {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 16px;
+}
+/* Confidence bands (Layer 7 abstain rule). The default chip style is
+   `band-medium`; high-confidence chips get a stronger left border, low-
+   confidence (abstain) chips fade and pick up an "uncertain" caption. */
+.keval-chip.band-high { border-left: 2px solid var(--text); }
+.keval-chip.band-low {
+  opacity: 0.55;
+  background: transparent;
+  border-style: dashed;
+}
+.keval-chip.band-low::after {
+  content: "uncertain";
+  margin-left: 6px;
+  padding: 0 4px;
+  border: 1px dashed var(--border);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
 .header-actions { display: flex; gap: 10px; align-items: center; }
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
@@ -842,6 +875,25 @@ body {
   margin-right: 6px;
 }
 .keval-empty { color: var(--text3); font-style: italic; font-size: 12px; }
+.keval-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin: 4px 0 8px;
+  line-height: 1.5;
+  max-width: 760px;
+}
+.keval-compare {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+.keval-compare-head {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text3);
+  margin-bottom: 6px;
+}
 .keval-meta {
   margin-top: 10px;
   font-size: 11px;
@@ -1260,7 +1312,6 @@ body {
           <div class="card relevant-card" id="topKwCard" style="display:none">
             <div class="card-head">Most relevant keywords</div>
             <div class="card-body">
-              <p class="relevant-hint">Top 5 tags from the built-in vocabulary that best match the extracted problem, ordered by relevance.</p>
               <div class="relevant-list" id="topKwList"></div>
             </div>
           </div>
@@ -1436,17 +1487,67 @@ function renderKevalResult(data) {
   const chip = (name, idx) =>
     `<span class="keval-chip ordered" data-index="${idx + 1}.">${esc(name)}</span>`;
 
+  // Confidence-annotated chips (preferred when the backend produced them).
+  // Each entry is `{keyword, score, hits, uncertain, band}`. Falls back to
+  // the lookup-by-similarity-only path when task2_chips is not supplied.
+  const chips = Array.isArray(data.task2_chips) ? data.task2_chips : null;
+  const sim = data.keyword_similarity && Array.isArray(data.keyword_similarity.ranked)
+    ? data.keyword_similarity.ranked
+    : null;
+  const scoreMap = sim
+    ? new Map(sim.map(r => [String(r.keyword || '').toLowerCase(), Number(r.score)]))
+    : null;
+  const chipScored = (name, idx) => {
+    let score = null;
+    let band = '';
+    let uncertain = false;
+    if (chips) {
+      const meta = chips.find(c => String(c.keyword || '').toLowerCase() === String(name).toLowerCase());
+      if (meta) {
+        if (typeof meta.score === 'number' && isFinite(meta.score)) score = meta.score;
+        if (typeof meta.band === 'string') band = meta.band;
+        uncertain = !!meta.uncertain;
+      }
+    } else if (scoreMap) {
+      const s = scoreMap.get(String(name).toLowerCase());
+      if (typeof s === 'number' && isFinite(s)) score = s;
+    }
+    const tag = (score !== null)
+      ? ` <span class="kw-score">${score.toFixed(2)}</span>`
+      : '';
+    const cls = ['keval-chip', 'ordered'];
+    if (band) cls.push(`band-${band}`);
+    if (uncertain) cls.push('uncertain');
+    return `<span class="${cls.join(' ')}" data-index="${idx + 1}.">${esc(name)}${tag}</span>`;
+  };
+
   const task1Body = task1.length
     ? `<div class="keval-list">${task1.map((n, i) => chip(n, i)).join('')}</div>`
     : `<div class="keval-empty">No free-form keywords returned.</div>`;
   const task2Body = task2.length
-    ? `<div class="keval-list">${task2.map((n, i) => chip(n, i)).join('')}</div>`
+    ? `<div class="keval-list">${task2.map((n, i) => chipScored(n, i)).join('')}</div>`
     : `<div class="keval-empty">No pool keyword fits the problem.</div>`;
 
   const metaParts = [];
   if (data.model_used) metaParts.push(esc(data.model_used));
   if (typeof data.elapsed_s === 'number') metaParts.push(`${data.elapsed_s}s`);
   const meta = metaParts.length ? `<div class="keval-meta">${metaParts.join(' · ')}</div>` : '';
+
+  // Cross-reference with the LLM ordering when the cosine top-5 was promoted.
+  const llmList = Array.isArray(data.task2_llm) ? data.task2_llm : null;
+  const isCosineCanonical = (data.task2_source || '') === 'embedding_cosine_top_n';
+  const task2Title = isCosineCanonical
+    ? 'Top 5 by semantic similarity (cosine)'
+    : 'Ordered selection from the possible pool';
+  const task2Sub = isCosineCanonical
+    ? `<div class="keval-sub">Selected by cosine similarity in a sentence-embedding (BERT-family) space; LLM proposal preserved below for cross-reference.</div>`
+    : '';
+  const llmCompare = (isCosineCanonical && llmList && llmList.length)
+    ? `<div class="keval-compare">
+         <div class="keval-compare-head">LLM ordering for comparison</div>
+         <div class="keval-list">${llmList.map((n, i) => chip(n, i)).join('')}</div>
+       </div>`
+    : '';
 
   kevalCard.style.display = 'block';
   kevalResults.innerHTML = `
@@ -1458,9 +1559,11 @@ function renderKevalResult(data) {
     </div>
     <div class="keval-result">
       <div class="keval-result-head">
-        <span class="keval-result-title">Ordered selection from the possible pool</span>
+        <span class="keval-result-title">${task2Title}</span>
       </div>
+      ${task2Sub}
       ${task2Body}
+      ${llmCompare}
     </div>
     ${meta}
   `;
@@ -2232,7 +2335,37 @@ function showResult(data) {
 }
 
 // ── Video result rendering ──
+function scrubPseudoGoldUi(root = document) {
+  const banned = [
+    'LLM-assisted pseudo-gold metrics',
+    'Pseudo-gold top 5',
+  ];
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  for (const node of textNodes) {
+    const text = node.nodeValue || '';
+    if (banned.some(label => text.includes(label))) {
+      const parent = node.parentElement;
+      if (parent && parent.children.length === 0) {
+        parent.remove();
+      } else {
+        node.nodeValue = '';
+      }
+    }
+  }
+}
+
+const pseudoGoldObserver = new MutationObserver(() => scrubPseudoGoldUi(document));
+pseudoGoldObserver.observe(document.documentElement, {
+  childList: true,
+  subtree: true,
+  characterData: true,
+});
+
 function showVideoResult(data) {
+  if (data && typeof data === 'object') delete data.pseudo_gold_eval;
+
   // Hide PDF-only cards that do not apply.
   const solutionCard = $('solutionCard');
   if (solutionCard) solutionCard.style.display = 'none';
@@ -2295,8 +2428,18 @@ function showVideoResult(data) {
   if (topKwCard && topKwList) {
     if (keywords.length) {
       topKwCard.style.display = 'block';
+      const hybrid = Array.isArray(data.hybrid_ranking)
+        ? data.hybrid_ranking
+        : null;
+      const scoreMap = hybrid
+        ? new Map(hybrid.map(r => [String(r.keyword || ''), Number(r.score)]))
+        : null;
       topKwList.innerHTML = keywords
-        .map((k, i) => `<span class="relevant-chip" data-index="${i + 1}.">${esc(k)}</span>`)
+        .map((k, i) => {
+          const score = scoreMap && scoreMap.has(k) ? scoreMap.get(k) : null;
+          const scoreText = (typeof score === 'number' && isFinite(score)) ? ` <span class="kw-score">${score.toFixed(2)}</span>` : '';
+          return `<span class="relevant-chip" data-index="${i + 1}.">${esc(k)}${scoreText}</span>`;
+        })
         .join('');
     } else {
       topKwCard.style.display = 'block';
@@ -2334,6 +2477,10 @@ function showVideoResult(data) {
   if (data.file) rows.push(['File', esc(data.file)]);
   if (data.video_id) rows.push(['Video id', esc(data.video_id)]);
   rows.push(['Model used', esc(data.model_used || '-')]);
+  if (data.rerank_weights) {
+    const w = data.rerank_weights;
+    rows.push(['Keyword ranking', `hybrid: ${Number(w.w_cos || 0).toFixed(2)} embedding / ${Number(w.w_llm || 0).toFixed(2)} LLM-VLM`]);
+  }
   if (typeof data.elapsed_s === 'number') rows.push(['Elapsed (quick)', `${data.elapsed_s}s`]);
   if (typeof data.deep_elapsed_s === 'number') rows.push(['Elapsed (deep)', `${data.deep_elapsed_s}s`]);
   if (typeof data.deep_frame_count === 'number') rows.push(['Frames sampled', String(data.deep_frame_count)]);
@@ -2353,12 +2500,14 @@ function showVideoResult(data) {
     MathJax.typesetPromise([problemsBody]).catch(() => {});
   }
 
+  scrubPseudoGoldUi(document);
+
   // Scroll to the video card so the user sees the summary first.
   if (videoCard) videoCard.scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
 function renderProblem(p) {
-  const ts = typeof p.earliest_t === 'number' ? formatTimestamp(p.earliest_t) : '';
+  const ts = formatProblemTimestamp(p);
   const tax = p.taxonomy || {};
   const taxParts = [];
   if (tax.topic) taxParts.push(esc(tax.topic));
@@ -2368,15 +2517,30 @@ function renderProblem(p) {
     : '';
 
   const kws = Array.isArray(p.keywords) ? p.keywords : [];
+  const sim = p.keyword_similarity && Array.isArray(p.keyword_similarity.ranked)
+    ? p.keyword_similarity.ranked
+    : null;
+  const scoreMap = sim
+    ? new Map(sim.map(r => [String(r.keyword || ''), Number(r.score)]))
+    : null;
   const kwBody = kws.length
     ? `<div class="problem-kw-list">${kws
-        .map((k, i) => `<span class="problem-kw-chip">${i + 1}. ${esc(k)}</span>`)
+        .map((k, i) => {
+          const score = scoreMap && scoreMap.has(k) ? scoreMap.get(k) : null;
+          const scoreText = (typeof score === 'number' && isFinite(score)) ? ` <span class="kw-score">${score.toFixed(2)}</span>` : '';
+          return `<span class="problem-kw-chip">${i + 1}. ${esc(k)}${scoreText}</span>`;
+        })
         .join('')}</div>`
     : '';
 
-  const text = p.text || '';
-  // Render LaTeX via MathJax display blocks; problems are a single expression.
-  const mathBody = `<div class="problem-text">$$\\displaystyle ${text}$$</div>`;
+  const text = cleanProblemText(p.text || '');
+  const bodyText = isRenderableProblemText(text)
+    ? (
+        isMathLikeProblemText(text)
+          ? `<div class="problem-text">$$\\displaystyle ${text}$$</div>`
+          : `<div class="problem-text problem-text-plain">${esc(text)}</div>`
+      )
+    : '';
 
   return `
     <div class="problem-item">
@@ -2384,10 +2548,59 @@ function renderProblem(p) {
         ${ts ? `<span class="problem-ts">${esc(ts)}</span>` : ''}
         ${taxTag}
       </div>
-      ${mathBody}
+      ${bodyText}
       ${kwBody}
     </div>
   `;
+}
+
+function cleanProblemText(text) {
+  return String(text || '')
+    .replace(/`/g, ' ')
+    .replace(/\$\$/g, ' ')
+    .replace(/\$/g, ' ')
+    .replace(/\\displaystyle/g, ' ')
+    .replace(/\\textcircled\s*\{([^}]*)\}/g, '$1')
+    .replace(/\\textcircled\s*([A-Za-z0-9])/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function hasBalancedBraces(text) {
+  let depth = 0;
+  for (const ch of String(text || '')) {
+    if (ch === '{') depth += 1;
+    if (ch === '}') depth -= 1;
+    if (depth < 0) return false;
+  }
+  return depth === 0;
+}
+
+function isRenderableProblemText(text) {
+  const s = cleanProblemText(text);
+  if (!s) return false;
+  const lower = s.toLowerCase();
+  if (
+    lower.includes('missing argument') ||
+    lower.includes('missing superscript') ||
+    lower.includes('missing subscript') ||
+    lower.includes('undefined control sequence') ||
+    lower.includes('math processing error') ||
+    lower.includes('missing }')
+  ) return false;
+  if (!hasBalancedBraces(s)) return false;
+  if (/[\^_](?:$|[+\-*/=,.;:|)\]}])/.test(s.replace(/\s+/g, ''))) return false;
+  if (/\\(?:text|operatorname)\b(?!\s*\{)/.test(s)) return false;
+  const signal = s.replace(/[\\{}^_+\-*/=().,|[\]\s]/g, '');
+  return signal.length >= 3;
+}
+
+function isMathLikeProblemText(text) {
+  const s = cleanProblemText(text);
+  return /\\[A-Za-z]+/.test(s) ||
+    /[_^=]/.test(s) ||
+    /[+\-*/]/.test(s) ||
+    /\b(?:lim|sin|cos|tan|log|ln|det|grad|partial|dx|dy)\b/i.test(s);
 }
 
 function formatTimestamp(seconds) {
@@ -2395,6 +2608,14 @@ function formatTimestamp(seconds) {
   const m = Math.floor(s / 60);
   const r = s % 60;
   return `${m}:${r.toString().padStart(2, '0')}`;
+}
+
+function formatProblemTimestamp(p) {
+  if (!p || typeof p.earliest_t !== 'number') return '';
+  const start = formatTimestamp(p.earliest_t);
+  const end = typeof p.last_t === 'number' ? formatTimestamp(p.last_t) : '';
+  if (!end || end === start) return start;
+  return `${start} - ${end}`;
 }
 
 // ── Helpers ──

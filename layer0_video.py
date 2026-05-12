@@ -51,6 +51,21 @@ def canonical_youtube_url(url: str) -> str | None:
     return f"https://www.youtube.com/watch?v={vid}"
 
 
+def _video_file_readable(path: Path) -> bool:
+    """Return True if OpenCV can open the file and read at least one frame."""
+    try:
+        import cv2
+
+        cap = cv2.VideoCapture(str(path))
+        if not cap.isOpened():
+            return False
+        ok, frame = cap.read()
+        cap.release()
+        return bool(ok and frame is not None)
+    except Exception:
+        return False
+
+
 def extract_frames(path: str | Path, *, interval_s: float = 15.0,
                     max_frames: int = 40,
                     jpeg_quality: int = 85) -> list[tuple[float, bytes]]:
@@ -115,18 +130,50 @@ def download_youtube_video(url: str, out_dir: str | Path, *,
     out_dir.mkdir(parents=True, exist_ok=True)
     vid = youtube_video_id(url) or "video"
 
-    # Reuse if already downloaded.
-    for existing in out_dir.glob(f"{vid}.*"):
-        if existing.is_file() and existing.suffix.lower() in {".mp4", ".webm", ".mkv", ".m4v"}:
+    # Reuse if already downloaded and the file decodes cleanly. Partial or
+    # interrupted downloads reuse as-is would make OpenCV return zero frames.
+    candidates = sorted(
+        (
+            p
+            for p in out_dir.glob(f"{vid}.*")
+            if p.is_file() and p.suffix.lower() in {".mp4", ".webm", ".mkv", ".m4v"}
+        ),
+        key=lambda p: p.stat().st_mtime,
+        reverse=True,
+    )
+    for existing in candidates:
+        if _video_file_readable(existing):
+            _log.info(f"  [L0v] Reusing verified download {existing.name}")
             return existing
+        try:
+            existing.unlink(missing_ok=True)  # type: ignore[arg-type]
+            _log.info(f"  [L0v] Removed unreadable cached file {existing.name}")
+        except OSError:
+            pass
 
     _log.info(f"  [L0v] Downloading YouTube video {vid} (max {max_height}p)...")
-    ydl_opts = {
-        "format": (
+
+    # Format ladders, tried in order. YouTube has been serving format 18
+    # (legacy 360p combined mp4) as a truncated stream for some videos: the
+    # download "completes" but OpenCV can open the moov header yet decode
+    # zero frames ("partial file"). The pipeline only needs frames (no
+    # audio), so we prefer video-only adaptive streams (no merge required,
+    # works even without ffmpeg) and fall back to combined legacy formats
+    # only as a last resort.
+    format_ladders = [
+        # Adaptive video-only: no merge needed (works without ffmpeg).
+        (
+            f"bestvideo[ext=mp4][height<={max_height}]/"
+            f"bestvideo[height<={max_height}]/"
+            f"bestvideo[ext=mp4]/bestvideo"
+        ),
+        # Combined fallbacks (the path that fails for 7hCsQOKOYS8 today).
+        (
             f"best[ext=mp4][height<={max_height}]/"
-            f"bestvideo[ext=mp4][height<={max_height}]+bestaudio[ext=m4a]/"
             f"best[height<={max_height}]/best"
         ),
+    ]
+    base_opts = {
         "outtmpl": str(out_dir / f"{vid}.%(ext)s"),
         "quiet": True,
         "no_warnings": True,
@@ -136,14 +183,62 @@ def download_youtube_video(url: str, out_dir: str | Path, *,
         "fragment_retries": 5,
         "file_access_retries": 5,
         "concurrent_fragment_downloads": 4,
+        "merge_output_format": "mp4",
     }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.extract_info(url, download=True)
 
-    for produced in out_dir.glob(f"{vid}.*"):
-        if produced.is_file() and produced.suffix.lower() in {".mp4", ".webm", ".mkv", ".m4v"}:
-            return produced
-    raise RuntimeError(f"yt-dlp did not produce a usable video file for {vid}")
+    client_variants = (
+        {},
+        {"extractor_args": {"youtube": {"player_client": ["android"]}}},
+        {"extractor_args": {"youtube": {"player_client": ["web", "ios", "android"]}}},
+    )
+
+    last_err: Exception | None = None
+    attempt_ix = 0
+    for client_opts in client_variants:
+        client_label = (
+            ",".join(client_opts.get("extractor_args", {}).get("youtube", {}).get("player_client", []))
+            if client_opts else "default"
+        )
+        for fmt in format_ladders:
+            attempt_ix += 1
+            try:
+                with yt_dlp.YoutubeDL({**base_opts, **client_opts, "format": fmt}) as ydl:
+                    ydl.extract_info(url, download=True)
+            except Exception as e:  # transient YouTube/yt-dlp errors
+                last_err = e
+                _log.info(
+                    f"  [L0v] Download attempt {attempt_ix} ({client_label}) failed: {str(e)[:140]}"
+                )
+                continue
+
+            produced_candidates = sorted(
+                (
+                    p
+                    for p in out_dir.glob(f"{vid}.*")
+                    if p.is_file() and p.suffix.lower() in {".mp4", ".webm", ".mkv", ".m4v"}
+                ),
+                key=lambda p: p.stat().st_mtime,
+                reverse=True,
+            )
+            for produced in produced_candidates:
+                if _video_file_readable(produced):
+                    _log.info(f"  [L0v] Download verified readable: {produced.name}")
+                    return produced
+                try:
+                    produced.unlink(missing_ok=True)  # type: ignore[arg-type]
+                except OSError:
+                    pass
+            _log.info(
+                f"  [L0v] Attempt {attempt_ix} ({client_label}) produced an undecodable file; "
+                "retrying with alternate format/client."
+            )
+
+    raise RuntimeError(
+        f"yt-dlp did not produce a decodable video file for {vid} "
+        "(file missing, corrupt, or open returned zero frames"
+        + (f"; last error: {str(last_err)[:160]}" if last_err else "")
+        + ")"
+    )
 
 
 def upload_local_video(client: genai.Client, path: str | Path,

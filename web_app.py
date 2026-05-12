@@ -21,6 +21,10 @@ import re
 import webbrowser
 from pathlib import Path
 
+# UI tests should measure the real end-to-end runtime; do not persist or reuse
+# video-analysis artifacts from the web app.
+os.environ.setdefault("STEP_DISABLE_VIDEO_CACHE", "1")
+
 from flask import (
     Flask,
     render_template,
@@ -193,6 +197,47 @@ class _SmartStdout:
                 q.put(_classify(buf.strip()))
             _thread_local.buf = ""
 
+    # File-like protocol: many libraries (tqdm, huggingface_hub, sentence-transformers,
+    # torch) probe these on sys.stdout. Missing any one of them raises AttributeError
+    # mid-pipeline, which previously broke every [SIM] call.
+    def isatty(self):
+        try:
+            return bool(_original_stdout.isatty())
+        except Exception:
+            return False
+
+    def fileno(self):
+        return _original_stdout.fileno()
+
+    def writable(self):
+        return True
+
+    def readable(self):
+        return False
+
+    def seekable(self):
+        return False
+
+    @property
+    def encoding(self):
+        return getattr(_original_stdout, "encoding", "utf-8") or "utf-8"
+
+    @property
+    def errors(self):
+        return getattr(_original_stdout, "errors", "replace")
+
+    @property
+    def closed(self):
+        return getattr(_original_stdout, "closed", False)
+
+    @property
+    def buffer(self):
+        return getattr(_original_stdout, "buffer", None)
+
+    def __getattr__(self, name):
+        # Last-resort proxy for any other attribute/method libraries expect.
+        return getattr(_original_stdout, name)
+
 
 sys.stdout = _SmartStdout()
 
@@ -234,6 +279,19 @@ def _classify(line: str) -> dict:
     if "[WARN]" in line or "[RETRY]" in line:
         return {"type": "warning", "text": line}
     return {"type": "log", "text": line}
+
+
+def _strip_ui_hidden_fields(value):
+    """Remove analysis-only fields that should never be rendered in the UI."""
+    if isinstance(value, dict):
+        return {
+            k: _strip_ui_hidden_fields(v)
+            for k, v in value.items()
+            if k != "pseudo_gold_eval"
+        }
+    if isinstance(value, list):
+        return [_strip_ui_hidden_fields(v) for v in value]
+    return value
 
 
 # ---------------------------------------------------------------------------
@@ -561,9 +619,9 @@ def _video_worker(tid: str, kind: str, url: str | None, filepath: Path | None,
             ensure_dirs()
             analyzer = _get_shared_video_analyzer()
             if kind == "youtube":
-                result = analyzer.analyze_youtube(url or "", mode=mode)
+                result = analyzer.analyze_youtube(url or "", mode=mode, use_cache=False)
             elif kind == "upload" and filepath is not None:
-                result = analyzer.analyze_file(filepath, mode=mode)
+                result = analyzer.analyze_file(filepath, mode=mode, use_cache=False)
             else:
                 result = {"media": "video", "error": "Invalid analysis request"}
             sys.stdout.flush()
@@ -571,8 +629,9 @@ def _video_worker(tid: str, kind: str, url: str | None, filepath: Path | None,
             if result.get("error"):
                 q.put({"type": "error", "text": result["error"]})
             else:
-                q.put({"type": "done", "data": result})
-                task["result"] = result
+                clean_result = _strip_ui_hidden_fields(result)
+                q.put({"type": "done", "data": clean_result})
+                task["result"] = clean_result
         except Exception as e:
             sys.stdout.flush()
             q.put({"type": "error", "text": str(e)})
