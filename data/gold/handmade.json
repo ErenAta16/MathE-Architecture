@@ -1,0 +1,102 @@
+{
+  "schema_version": "v1",
+  "description": "Ground-truth annotations for the MathE handmade materials shared with EREN. Use this file as the authoritative source for evaluation. Each item has an id, the relative pdf path, the expected topic / subtopic, and a list of gold_keywords drawn from the closed pool used by Layer 7 (see keyword_eval.DEFAULT_KEYWORD_POOL). Items whose gold_keywords list is empty are reported as ungraded by tools/eval_handmade.py and excluded from the means; fill them in to lock down the evaluation.",
+  "pool_reference": "Step_Project/keyword_eval.py :: DEFAULT_KEYWORD_POOL",
+  "notes": [
+    "Bootstrap entries (100, 101, 102, 122, 123) carry the gold_keywords approved by Beatriz on the 2026-04 review of the Pro-batch outputs. They are flagged with bootstrap=true so an external annotator can replace them with a fully independent annotation.",
+    "Items 135, 136, 137, 138 are kept as ungraded placeholders until a MathE expert provides reference tags."
+  ],
+  "items": [
+    {
+      "id": "100",
+      "pdf": "Materials shared with EREN/mathE handmade materials/100.pdf",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Partial fractions decomposition",
+        "Direct integrals",
+        "Fundamental theorem of Calculus"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved Pro batch, 2026-04-28"
+    },
+    {
+      "id": "101",
+      "pdf": "Materials shared with EREN/mathE handmade materials/101.pdf",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Partial fractions decomposition",
+        "Fundamental theorem of Calculus"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved Pro batch, 2026-04-28"
+    },
+    {
+      "id": "102",
+      "pdf": "Materials shared with EREN/mathE handmade materials/102.pdf",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Direct integrals",
+        "Fundamental theorem of Calculus"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved Pro batch, 2026-04-28"
+    },
+    {
+      "id": "122",
+      "pdf": "Materials shared with EREN/mathE handmade materials/122.pdf",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Trigonometric substitution",
+        "Trigonometric functions",
+        "Fundamental theorem of Calculus",
+        "Direct integrals"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved Pro batch, 2026-04-28"
+    },
+    {
+      "id": "123",
+      "pdf": "Materials shared with EREN/mathE handmade materials/123.pdf",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Partial fractions decomposition",
+        "Fundamental theorem of Calculus"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved Pro batch, 2026-04-28"
+    },
+    {
+      "id": "135",
+      "pdf": "Materials shared with EREN/mathE handmade materials/135.pdf",
+      "topic": null,
+      "subtopic": null,
+      "gold_keywords": []
+    },
+    {
+      "id": "136",
+      "pdf": "Materials shared with EREN/mathE handmade materials/136.pdf",
+      "topic": null,
+      "subtopic": null,
+      "gold_keywords": []
+    },
+    {
+      "id": "137",
+      "pdf": "Materials shared with EREN/mathE handmade materials/137.pdf",
+      "topic": null,
+      "subtopic": null,
+      "gold_keywords": []
+    },
+    {
+      "id": "138",
+      "pdf": "Materials shared with EREN/mathE handmade materials/138.pdf",
+      "topic": null,
+      "subtopic": null,
+      "gold_keywords": []
+    }
+  ]
+}

@@ -40,7 +40,21 @@ from layer4_synthesis import Layer4_Synthesis
 from layer5_llm_solver import Layer5_LLMSolver
 from layer6_verifier import Layer6_SymPyVerifier
 from pipeline_logger import PipelineLogger
-from taxonomy import classify_taxonomy, keywords_for_subtopic, merge_keywords
+from taxonomy import (
+    classify_taxonomy,
+    keyword_hit_counts,
+    keywords_for_subtopic,
+    merge_keywords,
+    refine_subtopic,
+)
+from semantic_similarity import (
+    default_similarity_config,
+    normalize_embedding_query,
+    similarity_enabled,
+    top_k_keywords,
+)
+from confidence import annotate_keywords, default_confidence_config
+from reranker import default_rerank_config, rerank_pool
 
 _log = logging.getLogger(__name__)
 
@@ -291,6 +305,7 @@ class STEPSolver:
                     nougat_latex=nougat_latex,
                     raw_text=raw_text,
                     timings=timings,
+                    solution_summary=result.get("llm_summary"),
                     verbose=verbose,
                 )
                 # Follow-up context (server-side only; stripped by the web layer).
@@ -398,14 +413,20 @@ class STEPSolver:
         # heuristics (e.g. "Find ∫ 3x² - 4x + 2/x dx" has no keyword), but the
         # solution and the model summary almost always spell out the technique.
         tax = result.get("taxonomy") or {}
+        summary = result.get("llm_summary") or {}
+        summary_text = " \n".join(
+            str(v) for v in summary.values() if isinstance(v, str) and v
+        )
+        solution_text = best.get("solution", "")
+
+        # Promote Indefinite -> Definite when any signal in the problem,
+        # solution or summary indicates definite limits / area / volume.
+        tax = refine_subtopic(tax, raw_text or "", vlm_latex or "",
+                              solution_text, summary_text)
+        result["taxonomy"] = tax
+
         if tax.get("topic") and tax.get("subtopic"):
-            summary = result.get("llm_summary") or {}
-            summary_text = " \n".join(
-                str(v) for v in summary.values() if isinstance(v, str) and v
-            )
-            enrich_text = "\n".join(
-                t for t in (summary_text, best.get("solution", "")) if t
-            )
+            enrich_text = "\n".join(t for t in (summary_text, solution_text) if t)
             extra = keywords_for_subtopic(tax["topic"], tax["subtopic"], enrich_text)
             if extra:
                 merged = merge_keywords(tax.get("keywords") or [], extra)
@@ -422,6 +443,7 @@ class STEPSolver:
             nougat_latex=nougat_latex,
             raw_text=raw_text,
             timings=timings,
+            solution_summary=result.get("llm_summary"),
             verbose=verbose,
         )
 
@@ -440,13 +462,20 @@ class STEPSolver:
 
     def _run_keyword_eval(self, *, vlm_latex: str, nougat_latex: str,
                            raw_text: str, timings: dict,
+                           solution_summary: dict | None = None,
                            verbose: bool = True) -> dict:
         """Run keyword evaluation in-line with the main solve.
 
-        Uses the VLM output as the primary problem source (falls back to Nougat
-        or raw text). Gemini 2.5 Pro is the default model; failures (rate limit,
-        missing key) are logged and return an error dict rather than breaking
-        the solve.
+        The LLM Task 1 / Task 2 calls see only the raw problem text so the
+        keyword pool selection cannot accidentally inherit terminology from
+        the solver's chain-of-thought. The cosine selector, on the other
+        hand, benefits from a richer query: when ``solution_summary`` is
+        supplied (problem_type / method_used / domain) we append it to the
+        problem text before encoding so the embedder anchors on the actual
+        mathematical technique, not on incidental LaTeX symbols.
+
+        Failures (rate limit, missing key) are logged and return an error
+        dict rather than breaking the solve.
         """
         from keyword_eval import evaluate_keywords, DEFAULT_KEYWORD_POOL
 
@@ -483,7 +512,221 @@ class STEPSolver:
             _log.info(
                 f"  [L7] [OK] {len(t1)} free + {len(t2)} pool keywords ({elapsed}s)"
             )
+
+        cosine_query = self._build_cosine_query(problem, solution_summary)
+        eval_result["cosine_query_source"] = (
+            "problem+solution_summary" if cosine_query is not problem else "problem"
+        )
+
+        self._attach_pool_similarity(
+            eval_result, problem_text=cosine_query, verbose=verbose,
+        )
+        self._promote_hybrid_selection(
+            eval_result, problem_text=cosine_query,
+            top_n=5, verbose=verbose,
+        )
+        self._attach_confidence(
+            eval_result, problem_text=cosine_query, verbose=verbose,
+        )
+
         return eval_result
+
+    @staticmethod
+    def _build_cosine_query(problem: str, solution_summary: dict | None) -> str:
+        """Return ``problem`` enriched with a few short structured cues.
+
+        Keeps the cosine query mathematically grounded by appending the
+        solver's own ``problem_type``, ``method_used`` and ``domain`` fields
+        when available. We deliberately avoid the full CoT / boxed answer:
+        those are noisy and could leak verb-heavy English that does not
+        match the embedding space of the closed pool.
+        """
+        if not isinstance(solution_summary, dict):
+            return problem
+        cues: list[str] = []
+        for key, label in (
+            ("problem_type", "Problem type"),
+            ("method_used", "Method used"),
+            ("domain", "Domain"),
+            ("surface", "Surface"),
+        ):
+            v = solution_summary.get(key)
+            if isinstance(v, str) and v.strip():
+                cues.append(f"{label}: {v.strip()}")
+        if not cues:
+            return problem
+        return f"{problem}\n\n" + "\n".join(cues)
+
+    @staticmethod
+    def _promote_hybrid_selection(eval_result: dict, *, problem_text: str,
+                                    top_n: int = 5,
+                                    verbose: bool = True) -> None:
+        """Combine cosine, LLM order and rule hits into a single ranking.
+
+        Cosine alone (Beatriz's 2026-04 proposal) gives every (item, keyword)
+        pair an explicit similarity value, but in practice the
+        general-purpose MiniLM embedder ranks paraphrastically related but
+        problem-irrelevant keywords too high (e.g. "Region decomposition"
+        ahead of "Direct integrals" for a partial-fractions problem). The
+        hybrid score in ``reranker.py`` keeps cosine dominant (default
+        weight 0.6) while letting the LLM's task-2 order (0.3) and the
+        regex-rule hit count (0.1) lift mathematically obvious tags into
+        the top-N.
+
+        ``task2_llm`` preserves the original LLM ordering as a
+        cross-reference. ``task2_source`` records which strategy produced
+        the canonical ``task2``.
+        """
+        sim = eval_result.get("keyword_similarity")
+        if not isinstance(sim, dict) or sim.get("error"):
+            return
+        ranked = sim.get("ranked")
+        if not isinstance(ranked, list) or not ranked:
+            return
+
+        cosine_scores: dict[str, float] = {}
+        for row in ranked:
+            if not isinstance(row, dict):
+                continue
+            kw = row.get("keyword")
+            sc = row.get("score")
+            if isinstance(kw, str) and isinstance(sc, (int, float)):
+                cosine_scores[kw] = float(sc)
+        if not cosine_scores:
+            return
+
+        llm_order = list(eval_result.get("task2") or [])
+        try:
+            hits = keyword_hit_counts(problem_text or "", list(cosine_scores))
+        except Exception:
+            hits = {}
+
+        cfg = default_rerank_config()
+        try:
+            ranked_h = rerank_pool(
+                cosine_scores=cosine_scores,
+                llm_ranking=llm_order,
+                rule_hits=hits,
+                cfg=cfg,
+            )
+        except Exception as e:
+            if verbose:
+                _log.info(f"  [L7] [HYB] [FAIL] {str(e)[:120]}")
+            return
+
+        hybrid_top = [r["keyword"] for r in ranked_h[: max(1, top_n)]]
+        if not hybrid_top:
+            return
+
+        old_task2 = list(eval_result.get("task2") or [])
+        if old_task2 and "task2_llm" not in eval_result:
+            eval_result["task2_llm"] = old_task2
+        eval_result["task2"] = hybrid_top
+        eval_result["task2_source"] = "hybrid_cosine_llm_rule"
+        eval_result["rerank_weights"] = {
+            "w_cos": cfg.w_cos,
+            "w_llm": cfg.w_llm,
+            "w_rule": cfg.w_rule,
+            "rrf_k": cfg.rrf_k,
+        }
+        eval_result["hybrid_ranking"] = ranked_h[:10]
+
+        if verbose:
+            preview = ", ".join(hybrid_top)
+            _log.info(
+                "  [L7] [HYB] task2 = hybrid top-{} "
+                "(w_cos={}, w_llm={}, w_rule={}): {}".format(
+                    top_n, cfg.w_cos, cfg.w_llm, cfg.w_rule, preview,
+                )
+            )
+
+    @staticmethod
+    def _attach_confidence(eval_result: dict, *, problem_text: str,
+                            verbose: bool = True) -> None:
+        """Annotate Task 2 keywords with cosine + rule-hit confidence bands.
+
+        Writes ``eval_result['task2_chips']`` as a list of
+        ``{keyword, score, hits, uncertain, band}`` dicts. The UI uses ``band``
+        for chip styling and ``uncertain`` for the abstain badge. This step
+        never raises: a missing similarity block or an unknown keyword simply
+        produces an unannotated chip.
+        """
+        task2 = list(eval_result.get("task2") or [])
+        if not task2:
+            return
+
+        sim = eval_result.get("keyword_similarity") or {}
+        ranked = sim.get("ranked") if isinstance(sim, dict) else None
+        scores: dict[str, float] = {}
+        if isinstance(ranked, list):
+            for row in ranked:
+                if not isinstance(row, dict):
+                    continue
+                kw = row.get("keyword")
+                sc = row.get("score")
+                if isinstance(kw, str) and isinstance(sc, (int, float)):
+                    scores[kw] = float(sc)
+
+        try:
+            hits = keyword_hit_counts(problem_text or "", task2)
+        except Exception as e:
+            if verbose:
+                _log.info(f"  [L7] [CONF] [FAIL] hit-count error: {str(e)[:120]}")
+            hits = {kw: 0 for kw in task2}
+
+        try:
+            cfg = default_confidence_config()
+            chips = annotate_keywords(
+                task2, cosine_scores=scores, rule_hits=hits, cfg=cfg,
+            )
+            eval_result["task2_chips"] = chips
+            if verbose:
+                low = [c["keyword"] for c in chips if c.get("band") == "low"]
+                if low:
+                    _log.info(f"  [L7] [CONF] flagged uncertain: {', '.join(low)}")
+        except Exception as e:
+            if verbose:
+                _log.info(f"  [L7] [CONF] [FAIL] {str(e)[:120]}")
+
+    @staticmethod
+    def _attach_pool_similarity(eval_result: dict, *, problem_text: str,
+                                  verbose: bool = True) -> None:
+        """Compute embedding cosine scores over the closed pool and attach them
+        to ``eval_result`` under ``keyword_similarity``.
+
+        Gemini still picks Task 2 keywords; this adds an explicit, deterministic
+        relevance score (cosine in a sentence-embedding space) next to each
+        chip, so reviewers can see *why* a keyword ranks where it does.
+        Failures are isolated: a bad embedding run never breaks Layer 7.
+        """
+        if not similarity_enabled():
+            return
+        pool = list(eval_result.get("pool") or [])
+        if not pool:
+            return
+        q = normalize_embedding_query(problem_text or "")
+        if not q:
+            return
+        try:
+            cfg = default_similarity_config()
+            sim = top_k_keywords(q, pool, cfg=cfg, query_source="problem_text")
+            eval_result["keyword_similarity"] = sim
+            if verbose:
+                top = sim.get("ranked") or []
+                preview = ", ".join(
+                    f"{r['keyword']}({r['score']:.2f})"
+                    for r in top[:3]
+                    if isinstance(r, dict)
+                )
+                if preview:
+                    _log.info(f"  [L7] [SIM] top: {preview}")
+        except Exception as e:
+            if verbose:
+                _log.info(f"  [L7] [SIM] [FAIL] {str(e)[:120]}")
+            eval_result["keyword_similarity"] = {
+                "method": "embedding_cosine",
+                "error": str(e)[:200],
+            }
 
     def ask_followup(self, *, prompt: str, prior_solution: str,
                       system_prompt: str | None, user_query: str) -> dict:

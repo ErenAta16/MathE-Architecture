@@ -67,6 +67,10 @@ GPT_MODEL = "gpt-4o"
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 GEMINI_FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-2.5-flash")
 GEMINI_VIDEO_MODEL = os.getenv("GEMINI_VIDEO_MODEL", "gemini-2.5-pro")
+STEP_SIMILARITY_MODEL = os.getenv(
+    "STEP_SIMILARITY_MODEL",
+    "sentence-transformers/all-MiniLM-L6-v2",
+).strip()
 VLM_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
 LLM_MAX_TOKENS = 8192
 LLM_TEMPERATURE = 0.0

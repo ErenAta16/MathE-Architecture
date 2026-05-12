@@ -1,0 +1,93 @@
+{
+  "schema_version": "v1",
+  "description": "Ground-truth annotations for the 6 YouTube videos used in the STEP video pipeline evaluation. Gold keywords are drawn from keyword_eval.DEFAULT_KEYWORD_POOL (MathE Definite Integrals vocabulary). Bootstrap annotations are derived from the supervisor-approved Gemini 2.5 Pro POC outputs (2026-04-29) that Beatriz confirmed as 'very good for what we want'.",
+  "pool_reference": "Step_Project/keyword_eval.py :: DEFAULT_KEYWORD_POOL",
+  "items": [
+    {
+      "id": "7hCsQOKOYS8",
+      "url": "https://www.youtube.com/watch?v=7hCsQOKOYS8",
+      "title_hint": "Definite integral with u-substitution",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Substitution",
+        "Fundamental theorem of Calculus",
+        "Trigonometric functions"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved POC 2026-04-29"
+    },
+    {
+      "id": "7R_DTzVHw5Y",
+      "url": "https://www.youtube.com/watch?v=7R_DTzVHw5Y",
+      "title_hint": "Evaluating definite integrals using geometry (area)",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Area of a planar region",
+        "Region decomposition",
+        "Additivity property"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved POC 2026-04-29"
+    },
+    {
+      "id": "OBZnEvoRuW0",
+      "url": "https://www.youtube.com/watch?v=OBZnEvoRuW0",
+      "title_hint": "Definite integral of tangent function",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Fundamental theorem of Calculus",
+        "Trigonometric functions",
+        "Direct integrals",
+        "Substitution"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved POC 2026-04-29"
+    },
+    {
+      "id": "4ZiO_eaj9Ag",
+      "url": "https://www.youtube.com/watch?v=4ZiO_eaj9Ag",
+      "title_hint": "Area between curves (integrating with respect to y)",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Area of a region between two or more curves",
+        "Area of a planar region",
+        "Direct integrals"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved POC 2026-04-29"
+    },
+    {
+      "id": "Sg24zkhG0Vw",
+      "url": "https://www.youtube.com/watch?v=Sg24zkhG0Vw",
+      "title_hint": "Volume of revolution (washer method)",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Volume of a solid of revolution",
+        "Volume of revolution",
+        "Area of a region between two or more curves"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved POC 2026-04-29"
+    },
+    {
+      "id": "JB961uV015E",
+      "url": "https://www.youtube.com/watch?v=JB961uV015E",
+      "title_hint": "Definite integral of a rational function (partial fractions)",
+      "topic": "Integration",
+      "subtopic": "Definite Integrals",
+      "gold_keywords": [
+        "Partial fractions decomposition",
+        "Fundamental theorem of Calculus",
+        "Direct integrals",
+        "Substitution"
+      ],
+      "bootstrap": true,
+      "source": "supervisor-approved POC 2026-04-29"
+    }
+  ]
+}

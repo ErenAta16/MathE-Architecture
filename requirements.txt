@@ -20,3 +20,6 @@ flask>=3.0.0
 # Video Deep-mode (optional: frame sampling + YouTube download)
 opencv-python-headless>=4.8.0
 yt-dlp>=2024.1.0
+
+# Embedding-based keyword similarity (optional)
+sentence-transformers>=3.0.0
