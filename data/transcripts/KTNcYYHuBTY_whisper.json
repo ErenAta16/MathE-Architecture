@@ -1,0 +1,335 @@
+{
+  "video_id": "KTNcYYHuBTY",
+  "url": "https://www.youtube.com/watch?v=KTNcYYHuBTY",
+  "transcript_path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\KTNcYYHuBTY_whisper.txt",
+  "media_file": "KTNcYYHuBTY.mp4",
+  "transcript": "In the previous session, we understood the concept of a unit imaginary number I. It is the square root of negative 1. If we square it, we get root of negative 1 times root of negative 1, which equals negative 1. The square of the unit imaginary number is negative 1. Well, let us now try to work out more powers of I. What will be I cubed then? Try it out. I cubed is I times I times I. We can write it as I squared multiplied by I. Now as I squared is equal to negative 1, I cubed is negative 1 multiplied by I or negative I. So the value of I cubed is negative I. You can now similarly work out fourth power of I. Give it a try. The fourth power of I can be written as I squared multiplied by I squared. This is nothing but negative 1 multiplied by negative 1. And we already know that negative 1 multiplied by negative 1 is 1. Hence the fourth power of I is just 1. So I squared is negative 1, I cubed is negative I and fourth power of I is 1. Can you similarly work out further powers like fifth, sixth, seventh and eighth powers of I? Try it out and you will observe something interesting. And this is what we would get. Notice the cyclical pattern in the powers. I negative 1 negative I 1 and then again I negative 1 negative I and then 1. This is one way in which we can understand it. First power, second power, third power and fourth power. Then repeat. Fifth power, sixth power, seventh power and eighth power. And this will go on. So what is I? It is just a unit imaginary number and is equal to the square root of negative 1. Why do I keep saying the word unit? To understand that let's look at an example. What will the square root of negative 9 be equal to? If we try it out on a non-fancy calculator it would say that the input is invalid. That's because most calculators are not programmed to use imaginary numbers. So how do we understand the square root of negative 9? It can be written as square root of 9 times negative 1, right? And we know a property of exponents which says that square root of a times b is equal to the square root of a times the square root of b. So this can be written as square root of 9 times the square root of negative 1. The square root of 9 is 3 and square root of negative 1 is i. So the square root of negative 9 is 3i. This is 3 times i. And this is also an imaginary number. But it's not a unit imaginary number as it's 3 times i. But the unit number i is 1 times i and hence it's called a unit imaginary number. Basically any real number times i is an imaginary number. For instance this is how we would write square root of negative 121 over 49. We get 11 over 7 times i. It's a real number times i. So numbers like 0.145i, 16.25i minus cube root of 7i are also imaginary numbers. And an imaginary number is simply b times i, where b is a real number and i is the imaginary number. So if tomorrow morning, what if your dad asks you, are imaginary numbers real? How would you answer that question? Well, it's a tricky question. You should tell him that imaginary numbers are not real numbers. They cannot be plotted on a real number line. But they are real in the sense that they exist in mathematics and are used widely in various applications. What kind of applications? We'll see that next.",
+  "segments": [
+    {
+      "start_s": 3.09,
+      "end_s": 8.55,
+      "text": "In the previous session, we understood the concept of a unit imaginary number I."
+    },
+    {
+      "start_s": 8.55,
+      "end_s": 11.57,
+      "text": "It is the square root of negative 1."
+    },
+    {
+      "start_s": 11.57,
+      "end_s": 18.79,
+      "text": "If we square it, we get root of negative 1 times root of negative 1, which equals negative 1."
+    },
+    {
+      "start_s": 18.79,
+      "end_s": 23.17,
+      "text": "The square of the unit imaginary number is negative 1."
+    },
+    {
+      "start_s": 23.17,
+      "end_s": 27.09,
+      "text": "Well, let us now try to work out more powers of I."
+    },
+    {
+      "start_s": 27.09,
+      "end_s": 29.41,
+      "text": "What will be I cubed then?"
+    },
+    {
+      "start_s": 29.41,
+      "end_s": 30.73,
+      "text": "Try it out."
+    },
+    {
+      "start_s": 30.73,
+      "end_s": 37.66,
+      "text": "I cubed is I times I times I."
+    },
+    {
+      "start_s": 37.66,
+      "end_s": 41.5,
+      "text": "We can write it as I squared multiplied by I."
+    },
+    {
+      "start_s": 41.5,
+      "end_s": 44.54,
+      "text": "Now as I squared is equal to negative 1,"
+    },
+    {
+      "start_s": 44.54,
+      "end_s": 49.18,
+      "text": "I cubed is negative 1 multiplied by I or negative I."
+    },
+    {
+      "start_s": 49.18,
+      "end_s": 52.94,
+      "text": "So the value of I cubed is negative I."
+    },
+    {
+      "start_s": 52.94,
+      "end_s": 56.54,
+      "text": "You can now similarly work out fourth power of I."
+    },
+    {
+      "start_s": 56.54,
+      "end_s": 60.97,
+      "text": "Give it a try."
+    },
+    {
+      "start_s": 60.97,
+      "end_s": 66.25,
+      "text": "The fourth power of I can be written as I squared multiplied by I squared."
+    },
+    {
+      "start_s": 66.25,
+      "end_s": 70.33,
+      "text": "This is nothing but negative 1 multiplied by negative 1."
+    },
+    {
+      "start_s": 70.33,
+      "end_s": 74.97,
+      "text": "And we already know that negative 1 multiplied by negative 1 is 1."
+    },
+    {
+      "start_s": 74.97,
+      "end_s": 78.49,
+      "text": "Hence the fourth power of I is just 1."
+    },
+    {
+      "start_s": 78.49,
+      "end_s": 86.41,
+      "text": "So I squared is negative 1, I cubed is negative I and fourth power of I is 1."
+    },
+    {
+      "start_s": 86.41,
+      "end_s": 92.41,
+      "text": "Can you similarly work out further powers like fifth, sixth, seventh and eighth powers of I?"
+    },
+    {
+      "start_s": 92.41,
+      "end_s": 96.09,
+      "text": "Try it out and you will observe something interesting."
+    },
+    {
+      "start_s": 96.09,
+      "end_s": 102.12,
+      "text": "And this is what we would get."
+    },
+    {
+      "start_s": 102.12,
+      "end_s": 105.24,
+      "text": "Notice the cyclical pattern in the powers."
+    },
+    {
+      "start_s": 105.24,
+      "end_s": 113.88,
+      "text": "I negative 1 negative I 1 and then again I negative 1 negative I and then 1."
+    },
+    {
+      "start_s": 113.88,
+      "end_s": 117.16,
+      "text": "This is one way in which we can understand it."
+    },
+    {
+      "start_s": 117.16,
+      "end_s": 121.88,
+      "text": "First power, second power, third power and fourth power."
+    },
+    {
+      "start_s": 121.88,
+      "end_s": 123.24,
+      "text": "Then repeat."
+    },
+    {
+      "start_s": 123.24,
+      "end_s": 128.04,
+      "text": "Fifth power, sixth power, seventh power and eighth power."
+    },
+    {
+      "start_s": 128.04,
+      "end_s": 130.44,
+      "text": "And this will go on."
+    },
+    {
+      "start_s": 130.44,
+      "end_s": 132.12,
+      "text": "So what is I?"
+    },
+    {
+      "start_s": 132.12,
+      "end_s": 138.28,
+      "text": "It is just a unit imaginary number and is equal to the square root of negative 1."
+    },
+    {
+      "start_s": 138.28,
+      "end_s": 140.92,
+      "text": "Why do I keep saying the word unit?"
+    },
+    {
+      "start_s": 140.92,
+      "end_s": 144.12,
+      "text": "To understand that let's look at an example."
+    },
+    {
+      "start_s": 144.12,
+      "end_s": 147.96,
+      "text": "What will the square root of negative 9 be equal to?"
+    },
+    {
+      "start_s": 147.96,
+      "end_s": 154.2,
+      "text": "If we try it out on a non-fancy calculator it would say that the input is invalid."
+    },
+    {
+      "start_s": 154.2,
+      "end_s": 159.4,
+      "text": "That's because most calculators are not programmed to use imaginary numbers."
+    },
+    {
+      "start_s": 159.4,
+      "end_s": 163.4,
+      "text": "So how do we understand the square root of negative 9?"
+    },
+    {
+      "start_s": 163.4,
+      "end_s": 168.44,
+      "text": "It can be written as square root of 9 times negative 1, right?"
+    },
+    {
+      "start_s": 168.44,
+      "end_s": 173.8,
+      "text": "And we know a property of exponents which says that square root of a times b is equal"
+    },
+    {
+      "start_s": 173.8,
+      "end_s": 177.64,
+      "text": "to the square root of a times the square root of b."
+    },
+    {
+      "start_s": 177.64,
+      "end_s": 183.24,
+      "text": "So this can be written as square root of 9 times the square root of negative 1."
+    },
+    {
+      "start_s": 183.24,
+      "end_s": 188.84,
+      "text": "The square root of 9 is 3 and square root of negative 1 is i."
+    },
+    {
+      "start_s": 188.84,
+      "end_s": 192.52,
+      "text": "So the square root of negative 9 is 3i."
+    },
+    {
+      "start_s": 192.52,
+      "end_s": 194.84,
+      "text": "This is 3 times i."
+    },
+    {
+      "start_s": 194.84,
+      "end_s": 197.48,
+      "text": "And this is also an imaginary number."
+    },
+    {
+      "start_s": 197.48,
+      "end_s": 202.04,
+      "text": "But it's not a unit imaginary number as it's 3 times i."
+    },
+    {
+      "start_s": 202.04,
+      "end_s": 209.0,
+      "text": "But the unit number i is 1 times i and hence it's called a unit imaginary number."
+    },
+    {
+      "start_s": 209.0,
+      "end_s": 214.6,
+      "text": "Basically any real number times i is an imaginary number."
+    },
+    {
+      "start_s": 214.6,
+      "end_s": 221.48,
+      "text": "For instance this is how we would write square root of negative 121 over 49."
+    },
+    {
+      "start_s": 221.48,
+      "end_s": 224.52,
+      "text": "We get 11 over 7 times i."
+    },
+    {
+      "start_s": 224.52,
+      "end_s": 227.0,
+      "text": "It's a real number times i."
+    },
+    {
+      "start_s": 227.0,
+      "end_s": 236.6,
+      "text": "So numbers like 0.145i, 16.25i minus cube root of 7i are also imaginary numbers."
+    },
+    {
+      "start_s": 236.6,
+      "end_s": 240.12,
+      "text": "And an imaginary number is simply b times i,"
+    },
+    {
+      "start_s": 240.12,
+      "end_s": 244.92,
+      "text": "where b is a real number and i is the imaginary number."
+    },
+    {
+      "start_s": 244.92,
+      "end_s": 248.28,
+      "text": "So if tomorrow morning, what if your dad asks you,"
+    },
+    {
+      "start_s": 248.28,
+      "end_s": 250.6,
+      "text": "are imaginary numbers real?"
+    },
+    {
+      "start_s": 250.6,
+      "end_s": 253.24,
+      "text": "How would you answer that question?"
+    },
+    {
+      "start_s": 253.24,
+      "end_s": 255.72,
+      "text": "Well, it's a tricky question."
+    },
+    {
+      "start_s": 255.72,
+      "end_s": 260.36,
+      "text": "You should tell him that imaginary numbers are not real numbers."
+    },
+    {
+      "start_s": 260.36,
+      "end_s": 263.32,
+      "text": "They cannot be plotted on a real number line."
+    },
+    {
+      "start_s": 263.32,
+      "end_s": 267.32,
+      "text": "But they are real in the sense that they exist in mathematics"
+    },
+    {
+      "start_s": 267.32,
+      "end_s": 270.76,
+      "text": "and are used widely in various applications."
+    },
+    {
+      "start_s": 270.76,
+      "end_s": 272.68,
+      "text": "What kind of applications?"
+    },
+    {
+      "start_s": 272.68,
+      "end_s": 274.2,
+      "text": "We'll see that next."
+    }
+  ],
+  "language": "en",
+  "duration_s": 279.22,
+  "elapsed_s": 27.9,
+  "model": "medium.en",
+  "device": "cuda",
+  "compute_type": "float16"
+}

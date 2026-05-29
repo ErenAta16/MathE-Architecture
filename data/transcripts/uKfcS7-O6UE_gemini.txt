@@ -1,0 +1,22 @@
+video_id: uKfcS7-O6UE
+url: https://www.youtube.com/watch?v=uKfcS7-O6UE
+title_hint:
+method: gemini_upload_transcription
+model: gemini-3.5-flash
+audio_file: uKfcS7-O6UE.m4a
+elapsed_s: 149.4
+word_count: 463
+char_count: 2267
+========================================================================
+
+Hi, I'm Aisling Lynch. I'm a lecturer with Limerick Institute of Technology, and as part of the Math E project, I'm going to be recording a video today talking about the quotient rule.
+
+The quotient rule then is used to differentiate a function that consists of two functions, one divided by another. So, for example, if we have y is equal to two x plus one over three x minus four. We can't use the general rule here, we must use a special rule called the quotient rule.
+
+So, the quotient rule tells us that if y is equal to u over v, in other words, one function divided by another function, then the derivative of y, dy dx, is equal to v multiplied by du dx minus u multiplied by dv dx, all over v squared.
+
+So, what we have here is v, the lower function, multiplied by the derivative of u, minus u, the upper function, multiplied by the derivative of v, all over v squared. So, let's start then with, I'll rewrite that out again, y is equal to two x plus one over three x minus four. So, the first thing we need to do then is let u equals two x plus one, and we'll let v equals three x minus four. So, that's u over v. We'll differentiate u, du dx is equal to two. We'll differentiate v, dv dx is equal to three.
+
+And now we have all of the elements that we need to put back into the rule. We have u, we have v, we have du dx, and we have dv dx. So, we'll put it all back into the rule now. Okay, so dy dx then is equal to v, which is three x minus four, by du dx, which is two, minus u, which is two x plus one, multiplied by dv dx, which is three. And we're going to put that all over v squared, which is three x, excuse me, three x minus four squared.
+
+So, now we can simplify the top line by multiplying out the brackets, and we'll leave the bottom line as it is. We can't simplify it any further, we can't cancel, for example. All right, so that will give us six x minus eight minus six x minus three, all over three x minus four squared. And now we can just simplify the top line a little further. We can cancel the six x with the minus six x, and we can add minus eight and minus three to give us minus eleven. So, we have minus eleven over three x minus four squared. And so, that is the derivative of y is equal to two x plus one over three x minus four.

@@ -1,0 +1,32 @@
+video_id: KTNcYYHuBTY
+url: https://www.youtube.com/watch?v=KTNcYYHuBTY
+title_hint:
+method: gemini_upload_transcription
+model: gemini-3-flash-preview
+audio_file: KTNcYYHuBTY.mp4
+elapsed_s: 59.4
+word_count: 659
+char_count: 3439
+========================================================================
+
+In the previous session, we understood the concept of a unit imaginary number i. It is the square root of negative one. If we square it, we get root of negative one times root of negative one, which equals negative one. The square of the unit imaginary number is negative one.
+
+Well, let us now try to work out more powers of i. What will be i cubed then? Try it out.
+
+i cubed is i times i times i. We can write it as i squared multiplied by i. Now as i squared is equal to negative one, i cubed is negative one multiplied by i, or negative i. So the value of i cubed is negative i.
+
+You can now similarly work out fourth power of i. Give it a try.
+
+The fourth power of i can be written as i squared multiplied by i squared. This is nothing but negative one multiplied by negative one. And we already know that negative one multiplied by negative one is one. Hence the fourth power of i is just one.
+
+So i squared is negative one, i cubed is negative i, and fourth power of i is one. Can you similarly work out further powers like fifth, sixth, seventh, and eighth powers of i? Try it out, and you will observe something interesting.
+
+And this is what we would get. Notice the cyclical pattern in the powers. i, negative one, negative i, one, and then again i, negative one, negative i, and then one. This is one way in which we can understand it. First power, second power, third power, and fourth power. Then repeat: fifth power, sixth power, seventh power, and eighth power. And this will go on.
+
+So what is i? It is just a unit imaginary number and is equal to the square root of negative one. Why do I keep saying the word unit? To understand that, let's look at an example. What will the square root of negative nine be equal to? If we try it out on a non-fancy calculator, it would say that the input is invalid. That's because most calculators are not programmed to use imaginary numbers.
+
+So how do we understand the square root of negative nine? It can be written as square root of nine times negative one, right? And we know a property of exponents which says that square root of a times b is equal to the square root of a times the square root of b. So this can be written as square root of nine times the square root of negative one. The square root of nine is three, and square root of negative one is i. So the square root of negative nine is three i. This is three times i. And this is also an imaginary number. But it's not a unit imaginary number as it's three times i. But the unit number i is one times i, and hence it's called a unit imaginary number. Basically, any real number times i is an imaginary number.
+
+For instance, this is how we would write square root of negative one hundred and twenty-one over forty-nine. We get eleven over seven times i. It's a real number times i. So numbers like zero point one four five i, sixteen point two five i, minus cube root of seven i are also imaginary numbers. An imaginary number is simply b times i, where b is a real number and i is the imaginary number.
+
+So if tomorrow morning, what if your dad asks you, "Are imaginary numbers real?" How would you answer that question? Well, it's a tricky question. You should tell him that imaginary numbers are not real numbers. They cannot be plotted on a real number line. But they are real in the sense that they exist in mathematics and are used widely in various applications. What kind of applications? We'll see that next.

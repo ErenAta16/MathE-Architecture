@@ -1,0 +1,28 @@
+video_id: LVLuqNH5iWw
+url: https://www.youtube.com/watch?v=LVLuqNH5iWw
+title_hint:
+method: gemini_upload_transcription
+model: gemini-3.5-flash
+audio_file: LVLuqNH5iWw.mp4
+elapsed_s: 64.2
+word_count: 478
+char_count: 2766
+========================================================================
+
+Find the local extrema of the function $f$ from $\mathbb{R}^2$ into $\mathbb{R}$, real function, $f$ depending by two variables $x$ and $y$ which will be $x$ to the power of four plus $y$ to the power of four minus $x$ squared minus $y$ squared plus three.
+
+So first of all, we have to find the critical points, yeah? Let's write the critical points are the solutions of the system consisting of the partial derivatives of $f$ with respect to $x$ and $y$. But this is equivalent to, in our case, $4x^3 - 2x = 0$ and $4y^3 - 2y = 0$, or equivalently, $2x(2x^2 - 1) = 0$ and $2y(2y^2 - 1) = 0$.
+
+So in this case, we have the following solutions: $x_1 = 0$, $x_1 = 1/\sqrt{2}$, and $x_2 = -1/\sqrt{2}$. $y_1 = 0$, $y_2 = 1/\sqrt{2}$, $y_3 = -1/\sqrt{2}$.
+
+So totally we have nine points. So we have nine critical points, which are: $M$, let's say $M_{ij}$ of $x_i, y_j$, where $i$ and $j$ runs over one, two, three. So the points are: $M_{11}$ is $(0, 0)$, $M_{12}$ is $(0, 1/\sqrt{2})$, $M_{13}$ is $(0, -1/\sqrt{2})$, $M_{21}$ is $(1/\sqrt{2}, 0)$, $M_{22}$ is $(1/\sqrt{2}, 1/\sqrt{2})$, $M_{23}$ is $(1/\sqrt{2}, -1/\sqrt{2})$, $M_{31}$ is $(-1/\sqrt{2}, 0)$, $M_{32}$ is $(-1/\sqrt{2}, 1/\sqrt{2})$, and finally $M_{33}$, which is minus minus, $(-1/\sqrt{2}, -1/\sqrt{2})$.
+
+In order to decide which of these points are local extrema for our function, we'll calculate the second differential of the function $f$. So the second differential of the function $f$ in a point $M$ will be $\frac{\partial^2 f}{\partial x^2} dx^2 + 2 \frac{\partial^2 f}{\partial x \partial y} dx dy + \frac{\partial^2 f}{\partial y^2} dy^2$.
+
+So in order to do this, we need the second partial derivatives of the function $f$. The first partial derivative will be $12x^2 - 2$, then with respect to $y$, is symmetric, is $12y^2 - 2$, and of course the second partial derivative with respect, the mixed derivative is zero.
+
+So consequently, we have that $d^2 f$ in $M_{11}$, when $x$ and $y$ are zero, will be, will be twelve, it is twelve multiply zero minus two, so this is $-2 dx^2 - 2 dy^2$, and as we can see, this is negatively defined, and consequently, $M_{11}$, the point $M_{11}$ by $(0, 0)$ is local maximum point.
+
+Similarly, $d^2 f$ in the points $M_{12}$ and $d^2 f$ in the point $M_{13}$ will be $-2 dx^2 + 4 dy^2$, and also for $d^2 f$ in $M_{21}$ and $M_{31}$, we'll have $4 dx^2 - 2 dy^2$, and in all cases, these points will be saddle points.
+
+And finally, for the points without $(0, 0)$, in other words, $M_{22}$, $M_{23}$, $M_{32}$, and $M_{33}$, we have $4 dx^2 + 4 dy^2$, and this is positively defined, and consequently, all these points will be minimum, local minimum points. So $M_{22}$, $M_{23}$, $M_{32}$, and $M_{33}$ are local minimum points. And that's all.
