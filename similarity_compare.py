@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import logging
 import math
+import re
 from typing import Any
 
 import numpy as np
@@ -30,6 +31,7 @@ _log = logging.getLogger(__name__)
 
 # Model cache to avoid reloading
 _CACHE: dict[str, Any] = {}
+_TOKEN_RE = re.compile(r"[A-Za-z]+(?:'[A-Za-z]+)?|\d+(?:\.\d+)?")
 
 
 # ---------------------------------------------------------------------------
@@ -47,6 +49,7 @@ def _get_bert():
 def _get_word2vec():
     """Google News Word2Vec (300d) via gensim downloader."""
     if "word2vec" not in _CACHE:
+        logging.getLogger("gensim").setLevel(logging.WARNING)
         import gensim.downloader as api
         _log.info("  [SIM] Loading Word2Vec (google-news-300)... this may take a minute")
         _CACHE["word2vec"] = api.load("word2vec-google-news-300")
@@ -56,6 +59,7 @@ def _get_word2vec():
 def _get_glove():
     """GloVe Wikipedia+Gigaword (300d) via gensim downloader."""
     if "glove" not in _CACHE:
+        logging.getLogger("gensim").setLevel(logging.WARNING)
         import gensim.downloader as api
         _log.info("  [SIM] Loading GloVe (glove-wiki-gigaword-300)... this may take a minute")
         _CACHE["glove"] = api.load("glove-wiki-gigaword-300")
@@ -71,34 +75,59 @@ def _encode_bert(texts: list[str]) -> np.ndarray:
     return model.encode(texts, normalize_embeddings=True, show_progress_bar=False)
 
 
-def _encode_word2vec(texts: list[str]) -> np.ndarray:
-    """Average word vectors for each text (standard approach for sentence-level Word2Vec)."""
-    wv = _get_word2vec()
+def _tokenize(text: str) -> list[str]:
+    """Tokenize text for static word-vector models.
+
+    Word2Vec and GloVe are word-level models, so phrase vectors are computed
+    by averaging the vectors of in-vocabulary tokens. Hyphenated math phrases
+    are split into useful parts (``left-endpoint`` -> ``left``, ``endpoint``).
+    """
+    return [m.group(0) for m in _TOKEN_RE.finditer((text or "").replace("-", " "))]
+
+
+def _lookup_vector(wv, token: str):
+    """Return the best available vector for a token in a cased/uncased model."""
+    candidates = (
+        token,
+        token.lower(),
+        token.title(),
+        token.upper(),
+    )
+    seen: set[str] = set()
+    for cand in candidates:
+        if not cand or cand in seen:
+            continue
+        seen.add(cand)
+        if cand in wv:
+            return wv[cand], cand
+    return None, None
+
+
+def _encode_static(texts: list[str], wv) -> np.ndarray:
+    """Average available word vectors for each text."""
     dim = wv.vector_size
     out = []
     for text in texts:
-        tokens = text.lower().replace("-", " ").split()
-        vecs = [wv[t] for t in tokens if t in wv]
+        vecs = []
+        for tok in _tokenize(text):
+            vec, _ = _lookup_vector(wv, tok)
+            if vec is not None:
+                vecs.append(vec)
         if vecs:
             out.append(np.mean(vecs, axis=0))
         else:
             out.append(np.zeros(dim))
     return np.array(out, dtype=np.float32)
+
+
+def _encode_word2vec(texts: list[str]) -> np.ndarray:
+    """Average word vectors for each text (standard sentence-level baseline)."""
+    return _encode_static(texts, _get_word2vec())
 
 
 def _encode_glove(texts: list[str]) -> np.ndarray:
     """Average word vectors for each text using GloVe."""
-    wv = _get_glove()
-    dim = wv.vector_size
-    out = []
-    for text in texts:
-        tokens = text.lower().replace("-", " ").split()
-        vecs = [wv[t] for t in tokens if t in wv]
-        if vecs:
-            out.append(np.mean(vecs, axis=0))
-        else:
-            out.append(np.zeros(dim))
-    return np.array(out, dtype=np.float32)
+    return _encode_static(texts, _get_glove())
 
 
 ENCODERS = {
@@ -106,6 +135,56 @@ ENCODERS = {
     "word2vec": _encode_word2vec,
     "glove": _encode_glove,
 }
+
+
+def encode_texts(model: str, texts: list[str]) -> np.ndarray:
+    """Encode texts with one of the supported embedding backends."""
+    encoder = ENCODERS.get(model)
+    if encoder is None:
+        raise ValueError(f"Unknown model: {model}. Choose from: {list(ENCODERS)}")
+    return encoder(texts)
+
+
+def static_coverage(model: str, text: str) -> dict:
+    """Vocabulary coverage for Word2Vec/GloVe phrase averaging.
+
+    BERT is not a static word-vector model; it uses subword tokenization, so
+    this returns a full-coverage placeholder for BERT and detailed OOV stats
+    for Word2Vec/GloVe. The eval harness stores this so low scores can be
+    interpreted against vocabulary mismatch rather than treated as a mystery.
+    """
+    tokens = _tokenize(text)
+    if model == "bert":
+        return {
+            "model": model,
+            "total_tokens": len(tokens),
+            "matched_tokens": len(tokens),
+            "coverage": 1.0 if tokens else 0.0,
+            "oov_tokens": [],
+        }
+    if model == "word2vec":
+        wv = _get_word2vec()
+    elif model == "glove":
+        wv = _get_glove()
+    else:
+        raise ValueError(f"Unknown model: {model}. Choose from: {list(ENCODERS)}")
+
+    matched = 0
+    oov: list[str] = []
+    for tok in tokens:
+        _, found = _lookup_vector(wv, tok)
+        if found is None:
+            oov.append(tok)
+        else:
+            matched += 1
+    total = len(tokens)
+    return {
+        "model": model,
+        "total_tokens": total,
+        "matched_tokens": matched,
+        "coverage": round((matched / total) if total else 0.0, 4),
+        "oov_tokens": sorted(set(oov), key=str.lower),
+    }
 
 
 # ---------------------------------------------------------------------------

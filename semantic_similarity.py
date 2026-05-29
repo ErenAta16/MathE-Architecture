@@ -30,12 +30,26 @@ _MODEL_CACHE: dict[str, Any] = {}
 @dataclass(frozen=True)
 class SimilarityConfig:
     model_id: str
+    backend: str = "bert"  # "bert" | "word2vec" | "glove" | "word2vec_glove"
     normalize: bool = True
     top_k: int = 5
     metric: str = "manhattan"  # "cosine" | "manhattan" | "euclidean"
 
 
 def default_similarity_config() -> SimilarityConfig:
+    backend = os.getenv("STEP_SIMILARITY_BACKEND", "bert").strip().lower()
+    aliases = {
+        "sbert": "bert",
+        "sentence-transformer": "bert",
+        "sentence_transformer": "bert",
+        "w2v": "word2vec",
+        "word2vec+glove": "word2vec_glove",
+        "glove+word2vec": "word2vec_glove",
+        "static_ensemble": "word2vec_glove",
+    }
+    backend = aliases.get(backend, backend)
+    if backend not in ("bert", "word2vec", "glove", "word2vec_glove"):
+        backend = "bert"
     model_id = os.getenv(
         "STEP_SIMILARITY_MODEL",
         "sentence-transformers/all-MiniLM-L6-v2",
@@ -43,11 +57,18 @@ def default_similarity_config() -> SimilarityConfig:
     metric = os.getenv("STEP_SIMILARITY_METRIC", "manhattan").strip().lower()
     if metric not in ("cosine", "manhattan", "euclidean"):
         metric = "manhattan"
+    if backend != "bert" and metric not in ("cosine", "manhattan", "euclidean"):
+        metric = "cosine"
     try:
         top_k = int(os.getenv("STEP_SIMILARITY_TOPK", "5"))
     except ValueError:
         top_k = 5
-    return SimilarityConfig(model_id=model_id, metric=metric, top_k=max(1, min(top_k, 10)))
+    return SimilarityConfig(
+        model_id=model_id,
+        backend=backend,
+        metric=metric,
+        top_k=max(1, min(top_k, 10)),
+    )
 
 
 def similarity_enabled() -> bool:
@@ -128,7 +149,7 @@ def _short_h(h: str, n: int = 16) -> str:
 
 
 def _pool_cache_path(cfg: SimilarityConfig, pool_h: str) -> Path:
-    name = f"pool_{_safe_name(cfg.model_id)}_{_short_h(pool_h)}.json"
+    name = f"pool_{_safe_name(cfg.backend)}_{_safe_name(cfg.model_id)}_{_short_h(pool_h)}.json"
     return _emb_dir() / name
 
 
@@ -136,7 +157,7 @@ def _query_cache_path(
     cfg: SimilarityConfig, pool_h: str, qh: str
 ) -> Path:
     name = (
-        f"q_{_safe_name(cfg.model_id)}_"
+        f"q_{_safe_name(cfg.backend)}_{_safe_name(cfg.model_id)}_"
         f"{_short_h(pool_h)}_{_short_h(qh)}.json"
     )
     return _emb_dir() / name
@@ -223,11 +244,64 @@ def _cosine(u: list[float], v: list[float]) -> float:
     return dot / ((du**0.5) * (dv**0.5))
 
 
+def _minmax(scores: dict[str, float]) -> dict[str, float]:
+    if not scores:
+        return {}
+    values = list(scores.values())
+    lo = min(values)
+    hi = max(values)
+    span = hi - lo
+    if span <= 1e-12:
+        return {k: 0.0 for k in scores}
+    return {k: (v - lo) / span for k, v in scores.items()}
+
+
+def _rank_static_pool(query_text: str, pool: list[str], *, cfg: SimilarityConfig) -> list[dict]:
+    """Rank with Word2Vec/GloVe or their equal-weight ensemble.
+
+    Static embeddings use the shared comparison module so the production UI and
+    evaluation harness run the same word-vector logic.
+    """
+    from similarity_compare import rank_pool as rank_static
+
+    metric = cfg.metric if cfg.metric in ("cosine", "manhattan", "euclidean") else "cosine"
+    if cfg.backend in ("word2vec", "glove"):
+        ranked = rank_static(query_text, pool, model=cfg.backend, metric=metric)
+        for row in ranked:
+            row["backend"] = cfg.backend
+        return ranked
+
+    w2v = rank_static(query_text, pool, model="word2vec", metric=metric)
+    glove = rank_static(query_text, pool, model="glove", metric=metric)
+    w2v_scores = {r["keyword"]: float(r["score"]) for r in w2v}
+    glove_scores = {r["keyword"]: float(r["score"]) for r in glove}
+    w2v_norm = _minmax(w2v_scores)
+    glove_norm = _minmax(glove_scores)
+    out = []
+    for kw in pool:
+        s_w = w2v_norm.get(kw, 0.0)
+        s_g = glove_norm.get(kw, 0.0)
+        out.append({
+            "keyword": kw,
+            "score": round((s_w + s_g) / 2.0, 6),
+            "backend": cfg.backend,
+            "components": {
+                "word2vec": round(s_w, 6),
+                "glove": round(s_g, 6),
+            },
+        })
+    out.sort(key=lambda d: (-d["score"], d["keyword"].lower()))
+    return out
+
+
 def rank_pool(query_text: str, pool: list[str], *, cfg: SimilarityConfig) -> list[dict]:
     q = normalize_embedding_query(query_text or "")
     pool = [p.strip() for p in (pool or []) if p and p.strip()]
     if not q or not pool:
         return []
+
+    if cfg.backend != "bert":
+        return _rank_static_pool(q, pool, cfg=cfg)
 
     pool_h = pool_hash(pool)
     qh = query_hash(q)
@@ -290,7 +364,8 @@ def top_k_keywords(
     ranked = rank_pool(qn, pool, cfg=cfg)
     pool_h = pool_hash(pool)
     return {
-        "method": f"embedding_{cfg.metric}",
+        "method": f"{cfg.backend}_{cfg.metric}",
+        "backend": cfg.backend,
         "metric": cfg.metric,
         "model_id": cfg.model_id,
         "query_source": query_source,
