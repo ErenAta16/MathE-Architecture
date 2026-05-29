@@ -1,8 +1,9 @@
 """
 Layer 3v — video understanding with Gemini 2.5 Pro.
 
-Produces three fields per video: ``title``, ``summary`` and up to five
-``keywords`` copied verbatim from a closed keyword pool. Both the YouTube
+Produces four fields per video: ``title``, ``summary``, a concise
+``solution``/teaching explanation, and up to five ``keywords`` copied
+verbatim from a closed keyword pool. Both the YouTube
 URL path and the uploaded-file path go through the same prompt so outputs
 stay comparable.
 """
@@ -10,6 +11,7 @@ stay comparable.
 from __future__ import annotations
 
 import logging
+import re
 import time
 from pathlib import Path
 
@@ -25,10 +27,13 @@ _log = logging.getLogger(__name__)
 
 _SYSTEM = (
     "You watch a mathematics video and classify it with keywords. "
-    "Return EXACTLY three lines, no other output:\n"
+    "Return EXACTLY four labeled fields, no other output:\n"
     "1) TITLE: <short phrase describing the video subject>\n"
     "2) SUMMARY: <two short sentences in English>\n"
-    "3) KEYWORDS: <exactly five comma-separated keywords copied verbatim from "
+    "3) SOLUTION: <concise step-by-step mathematical explanation of the main "
+    "worked example or method shown in the video; 3-6 short numbered steps; "
+    "do not mention keywords or classification>\n"
+    "4) KEYWORDS: <exactly five comma-separated keywords copied verbatim from "
     "the closed list, ordered by relevance (most relevant first). If fewer "
     "than five items truly fit, pick the closest remaining ones so the count "
     "stays at five>"
@@ -39,7 +44,7 @@ def _user_prompt(pool: list[str]) -> str:
     return (
         "Closed keyword pool (use these exact phrasings only for KEYWORDS):\n"
         + ", ".join(pool)
-        + "\n\nAnalyse the video and return the three required lines."
+        + "\n\nAnalyse the video and return the four required labeled fields."
     )
 
 
@@ -47,23 +52,50 @@ def _parse_reply(text: str, pool: list[str]) -> dict:
     pool_lookup = {p.lower(): p for p in pool}
     title = ""
     summary = ""
+    solution = ""
     keywords: list[str] = []
-    for raw in (text or "").splitlines():
+
+    lines = [raw.rstrip() for raw in (text or "").splitlines()]
+    solution_lines: list[str] = []
+    in_solution = False
+    for raw in lines:
         line = raw.strip()
-        upper = line.upper()
+        if not line:
+            if in_solution:
+                solution_lines.append("")
+            continue
+        label_line = re.sub(r"^\s*\d+\s*[\).:-]\s*", "", line)
+        upper = label_line.upper()
         if upper.startswith("TITLE:"):
-            title = line.split(":", 1)[1].strip()
+            in_solution = False
+            title = label_line.split(":", 1)[1].strip()
         elif upper.startswith("SUMMARY:"):
-            summary = line.split(":", 1)[1].strip()
+            in_solution = False
+            summary = label_line.split(":", 1)[1].strip()
+        elif upper.startswith("SOLUTION:"):
+            in_solution = True
+            first = label_line.split(":", 1)[1].strip()
+            if first:
+                solution_lines.append(first)
         elif upper.startswith("KEYWORDS:"):
-            parts = [p.strip() for p in line.split(":", 1)[1].split(",") if p.strip()]
+            in_solution = False
+            parts = [p.strip() for p in label_line.split(":", 1)[1].split(",") if p.strip()]
             seen: set[str] = set()
             for part in parts:
                 canon = pool_lookup.get(part.lower())
                 if canon and canon not in seen:
                     keywords.append(canon)
                     seen.add(canon)
-    return {"title": title, "summary": summary, "keywords": keywords[:5]}
+        elif in_solution:
+            solution_lines.append(line)
+
+    solution = "\n".join(solution_lines).strip()
+    return {
+        "title": title,
+        "summary": summary,
+        "solution": solution,
+        "keywords": keywords[:5],
+    }
 
 
 def _client() -> genai.Client:

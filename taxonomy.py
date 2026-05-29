@@ -879,6 +879,44 @@ def merge_keywords(*lists: list[str]) -> list[str]:
     return out
 
 
+def keywords_for_taxonomy(
+    topic_name: str | None,
+    subtopic_name: str | None = None,
+    *,
+    include_topic: bool = True,
+) -> list[str]:
+    """Return the controlled keyword names that belong to a topic/subtopic.
+
+    ``include_topic=True`` intentionally returns the whole topic family. Video
+    scenes are often short and noisy; when the global video is clearly
+    "Complex Numbers", allowing all complex-number subtopics is safer than
+    letting static embeddings compare against unrelated calculus keywords.
+    """
+    topic_lc = (topic_name or "").strip().lower()
+    sub_lc = (subtopic_name or "").strip().lower()
+    if not topic_lc:
+        return []
+
+    for topic in TAXONOMY:
+        if topic.name.lower() != topic_lc:
+            continue
+        selected: list[SubtopicRule] = []
+        if include_topic:
+            selected = list(topic.subtopics)
+        elif sub_lc:
+            selected = [sub for sub in topic.subtopics if sub.name.lower() == sub_lc]
+
+        out: list[str] = []
+        seen: set[str] = set()
+        for sub in selected:
+            for rule in sub.keywords:
+                if rule.name not in seen:
+                    seen.add(rule.name)
+                    out.append(rule.name)
+        return out
+    return []
+
+
 def topic_from_keywords(keywords: list[str]) -> tuple[str, str] | None:
     """Infer ``(topic, subtopic)`` from a list of already-chosen keyword names.
 

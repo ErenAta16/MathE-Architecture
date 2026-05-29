@@ -26,7 +26,12 @@ from layer0_video import (
 )
 from layer3_video_vlm import analyze_local_file, analyze_youtube
 from layer3v_frames import analyze_frames_deep
-from taxonomy import classify_taxonomy, refine_subtopic, topic_from_keywords
+from taxonomy import (
+    classify_taxonomy,
+    keywords_for_taxonomy,
+    refine_subtopic,
+    topic_from_keywords,
+)
 from semantic_similarity import (
     default_similarity_config,
     normalize_embedding_query,
@@ -224,6 +229,47 @@ class VideoAnalyzer:
             return f"Context: {ctx}", "video_context"
         return "", "none"
 
+    @staticmethod
+    def _scoped_scene_pool(result: dict, pool: list[str]) -> tuple[list[str], str]:
+        """Keep per-scene static embeddings inside the global video topic.
+
+        Word2Vec/GloVe are intentionally weaker than BERT for phrase-level
+        meaning. On noisy frame OCR they may over-rank generic but unrelated
+        math phrases ("area", "center of mass"). The video-level VLM taxonomy
+        is a stable guardrail: use it to narrow the candidate pool, while still
+        scoring/ranking with the configured embedding backend.
+        """
+        tax = result.get("taxonomy") if isinstance(result.get("taxonomy"), dict) else {}
+        topic_pool = keywords_for_taxonomy(
+            tax.get("topic"),
+            tax.get("subtopic"),
+            include_topic=True,
+        )
+        if not topic_pool:
+            return pool, "full_pool"
+
+        original = {str(k).strip().lower(): str(k).strip() for k in pool if str(k).strip()}
+        scoped: list[str] = []
+        seen: set[str] = set()
+
+        def add(name: str) -> None:
+            key = str(name or "").strip().lower()
+            canonical = original.get(key)
+            if canonical and canonical not in seen:
+                seen.add(canonical)
+                scoped.append(canonical)
+
+        for name in topic_pool:
+            add(name)
+        for name in result.get("keywords") or []:
+            add(name)
+        for name in result.get("keywords_llm") or []:
+            add(name)
+
+        if len(scoped) >= 5:
+            return scoped, f"topic:{tax.get('topic') or 'unknown'}"
+        return pool, "full_pool"
+
     def _attach_similarity(self, result: dict) -> None:
         """Attach embedding-based cosine similarity scores for keyword selection.
 
@@ -267,7 +313,7 @@ class VideoAnalyzer:
                 )
                 hybrid_top = [r["keyword"] for r in hybrid[: cfg.top_k]]
                 result["keywords"] = hybrid_top
-                result["keywords_source"] = "hybrid"
+                result["keywords_source"] = f"hybrid_{sim.get('backend', 'embedding')}"
                 result["hybrid_ranking"] = hybrid[:10]
                 result["rerank_weights"] = {
                     "w_cos": rcfg.w_cos,
@@ -296,6 +342,7 @@ class VideoAnalyzer:
         # Deep mode: per-problem ranking; one bad scene must not abort the rest.
         problems = result.get("problems")
         if isinstance(problems, list) and problems:
+            scene_pool, scene_pool_scope = self._scoped_scene_pool(result, pool)
             for p in problems:
                 if not isinstance(p, dict):
                     continue
@@ -312,9 +359,10 @@ class VideoAnalyzer:
                     continue
                 try:
                     sim_p = top_k_keywords(
-                        q_sc, pool, cfg=cfg, query_source=q_src
+                        q_sc, scene_pool, cfg=cfg, query_source=q_src
                     )
                     p["keyword_similarity"] = sim_p
+                    p["keyword_pool_scope"] = scene_pool_scope
                     ranked_p = sim_p.get("ranked") or []
                     cos_sc = {
                         r["keyword"]: float(r["score"])
@@ -328,7 +376,8 @@ class VideoAnalyzer:
                         cfg=rcfg,
                     )
                     p["keywords"] = [r["keyword"] for r in scene_hybrid[: cfg.top_k]]
-                    p["keywords_source"] = "hybrid"
+                    p["keywords_source"] = f"hybrid_{sim_p.get('backend', 'embedding')}"
+                    p["hybrid_ranking"] = scene_hybrid[:10]
                 except Exception as e:
                     _log.info(f"  [SIM] [FAIL] scene: {str(e)[:120]}")
                     p["keyword_similarity"] = {
@@ -362,6 +411,33 @@ class VideoAnalyzer:
     # Shared finalization / cache helpers
     # ------------------------------------------------------------------
     @staticmethod
+    def _fallback_video_solution(title: str, summary: str, keywords: list[str]) -> str:
+        """Build a visible explanation when the video VLM omits SOLUTION.
+
+        The real keyword/classification measurements stay unchanged. This only
+        prevents the UI from having an empty solution card when Gemini returns
+        the older three-field format or leaves the SOLUTION field blank.
+        """
+        title = (title or "Video").strip()
+        summary = (summary or "").strip()
+        key = [str(k).strip() for k in (keywords or []) if str(k).strip()]
+
+        lines = [f"1. Main topic: {title}."]
+        if summary:
+            lines.append(f"2. What the video explains: {summary}")
+        if key:
+            lines.append(
+                "3. Main mathematical ideas: "
+                + ", ".join(key[:5])
+                + "."
+            )
+        lines.append(
+            "4. Use the scene keyword rankings below to see which concept is "
+            "active at each timestamp."
+        )
+        return "\n".join(lines)
+
+    @staticmethod
     def _finalize(vlm: dict, *, base: dict, elapsed_s: float) -> dict:
         summary_text = vlm.get("summary") or ""
         keywords = vlm.get("keywords", []) or []
@@ -385,6 +461,14 @@ class VideoAnalyzer:
             **base,
             "title": vlm.get("title", ""),
             "summary": summary_text,
+            "solution": (
+                vlm.get("solution", "")
+                or VideoAnalyzer._fallback_video_solution(
+                    str(vlm.get("title") or ""),
+                    summary_text,
+                    keywords,
+                )
+            ),
             "keywords": keywords,
             "pool": vlm.get("pool", []),
             "model_used": vlm.get("model_used", ""),

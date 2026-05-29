@@ -66,8 +66,8 @@ def _video_file_readable(path: Path) -> bool:
         return False
 
 
-def extract_frames(path: str | Path, *, interval_s: float = 15.0,
-                    max_frames: int = 40,
+def extract_frames(path: str | Path, *, interval_s: float | None = None,
+                    max_frames: int | None = None,
                     jpeg_quality: int = 85) -> list[tuple[float, bytes]]:
     """Sample frames from a local video at roughly one per ``interval_s`` seconds.
 
@@ -77,6 +77,20 @@ def extract_frames(path: str | Path, *, interval_s: float = 15.0,
     this function only hands back raw samples.
     """
     import cv2  # lazy import so the main pipeline does not pay the cost
+
+    if interval_s is None:
+        try:
+            interval_s = float(__import__("os").environ.get("STEP_VIDEO_FRAME_INTERVAL", "30"))
+        except ValueError:
+            interval_s = 30.0
+    interval_s = max(5.0, float(interval_s))
+
+    if max_frames is None:
+        try:
+            max_frames = int(__import__("os").environ.get("STEP_VIDEO_MAX_FRAMES", "24"))
+        except ValueError:
+            max_frames = 24
+    max_frames = max(1, min(int(max_frames), 40))
 
     path = Path(path)
     if not path.exists():
@@ -194,6 +208,7 @@ def download_youtube_video(url: str, out_dir: str | Path, *,
 
     last_err: Exception | None = None
     attempt_ix = 0
+    failed_attempts = 0
     for client_opts in client_variants:
         client_label = (
             ",".join(client_opts.get("extractor_args", {}).get("youtube", {}).get("player_client", []))
@@ -206,9 +221,7 @@ def download_youtube_video(url: str, out_dir: str | Path, *,
                     ydl.extract_info(url, download=True)
             except Exception as e:  # transient YouTube/yt-dlp errors
                 last_err = e
-                _log.info(
-                    f"  [L0v] Download attempt {attempt_ix} ({client_label}) failed: {str(e)[:140]}"
-                )
+                failed_attempts += 1
                 continue
 
             produced_candidates = sorted(
@@ -222,16 +235,17 @@ def download_youtube_video(url: str, out_dir: str | Path, *,
             )
             for produced in produced_candidates:
                 if _video_file_readable(produced):
+                    if failed_attempts:
+                        _log.info(
+                            f"  [L0v] Download fallback succeeded after {failed_attempts} alternate attempt(s)"
+                        )
                     _log.info(f"  [L0v] Download verified readable: {produced.name}")
                     return produced
                 try:
                     produced.unlink(missing_ok=True)  # type: ignore[arg-type]
                 except OSError:
                     pass
-            _log.info(
-                f"  [L0v] Attempt {attempt_ix} ({client_label}) produced an undecodable file; "
-                "retrying with alternate format/client."
-            )
+            failed_attempts += 1
 
     raise RuntimeError(
         f"yt-dlp did not produce a decodable video file for {vid} "
