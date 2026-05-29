@@ -1,0 +1,1505 @@
+{
+  "schema_version": "graded-video-reference-v1",
+  "generated_at": "2026-05-13T02:07:55",
+  "source_path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\gold\\videos_15_nocache_graded_run_base.json",
+  "pool_source": "keyword_eval.DEFAULT_KEYWORD_POOL",
+  "pool_size": 116,
+  "reference_type": "graded_vlm_reference_not_human_gold",
+  "binary_gold_rule": "relevance >= 2",
+  "n_items": 15,
+  "n_failures": 0,
+  "items": [
+    {
+      "id": "KTNcYYHuBTY",
+      "url": "https://www.youtube.com/watch?v=KTNcYYHuBTY",
+      "mode": "quick",
+      "title": "Powers of the Imaginary Unit i",
+      "summary": "This video introduces the imaginary unit i as the square root of -1 and calculates its integer powers. It demonstrates that the powers of i follow a repeating cycle of four values: i, -1, -i, and 1.",
+      "query_text": "Powers of the Imaginary Unit i\n\nThis video introduces the imaginary unit i as the square root of -1 and calculates its integer powers. It demonstrates that the powers of i follow a repeating cycle of four values: i, -1, -i, and 1.",
+      "reference_keywords": [
+        "Powers of i",
+        "Powers of complex numbers",
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Nth root"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Powers and Roots",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Powers of i",
+          "relevance": 3,
+          "rationale": "This is the exact subject of the video, which calculates the integer powers of the imaginary unit i."
+        },
+        {
+          "keyword": "Roots of unity",
+          "relevance": 3,
+          "rationale": "The repeating cycle of four values {i, -1, -i, 1} demonstrated in the video are precisely the 4th roots of unity."
+        },
+        {
+          "keyword": "Complex plane",
+          "relevance": 2,
+          "rationale": "The cyclic nature of the powers of i is best visualized as points on the complex plane (or Argand diagram)."
+        },
+        {
+          "keyword": "Complex plane rotation",
+          "relevance": 2,
+          "rationale": "Each successive power of i corresponds to a 90-degree rotation in the complex plane, which explains the cycle."
+        },
+        {
+          "keyword": "Imaginary part",
+          "relevance": 2,
+          "rationale": "The powers of i cycle through imaginary parts of 1, 0, -1, and 0."
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "relevance": 2,
+          "rationale": "An underlying property is that the modulus of i and all of its integer powers is 1."
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "relevance": 2,
+          "rationale": "Calculating powers is a fundamental operation performed on complex numbers."
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "relevance": 2,
+          "rationale": "The video addresses a specific, fundamental case of the broader topic of raising complex numbers to a power."
+        },
+        {
+          "keyword": "Real part",
+          "relevance": 2,
+          "rationale": "The powers of i cycle through real parts of 0, -1, 0, and 1."
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "relevance": 2,
+          "rationale": "The results of the powers (e.g., -1, i) are expressed in standard rectangular form a+bi."
+        },
+        {
+          "keyword": "Euler's formula",
+          "relevance": 1,
+          "rationale": "Provides a more advanced method to understand powers of i, as i can be written as e^(i*pi/2)."
+        },
+        {
+          "keyword": "Polar form",
+          "relevance": 1,
+          "rationale": "This form is useful for understanding the rotational nature of the powers of i, though a basic video may not cover it."
+        }
+      ],
+      "gold_keywords": [
+        "Powers of i",
+        "Roots of unity",
+        "Complex plane",
+        "Complex plane rotation",
+        "Imaginary part",
+        "Modulus of a complex number",
+        "Operations with complex numbers",
+        "Powers of complex numbers",
+        "Real part",
+        "Rectangular form (Standard form)"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The keywords describe the imaginary unit i, its representation in the complex plane, and the cyclic properties of its integer powers.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "BZxZ_eEuJBM",
+      "url": "https://www.youtube.com/watch?v=BZxZ_eEuJBM",
+      "mode": "quick",
+      "title": "Complex Conjugates",
+      "summary": "The video clarifies the formal definition of the real and imaginary parts of a complex number, a + bi. It then defines the complex conjugate, a - bi, and shows how it can be used to simplify the division of complex numbers.",
+      "query_text": "Complex Conjugates\n\nThe video clarifies the formal definition of the real and imaginary parts of a complex number, a + bi. It then defines the complex conjugate, a - bi, and shows how it can be used to simplify the division of complex numbers.",
+      "reference_keywords": [
+        "Operations with complex numbers",
+        "Imaginary part",
+        "Conjugate number",
+        "Real part",
+        "Argand diagram"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Arithmetic",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Conjugate number",
+          "relevance": 3,
+          "rationale": "The video's title and central topic is the definition and application of the complex conjugate."
+        },
+        {
+          "keyword": "Imaginary part",
+          "relevance": 3,
+          "rationale": "The summary states the video begins by formally defining the imaginary part of a complex number."
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "relevance": 3,
+          "rationale": "The summary explicitly states that the conjugate is used to simplify the division of complex numbers, which is a key operation."
+        },
+        {
+          "keyword": "Real part",
+          "relevance": 3,
+          "rationale": "The summary states the video begins by formally defining the real part of a complex number."
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "relevance": 3,
+          "rationale": "The video uses the standard form `a + bi` to define complex numbers and their conjugates."
+        },
+        {
+          "keyword": "Algebraic form",
+          "relevance": 2,
+          "rationale": "This is a synonym for the rectangular or standard form `a + bi` which is central to the video's explanation."
+        },
+        {
+          "keyword": "Argand diagram",
+          "relevance": 2,
+          "rationale": "This is a synonym for the complex plane, which is the standard way to represent the concepts discussed."
+        },
+        {
+          "keyword": "Complex plane",
+          "relevance": 2,
+          "rationale": "The complex plane is the standard geometric setting for visualizing complex numbers and their conjugates."
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "relevance": 2,
+          "rationale": "The video's example of simplifying the division of complex numbers involves manipulating expressions and equations with complex numbers."
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "relevance": 1,
+          "rationale": "The modulus is a closely related concept, as multiplying a complex number by its conjugate yields the square of its modulus."
+        }
+      ],
+      "gold_keywords": [
+        "Conjugate number",
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Real part",
+        "Rectangular form (Standard form)",
+        "Algebraic form",
+        "Argand diagram",
+        "Complex plane",
+        "Equations involving complex numbers"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video defines the real and imaginary parts of a complex number, introduces the complex conjugate, and demonstrates its use in simplifying division.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "kpywdu1afas",
+      "url": "https://www.youtube.com/watch?v=kpywdu1afas",
+      "mode": "quick",
+      "title": "Introduction to Complex Numbers",
+      "summary": "The video defines the imaginary unit 'i' as the square root of -1 and uses it to simplify roots of negative numbers. It then introduces complex numbers as having a real and an imaginary part, and shows how to plot them on the complex plane.",
+      "query_text": "Introduction to Complex Numbers\n\nThe video defines the imaginary unit 'i' as the square root of -1 and uses it to simplify roots of negative numbers. It then introduces complex numbers as having a real and an imaginary part, and shows how to plot them on the complex plane.",
+      "reference_keywords": [
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Complex plane",
+        "Powers of i",
+        "Real part"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Algebraic form",
+          "relevance": 3,
+          "rationale": "The description of a number with a real and imaginary part (a + bi) refers to its algebraic form."
+        },
+        {
+          "keyword": "Argand diagram",
+          "relevance": 3,
+          "rationale": "This is the formal name for the complex plane, which the summary states is used for plotting."
+        },
+        {
+          "keyword": "Complex plane",
+          "relevance": 3,
+          "rationale": "The summary explicitly mentions that the video shows how to plot numbers on the complex plane."
+        },
+        {
+          "keyword": "Imaginary part",
+          "relevance": 3,
+          "rationale": "The summary explicitly states the video defines the imaginary part of a complex number."
+        },
+        {
+          "keyword": "Real part",
+          "relevance": 3,
+          "rationale": "The summary explicitly states the video defines the real part of a complex number."
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "relevance": 3,
+          "rationale": "This is the standard name for the a + bi form, which is central to the video's topic."
+        },
+        {
+          "keyword": "Conjugate number",
+          "relevance": 2,
+          "rationale": "The conjugate is a fundamental property often introduced alongside the basic definition of a complex number."
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "relevance": 2,
+          "rationale": "This concept is directly related to plotting numbers on the complex plane, as it represents the distance from the origin."
+        },
+        {
+          "keyword": "Nth root",
+          "relevance": 2,
+          "rationale": "The summary mentions simplifying the roots of negative numbers, which directly involves this concept."
+        },
+        {
+          "keyword": "Powers of i",
+          "relevance": 2,
+          "rationale": "The video defines 'i', which is the fundamental basis for understanding its powers."
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "relevance": 1,
+          "rationale": "The video provides the foundational knowledge required to later solve equations with complex numbers."
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "relevance": 1,
+          "rationale": "An introductory video is likely to touch upon basic operations (addition, subtraction) after defining complex numbers."
+        }
+      ],
+      "gold_keywords": [
+        "Algebraic form",
+        "Argand diagram",
+        "Complex plane",
+        "Imaginary part",
+        "Real part",
+        "Rectangular form (Standard form)",
+        "Conjugate number",
+        "Modulus of a complex number",
+        "Nth root",
+        "Powers of i"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video introduces the fundamental concepts of complex numbers, including their components (real and imaginary parts) and their graphical representation on the complex plane.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "KeYfQ8Em9BU",
+      "url": "https://www.youtube.com/watch?v=KeYfQ8Em9BU",
+      "mode": "quick",
+      "title": "Regions in the complex plane",
+      "summary": "The video demonstrates how to represent inequalities involving complex numbers on the complex plane. It shows how to identify and shade the locus of points satisfying various conditions on their real and imaginary parts.",
+      "query_text": "Regions in the complex plane\n\nThe video demonstrates how to represent inequalities involving complex numbers on the complex plane. It shows how to identify and shade the locus of points satisfying various conditions on their real and imaginary parts.",
+      "reference_keywords": [
+        "Regions in the complex plane",
+        "Complex plane",
+        "Imaginary part",
+        "Real part",
+        "Rectangular form (Standard form)"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Argand diagram",
+          "relevance": 3,
+          "rationale": "This is the formal name for the complex plane used for graphical representation."
+        },
+        {
+          "keyword": "Complex plane",
+          "relevance": 3,
+          "rationale": "The video is entirely about representing regions on the complex plane."
+        },
+        {
+          "keyword": "Imaginary part",
+          "relevance": 3,
+          "rationale": "The summary explicitly states the video covers conditions on the imaginary parts of complex numbers."
+        },
+        {
+          "keyword": "Real part",
+          "relevance": 3,
+          "rationale": "The summary explicitly states the video covers conditions on the real parts of complex numbers."
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "relevance": 3,
+          "rationale": "This is the exact title and primary topic of the video."
+        },
+        {
+          "keyword": "Algebraic form",
+          "relevance": 2,
+          "rationale": "A synonym for the rectangular form, which is central to describing regions based on real and imaginary parts."
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "relevance": 2,
+          "rationale": "The video focuses on inequalities, which are directly related to equations that often define the boundaries of the regions."
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "relevance": 2,
+          "rationale": "Defining regions using the modulus (e.g., |z| < r for a disk) is a fundamental and common type of problem in this topic."
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "relevance": 2,
+          "rationale": "Conditions on the real and imaginary parts are expressed using the rectangular form z = x + iy."
+        },
+        {
+          "keyword": "Conjugate number",
+          "relevance": 1,
+          "rationale": "Inequalities can sometimes involve the conjugate, which relates directly back to conditions on the real and imaginary parts."
+        },
+        {
+          "keyword": "Polar form",
+          "relevance": 1,
+          "rationale": "While the summary emphasizes real/imaginary parts, some regions (like wedges or annuli) are naturally described using polar coordinates."
+        },
+        {
+          "keyword": "Principal argument",
+          "relevance": 1,
+          "rationale": "The argument of a complex number is used to define wedge-shaped regions, a common type of region in the complex plane."
+        }
+      ],
+      "gold_keywords": [
+        "Argand diagram",
+        "Complex plane",
+        "Imaginary part",
+        "Real part",
+        "Regions in the complex plane",
+        "Algebraic form",
+        "Equations involving complex numbers",
+        "Modulus of a complex number",
+        "Rectangular form (Standard form)"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video explains how to graphically represent and shade regions on the complex plane (Argand diagram) that satisfy inequalities involving the real part, imaginary part, and modulus of complex numbers.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "AqtgBbEI4wM",
+      "url": "https://www.youtube.com/watch?v=AqtgBbEI4wM",
+      "mode": "quick",
+      "title": "Sketching the Locus of Complex Numbers",
+      "summary": "The video explains how to find the locus of points for a complex number z based on given equations. It demonstrates that an equation of the form |z - z_0| = r represents a circle and |z - z_1| = |z - z_2| represents a line.",
+      "query_text": "Sketching the Locus of Complex Numbers\n\nThe video explains how to find the locus of points for a complex number z based on given equations. It demonstrates that an equation of the form |z - z_0| = r represents a circle and |z - z_1| = |z - z_2| represents a line.",
+      "reference_keywords": [
+        "Equations involving complex numbers",
+        "Regions in the complex plane",
+        "Modulus of a complex number",
+        "Argand diagram",
+        "Algebraic form"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Argand diagram",
+          "relevance": 3,
+          "rationale": "This is the specific name for the diagram used to geometrically represent complex numbers, which is essential for sketching a locus."
+        },
+        {
+          "keyword": "Complex plane",
+          "relevance": 3,
+          "rationale": "The video involves sketching the locus of complex numbers, which is done on the complex plane."
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "relevance": 3,
+          "rationale": "The video summary explicitly states that it explains how to find the locus of a complex number based on given equations."
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "relevance": 3,
+          "rationale": "Both examples provided, |z - z_0| = r and |z - z_1| = |z - z_2|, are fundamentally defined by the modulus of a complex number."
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "relevance": 3,
+          "rationale": "The core topic is finding and sketching the 'locus of points', which are specific regions or curves in the complex plane."
+        },
+        {
+          "keyword": "Algebraic form",
+          "relevance": 2,
+          "rationale": "Representing z as x + iy is the standard method to convert the locus equations into Cartesian form for sketching."
+        },
+        {
+          "keyword": "Imaginary part",
+          "relevance": 2,
+          "rationale": "The vertical axis of the Argand diagram, used for sketching, represents the imaginary part of the complex number."
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "relevance": 2,
+          "rationale": "The given equations involve operations like subtraction (e.g., z - z_0)."
+        },
+        {
+          "keyword": "Real part",
+          "relevance": 2,
+          "rationale": "The horizontal axis of the Argand diagram, used for sketching, represents the real part of the complex number."
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "relevance": 2,
+          "rationale": "This is a synonym for the algebraic form, which is the primary representation used for these types of problems."
+        },
+        {
+          "keyword": "Polar form",
+          "relevance": 1,
+          "rationale": "While not the primary form for the examples given, it is a fundamental representation of complex numbers relevant to their geometry."
+        },
+        {
+          "keyword": "Trigonometric form",
+          "relevance": 1,
+          "rationale": "A synonym for polar form, another key representation of complex numbers that provides geometric insight."
+        }
+      ],
+      "gold_keywords": [
+        "Argand diagram",
+        "Complex plane",
+        "Equations involving complex numbers",
+        "Modulus of a complex number",
+        "Regions in the complex plane",
+        "Algebraic form",
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Real part",
+        "Rectangular form (Standard form)"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video demonstrates how to sketch the locus of points in the complex plane (Argand diagram) that satisfy equations involving the modulus of a complex number.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "G8GAsYkZlpE",
+      "url": "https://www.youtube.com/watch?v=G8GAsYkZlpE",
+      "mode": "quick",
+      "title": "Second Derivative Test for Relative Extrema",
+      "summary": "The video explains how to use the second derivative test to determine if a critical point is a local maximum or minimum. The method is demonstrated on a polynomial function, and the result is confirmed using the first derivative test.",
+      "query_text": "Second Derivative Test for Relative Extrema\n\nThe video explains how to use the second derivative test to determine if a critical point is a local maximum or minimum. The method is demonstrated on a polynomial function, and the result is confirmed using the first derivative test.",
+      "reference_keywords": [
+        "Second derivative test",
+        "Local maximum",
+        "Local minimum",
+        "Critical point",
+        "Concavity"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Extrema and Concavity",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Critical point",
+          "relevance": 3,
+          "rationale": "The second derivative test is applied specifically to critical points to classify them."
+        },
+        {
+          "keyword": "Local maximum",
+          "relevance": 3,
+          "rationale": "The video explicitly explains how to use the test to identify a local maximum."
+        },
+        {
+          "keyword": "Local minimum",
+          "relevance": 3,
+          "rationale": "The video explicitly explains how to use the test to identify a local minimum."
+        },
+        {
+          "keyword": "Second derivative test",
+          "relevance": 3,
+          "rationale": "This is the central topic of the video as stated in the title."
+        },
+        {
+          "keyword": "Concavity",
+          "relevance": 2,
+          "rationale": "The second derivative test works by determining the concavity of the function at a critical point."
+        },
+        {
+          "keyword": "First derivative test",
+          "relevance": 2,
+          "rationale": "The summary states that the first derivative test is used to confirm the result."
+        },
+        {
+          "keyword": "Higher-order derivatives",
+          "relevance": 2,
+          "rationale": "The second derivative is a type of higher-order derivative."
+        },
+        {
+          "keyword": "Optimization",
+          "relevance": 2,
+          "rationale": "Finding local maxima and minima is a fundamental part of optimization problems."
+        },
+        {
+          "keyword": "Stationary point",
+          "relevance": 2,
+          "rationale": "A stationary point is a type of critical point where the derivative is zero, which is where the test is applied."
+        },
+        {
+          "keyword": "Unconstrained optimization",
+          "relevance": 2,
+          "rationale": "This video addresses finding extrema without constraints, which is unconstrained optimization."
+        },
+        {
+          "keyword": "Differentiability",
+          "relevance": 1,
+          "rationale": "The function must be twice differentiable for the second derivative test to be applied."
+        },
+        {
+          "keyword": "Maximum",
+          "relevance": 1,
+          "rationale": "A general term related to the specific concept of a local maximum."
+        },
+        {
+          "keyword": "Minimum",
+          "relevance": 1,
+          "rationale": "A general term related to the specific concept of a local minimum."
+        }
+      ],
+      "gold_keywords": [
+        "Critical point",
+        "Local maximum",
+        "Local minimum",
+        "Second derivative test",
+        "Concavity",
+        "First derivative test",
+        "Higher-order derivatives",
+        "Optimization",
+        "Stationary point",
+        "Unconstrained optimization"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video explains and demonstrates the second derivative test for classifying critical points as local maxima or minima, confirming the result with the first derivative test.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "8mjcnxGMwFo",
+      "url": "https://www.youtube.com/watch?v=8mjcnxGMwFo",
+      "mode": "quick",
+      "title": "Lagrange Multipliers",
+      "summary": "This video introduces the concept of constrained optimization, where the goal is to find the maximum or minimum of a function subject to a constraint. It explains the method of Lagrange multipliers, which finds these optimal points by identifying where the gradient of the function is parallel to the gradient of the constraint.",
+      "query_text": "Lagrange Multipliers\n\nThis video introduces the concept of constrained optimization, where the goal is to find the maximum or minimum of a function subject to a constraint. It explains the method of Lagrange multipliers, which finds these optimal points by identifying where the gradient of the function is parallel to the gradient of the constraint.",
+      "reference_keywords": [
+        "Lagrange multipliers",
+        "Constrained optimization",
+        "Optimization",
+        "Minimum",
+        "Maximum"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Constrained optimization",
+          "relevance": 3,
+          "rationale": "The summary explicitly states the video introduces the concept of constrained optimization."
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "relevance": 3,
+          "rationale": "The video's title and primary topic is the method of Lagrange multipliers."
+        },
+        {
+          "keyword": "Optimization",
+          "relevance": 3,
+          "rationale": "This is the general mathematical field to which the topic belongs."
+        },
+        {
+          "keyword": "Critical point",
+          "relevance": 2,
+          "rationale": "The solutions found are critical points of the function restricted to the constraint."
+        },
+        {
+          "keyword": "Feasible set",
+          "relevance": 2,
+          "rationale": "The set of points satisfying the constraint is the feasible set for the optimization problem."
+        },
+        {
+          "keyword": "Maximum",
+          "relevance": 2,
+          "rationale": "The summary states the goal is to find the maximum of a function."
+        },
+        {
+          "keyword": "Minimum",
+          "relevance": 2,
+          "rationale": "The summary states the goal is to find the minimum of a function."
+        },
+        {
+          "keyword": "Optimal solution",
+          "relevance": 2,
+          "rationale": "The points found by the method are the optimal solutions to the problem."
+        },
+        {
+          "keyword": "Stationary point",
+          "relevance": 2,
+          "rationale": "The method works by finding stationary points of the Lagrangian function."
+        },
+        {
+          "keyword": "Global optimum",
+          "relevance": 1,
+          "rationale": "Finding the global optimum is often the ultimate goal, though the method itself finds local candidates."
+        },
+        {
+          "keyword": "KKT conditions",
+          "relevance": 1,
+          "rationale": "The Karush-Kuhn-Tucker (KKT) conditions are a generalization of the method of Lagrange multipliers."
+        },
+        {
+          "keyword": "Local maximum",
+          "relevance": 1,
+          "rationale": "The method identifies candidate points which are local maxima."
+        },
+        {
+          "keyword": "Local minimum",
+          "relevance": 1,
+          "rationale": "The method identifies candidate points which are local minima."
+        },
+        {
+          "keyword": "Saddle point",
+          "relevance": 1,
+          "rationale": "The method can also identify saddle points, which are critical points that are not extrema."
+        }
+      ],
+      "gold_keywords": [
+        "Constrained optimization",
+        "Lagrange multipliers",
+        "Optimization",
+        "Critical point",
+        "Feasible set",
+        "Maximum",
+        "Minimum",
+        "Optimal solution",
+        "Stationary point"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video explains how to perform constrained optimization to find the maximum or minimum of a function by using the method of Lagrange multipliers, which relates the gradients of the function and the constraint.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "LVLuqNH5iWw",
+      "url": "https://www.youtube.com/watch?v=LVLuqNH5iWw",
+      "mode": "quick",
+      "title": "Local Extrema of a Multivariable Function",
+      "summary": "The video explains how to find the local extrema of a function with two variables. It demonstrates the process by first finding the critical points and then classifying them using the second derivative test.",
+      "query_text": "Local Extrema of a Multivariable Function\n\nThe video explains how to find the local extrema of a function with two variables. It demonstrates the process by first finding the critical points and then classifying them using the second derivative test.",
+      "reference_keywords": [
+        "Local maximum",
+        "Local minimum",
+        "Second derivative test",
+        "Critical point",
+        "Saddle point"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Extrema and Concavity",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Critical point",
+          "relevance": 3,
+          "rationale": "The summary explicitly states that the first step of the process is finding critical points."
+        },
+        {
+          "keyword": "Hessian matrix",
+          "relevance": 3,
+          "rationale": "The second derivative test for multivariable functions is based on the determinant of the Hessian matrix."
+        },
+        {
+          "keyword": "Local maximum",
+          "relevance": 3,
+          "rationale": "The video's primary goal is to find local extrema, which includes local maxima."
+        },
+        {
+          "keyword": "Local minimum",
+          "relevance": 3,
+          "rationale": "The video's primary goal is to find local extrema, which includes local minima."
+        },
+        {
+          "keyword": "Saddle point",
+          "relevance": 3,
+          "rationale": "A saddle point is a key outcome of the second derivative test for multivariable functions."
+        },
+        {
+          "keyword": "Second derivative test",
+          "relevance": 3,
+          "rationale": "The summary explicitly states this test is used to classify the critical points."
+        },
+        {
+          "keyword": "Unconstrained optimization",
+          "relevance": 3,
+          "rationale": "Finding local extrema of a function without any constraints is the definition of unconstrained optimization."
+        },
+        {
+          "keyword": "Maximum",
+          "relevance": 2,
+          "rationale": "The video is about finding the maximum value of a function in a local region."
+        },
+        {
+          "keyword": "Minimum",
+          "relevance": 2,
+          "rationale": "The video is about finding the minimum value of a function in a local region."
+        },
+        {
+          "keyword": "Optimization",
+          "relevance": 2,
+          "rationale": "Finding extrema is a fundamental problem in the field of optimization."
+        },
+        {
+          "keyword": "Stationary point",
+          "relevance": 2,
+          "rationale": "This is a synonym for a critical point, a central concept in the video."
+        },
+        {
+          "keyword": "Higher-order derivatives",
+          "relevance": 1,
+          "rationale": "The second derivative test requires the calculation of second-order partial derivatives."
+        },
+        {
+          "keyword": "Maximizer",
+          "relevance": 1,
+          "rationale": "Refers to the input coordinates that yield a local maximum value."
+        },
+        {
+          "keyword": "Minimizer",
+          "relevance": 1,
+          "rationale": "Refers to the input coordinates that yield a local minimum value."
+        }
+      ],
+      "gold_keywords": [
+        "Critical point",
+        "Hessian matrix",
+        "Local maximum",
+        "Local minimum",
+        "Saddle point",
+        "Second derivative test",
+        "Unconstrained optimization",
+        "Maximum",
+        "Minimum",
+        "Optimization",
+        "Stationary point"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video explains how to find local extrema for a multivariable function by locating critical points and then classifying them using the second derivative test.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "vwUV2IDLP8Q",
+      "url": "https://www.youtube.com/watch?v=vwUV2IDLP8Q",
+      "mode": "quick",
+      "title": "Constrained Optimization",
+      "summary": "The video introduces constrained optimization by seeking to maximize a multivariable function subject to a constraint equation. It visualizes the problem using the function's 3D graph and 2D contour lines, showing the solution occurs where a contour line is tangent to the constraint curve.",
+      "query_text": "Constrained Optimization\n\nThe video introduces constrained optimization by seeking to maximize a multivariable function subject to a constraint equation. It visualizes the problem using the function's 3D graph and 2D contour lines, showing the solution occurs where a contour line is tangent to the constraint curve.",
+      "reference_keywords": [
+        "Constrained optimization",
+        "Optimization",
+        "Lagrange multipliers",
+        "Feasible set",
+        "Maximum"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Constrained optimization",
+          "relevance": 3,
+          "rationale": "The video title and primary topic, explicitly defined as maximizing a function subject to a constraint."
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "relevance": 3,
+          "rationale": "The condition of a contour line being tangent to the constraint curve is the geometric basis for the method of Lagrange multipliers, the standard technique for this problem."
+        },
+        {
+          "keyword": "Maximum",
+          "relevance": 3,
+          "rationale": "The video explicitly states the goal is to 'maximize a multivariable function'."
+        },
+        {
+          "keyword": "Optimization",
+          "relevance": 3,
+          "rationale": "The broader mathematical field to which the video's topic belongs."
+        },
+        {
+          "keyword": "Critical point",
+          "relevance": 2,
+          "rationale": "A closely related concept to a stationary point; the solution will be a critical point of the function when restricted to the constraint."
+        },
+        {
+          "keyword": "Feasible set",
+          "relevance": 2,
+          "rationale": "The 'constraint curve' described in the summary defines the feasible set of points for the optimization problem."
+        },
+        {
+          "keyword": "Maximizer",
+          "relevance": 2,
+          "rationale": "Refers to the input values that yield the maximum value of the function."
+        },
+        {
+          "keyword": "Optimal solution",
+          "relevance": 2,
+          "rationale": "The point that maximizes the function subject to the constraint is the optimal solution."
+        },
+        {
+          "keyword": "Stationary point",
+          "relevance": 2,
+          "rationale": "The solution to a constrained optimization problem via Lagrange multipliers is found by identifying stationary points of the Lagrangian function."
+        },
+        {
+          "keyword": "Tangent line",
+          "relevance": 2,
+          "rationale": "The summary explicitly mentions that the solution occurs where a contour line is 'tangent to the constraint curve'."
+        },
+        {
+          "keyword": "Global optimum",
+          "relevance": 1,
+          "rationale": "While the method finds local extrema, the ultimate goal in many optimization problems is to identify the global optimum."
+        },
+        {
+          "keyword": "Local maximum",
+          "relevance": 1,
+          "rationale": "The method described finds candidate points which are often local maxima, a key concept in optimization."
+        },
+        {
+          "keyword": "Minimum",
+          "relevance": 1,
+          "rationale": "Optimization problems involve finding either a maximum or a minimum; they are dual concepts."
+        },
+        {
+          "keyword": "Unconstrained optimization",
+          "relevance": 1,
+          "rationale": "Provides essential context by representing the type of optimization problem that is NOT being solved, helping to define the topic by contrast."
+        }
+      ],
+      "gold_keywords": [
+        "Constrained optimization",
+        "Lagrange multipliers",
+        "Maximum",
+        "Optimization",
+        "Critical point",
+        "Feasible set",
+        "Maximizer",
+        "Optimal solution",
+        "Stationary point",
+        "Tangent line"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The keywords identify the core topic of constrained optimization, its goal of finding a maximum, the geometric interpretation involving tangency, and the associated mathematical concepts and methods.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "kv8pMEALdWo",
+      "url": "https://www.youtube.com/watch?v=kv8pMEALdWo",
+      "mode": "quick",
+      "title": "Introduction to Kuhn-Tucker Conditions",
+      "summary": "The video explains the purpose of Kuhn-Tucker conditions for solving constrained optimization problems. It uses a simple hiking analogy to build intuition for how the conditions identify interior and corner solutions.",
+      "query_text": "Introduction to Kuhn-Tucker Conditions\n\nThe video explains the purpose of Kuhn-Tucker conditions for solving constrained optimization problems. It uses a simple hiking analogy to build intuition for how the conditions identify interior and corner solutions.",
+      "reference_keywords": [
+        "Constrained optimization",
+        "Optimization",
+        "KKT conditions",
+        "Optimal solution",
+        "Lagrange multipliers"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Constrained optimization",
+          "relevance": 3,
+          "rationale": "The summary clearly states that KKT conditions are used for solving constrained optimization problems."
+        },
+        {
+          "keyword": "KKT conditions",
+          "relevance": 3,
+          "rationale": "The video title and summary explicitly state that the topic is an introduction to Kuhn-Tucker conditions."
+        },
+        {
+          "keyword": "Optimal solution",
+          "relevance": 3,
+          "rationale": "The purpose of using KKT conditions is to find the optimal solution to a problem."
+        },
+        {
+          "keyword": "Optimization",
+          "relevance": 3,
+          "rationale": "This is the overarching mathematical field to which the video's topic belongs."
+        },
+        {
+          "keyword": "Feasible set",
+          "relevance": 2,
+          "rationale": "In constrained optimization, the solution must be found within the feasible set defined by the constraints."
+        },
+        {
+          "keyword": "Global optimum",
+          "relevance": 2,
+          "rationale": "KKT conditions are necessary conditions for a point to be a local optimum, which is a step towards finding the global optimum."
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "relevance": 2,
+          "rationale": "Kuhn-Tucker conditions are a generalization of the method of Lagrange multipliers to include inequality constraints, making this a closely related concept."
+        },
+        {
+          "keyword": "Maximizer",
+          "relevance": 2,
+          "rationale": "A maximizer is a type of optimal solution that KKT conditions help identify."
+        },
+        {
+          "keyword": "Maximum",
+          "relevance": 2,
+          "rationale": "Finding the maximum value is a primary goal of optimization problems discussed."
+        },
+        {
+          "keyword": "Minimizer",
+          "relevance": 2,
+          "rationale": "A minimizer is a type of optimal solution that KKT conditions help identify."
+        },
+        {
+          "keyword": "Minimum",
+          "relevance": 2,
+          "rationale": "Finding the minimum value is a primary goal of optimization problems discussed."
+        },
+        {
+          "keyword": "Stationary point",
+          "relevance": 1,
+          "rationale": "KKT conditions are first-order necessary conditions that identify candidate points for optima, which are analogous to stationary points in unconstrained optimization."
+        },
+        {
+          "keyword": "Unconstrained optimization",
+          "relevance": 1,
+          "rationale": "This topic is often discussed as a precursor or a point of contrast to constrained optimization."
+        }
+      ],
+      "gold_keywords": [
+        "Constrained optimization",
+        "KKT conditions",
+        "Optimal solution",
+        "Optimization",
+        "Feasible set",
+        "Global optimum",
+        "Lagrange multipliers",
+        "Maximizer",
+        "Maximum",
+        "Minimizer",
+        "Minimum"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video explains the Kuhn-Tucker (KKT) conditions, which are a fundamental method for solving constrained optimization problems to find an optimal solution.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "QqAPCIIdx-E",
+      "url": "https://www.youtube.com/watch?v=QqAPCIIdx-E",
+      "mode": "quick",
+      "title": "Derivative using Chain and Product Rules",
+      "summary": "This video demonstrates how to find the derivative of a function that is a product of two functions raised to a power. It shows two different approaches, one starting with the chain rule and the other with the product rule, to arrive at the same solution.",
+      "query_text": "Derivative using Chain and Product Rules\n\nThis video demonstrates how to find the derivative of a function that is a product of two functions raised to a power. It shows two different approaches, one starting with the chain rule and the other with the product rule, to arrive at the same solution.",
+      "reference_keywords": [
+        "Chain rule",
+        "Product rule",
+        "Power rule",
+        "Trigonometric rules",
+        "Trigonometric functions"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Chain rule",
+          "relevance": 3,
+          "rationale": "Explicitly mentioned in the video title and summary as a core method being demonstrated."
+        },
+        {
+          "keyword": "Derivative definition",
+          "relevance": 3,
+          "rationale": "The video is fundamentally about the process of finding a derivative."
+        },
+        {
+          "keyword": "Power rule",
+          "relevance": 3,
+          "rationale": "Essential for differentiating the 'functions raised to a power' described in the summary."
+        },
+        {
+          "keyword": "Product rule",
+          "relevance": 3,
+          "rationale": "Explicitly mentioned in the video title and summary as a core method being demonstrated."
+        },
+        {
+          "keyword": "Differentiability",
+          "relevance": 2,
+          "rationale": "A foundational concept, as the video deals with functions for which a derivative can be found."
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "relevance": 2,
+          "rationale": "A fundamental interpretation of the derivative, which is being calculated in the video."
+        },
+        {
+          "keyword": "Leibniz notation",
+          "relevance": 2,
+          "rationale": "A common notation for derivatives that is very likely to be used in this type of demonstration."
+        },
+        {
+          "keyword": "Slope",
+          "relevance": 2,
+          "rationale": "A primary interpretation of what the derivative represents."
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "relevance": 2,
+          "rationale": "A basic differentiation rule that is often required to simplify the result after applying the product or chain rule."
+        },
+        {
+          "keyword": "Critical point",
+          "relevance": 1,
+          "rationale": "Finding critical points is a primary application of the skill taught in the video."
+        },
+        {
+          "keyword": "Higher-order derivatives",
+          "relevance": 1,
+          "rationale": "The techniques shown are the building blocks for finding second and higher-order derivatives."
+        },
+        {
+          "keyword": "Tangent line",
+          "relevance": 1,
+          "rationale": "The derivative gives the slope of the tangent line, a closely related application."
+        }
+      ],
+      "gold_keywords": [
+        "Chain rule",
+        "Derivative definition",
+        "Power rule",
+        "Product rule",
+        "Differentiability",
+        "Instantaneous rate of change",
+        "Leibniz notation",
+        "Slope",
+        "Sum/Difference rule"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "This video explains how to find the derivative of a function by applying the product rule and the chain rule.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "QhB481jPAa4",
+      "url": "https://www.youtube.com/watch?v=QhB481jPAa4",
+      "mode": "quick",
+      "title": "Differentiation of y = cos(ax)",
+      "summary": "This video explains how to find the derivative of the function y = cos(ax) by applying the chain rule. It then demonstrates how to use this result in a more complex example that also requires the product rule.",
+      "query_text": "Differentiation of y = cos(ax)\n\nThis video explains how to find the derivative of the function y = cos(ax) by applying the chain rule. It then demonstrates how to use this result in a more complex example that also requires the product rule.",
+      "reference_keywords": [
+        "Chain rule",
+        "Trigonometric rules",
+        "Product rule",
+        "Trigonometric functions",
+        "Power rule"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Chain rule",
+          "relevance": 3,
+          "rationale": "The summary explicitly states that the chain rule is the primary method used to differentiate y = cos(ax)."
+        },
+        {
+          "keyword": "Product rule",
+          "relevance": 3,
+          "rationale": "The summary explicitly mentions that the product rule is required for a more complex example shown in the video."
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "relevance": 3,
+          "rationale": "The video is about differentiating the trigonometric function cosine."
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "relevance": 3,
+          "rationale": "Finding the derivative of cos(ax) requires knowing the basic differentiation rule for cosine."
+        },
+        {
+          "keyword": "Constant rule",
+          "relevance": 2,
+          "rationale": "The chain rule applied to cos(ax) involves differentiating the inner function 'ax', which uses the constant rule."
+        },
+        {
+          "keyword": "Leibniz notation",
+          "relevance": 2,
+          "rationale": "It is highly probable that the video uses Leibniz notation (dy/dx) to represent the derivative."
+        },
+        {
+          "keyword": "Power rule",
+          "relevance": 2,
+          "rationale": "The derivative of the inner function 'ax' (or ax^1) implicitly uses the power rule."
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "relevance": 1,
+          "rationale": "The derivative is the mathematical representation of the instantaneous rate of change, providing conceptual context."
+        },
+        {
+          "keyword": "Slope",
+          "relevance": 1,
+          "rationale": "The derivative of a function represents the slope of its tangent line, which is a core concept of differentiation."
+        },
+        {
+          "keyword": "Tangent line",
+          "relevance": 1,
+          "rationale": "The result of the differentiation gives the slope of the tangent line to the function at any point."
+        }
+      ],
+      "gold_keywords": [
+        "Chain rule",
+        "Product rule",
+        "Trigonometric functions",
+        "Trigonometric rules",
+        "Constant rule",
+        "Leibniz notation",
+        "Power rule"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video demonstrates finding the derivative of a composite trigonometric function using the chain rule and product rule.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "JTDa2uZS2gI",
+      "url": "https://www.youtube.com/watch?v=JTDa2uZS2gI",
+      "mode": "quick",
+      "title": "Calculating Partial Derivatives",
+      "summary": "The video defines partial differentiation and explains the core principle of treating other variables as constants. It then demonstrates how to calculate partial derivatives for multivariable functions using standard differentiation rules.",
+      "query_text": "Calculating Partial Derivatives\n\nThe video defines partial differentiation and explains the core principle of treating other variables as constants. It then demonstrates how to calculate partial derivatives for multivariable functions using standard differentiation rules.",
+      "reference_keywords": [
+        "Chain rule",
+        "Constant rule",
+        "Derivative definition",
+        "Trigonometric rules",
+        "Power rule"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Partial Derivatives",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Constant rule",
+          "relevance": 3,
+          "rationale": "The core principle explained is treating other variables as constants, which directly involves the constant rule."
+        },
+        {
+          "keyword": "Derivative definition",
+          "relevance": 3,
+          "rationale": "The video explicitly defines partial differentiation, which is a type of derivative."
+        },
+        {
+          "keyword": "Power rule",
+          "relevance": 3,
+          "rationale": "This is one of the most standard differentiation rules that would be used to demonstrate calculations."
+        },
+        {
+          "keyword": "Product rule",
+          "relevance": 3,
+          "rationale": "Mentioned as one of the standard differentiation rules used for calculating partial derivatives."
+        },
+        {
+          "keyword": "Quotient rule",
+          "relevance": 3,
+          "rationale": "Mentioned as one of the standard differentiation rules used for calculating partial derivatives."
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "relevance": 3,
+          "rationale": "A fundamental differentiation rule that would be used in demonstrations with polynomial functions."
+        },
+        {
+          "keyword": "Chain rule",
+          "relevance": 2,
+          "rationale": "A key standard differentiation rule for composite multivariable functions."
+        },
+        {
+          "keyword": "Differentiability",
+          "relevance": 2,
+          "rationale": "The existence of partial derivatives is a necessary condition for differentiability in multivariable calculus."
+        },
+        {
+          "keyword": "Higher-order derivatives",
+          "relevance": 2,
+          "rationale": "Calculating second partial derivatives is a standard and direct extension of the topic."
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "relevance": 2,
+          "rationale": "A partial derivative represents the instantaneous rate of change with respect to one variable."
+        },
+        {
+          "keyword": "Leibniz notation",
+          "relevance": 2,
+          "rationale": "The ∂f/∂x notation used for partial derivatives is a specific form of Leibniz notation."
+        },
+        {
+          "keyword": "Slope",
+          "relevance": 2,
+          "rationale": "A partial derivative gives the slope of a tangent line to a surface in the direction of a coordinate axis."
+        },
+        {
+          "keyword": "Critical point",
+          "relevance": 1,
+          "rationale": "A primary application of partial derivatives is finding critical points by setting them to zero."
+        },
+        {
+          "keyword": "Hessian matrix",
+          "relevance": 1,
+          "rationale": "The video teaches how to calculate second-order partial derivatives, which are the components of the Hessian matrix."
+        }
+      ],
+      "gold_keywords": [
+        "Constant rule",
+        "Derivative definition",
+        "Power rule",
+        "Product rule",
+        "Quotient rule",
+        "Sum/Difference rule",
+        "Chain rule",
+        "Differentiability",
+        "Higher-order derivatives",
+        "Instantaneous rate of change",
+        "Leibniz notation",
+        "Slope"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The keywords identify the core concept of partial differentiation, the specific calculation rules used, and its interpretation as a rate of change.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "TDHI-aieyfk",
+      "url": "https://www.youtube.com/watch?v=TDHI-aieyfk",
+      "mode": "quick",
+      "title": "Derivatives of Common Functions",
+      "summary": "This video lists the derivatives of common trigonometric, exponential, and logarithmic functions. The speaker presents the formulas for sine, cosine, tangent, e^x, and the natural logarithm without proof.",
+      "query_text": "Derivatives of Common Functions\n\nThis video lists the derivatives of common trigonometric, exponential, and logarithmic functions. The speaker presents the formulas for sine, cosine, tangent, e^x, and the natural logarithm without proof.",
+      "reference_keywords": [
+        "Trigonometric rules",
+        "Exponential rule",
+        "Logarithmic rule",
+        "Tangent line",
+        "Slope"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivatives",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Exponential rule",
+          "relevance": 3,
+          "rationale": "The summary explicitly states the video covers the derivative of the exponential function e^x."
+        },
+        {
+          "keyword": "Logarithmic rule",
+          "relevance": 3,
+          "rationale": "The summary explicitly states the video covers the derivative of the natural logarithm function."
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "relevance": 3,
+          "rationale": "The video is about finding the derivatives of this specific class of functions."
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "relevance": 3,
+          "rationale": "The summary explicitly states the video covers the derivatives of trigonometric functions like sine, cosine, and tangent."
+        },
+        {
+          "keyword": "Differentiability",
+          "relevance": 2,
+          "rationale": "The video deals with functions that are differentiable, which is the core property allowing a derivative to be found."
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "relevance": 2,
+          "rationale": "This is the primary physical interpretation of a derivative, which is the central topic of the video."
+        },
+        {
+          "keyword": "Leibniz notation",
+          "relevance": 2,
+          "rationale": "This is a standard notation (e.g., dy/dx) for derivatives and is very likely to be used when presenting the formulas."
+        },
+        {
+          "keyword": "Slope",
+          "relevance": 2,
+          "rationale": "The derivative of a function at a point is fundamentally interpreted as the slope of the tangent line."
+        },
+        {
+          "keyword": "Tangent line",
+          "relevance": 2,
+          "rationale": "The concept of a derivative is geometrically linked to the slope of the tangent line to a function's graph."
+        },
+        {
+          "keyword": "Derivative definition",
+          "relevance": 1,
+          "rationale": "Although the video presents formulas without proof, the entire topic is based on the formal definition of a derivative."
+        },
+        {
+          "keyword": "Power rule",
+          "relevance": 1,
+          "rationale": "The power rule is another fundamental differentiation formula often taught with the exponential and logarithmic rules."
+        },
+        {
+          "keyword": "Smooth function",
+          "relevance": 1,
+          "rationale": "The common functions discussed in the video are all examples of smooth (infinitely differentiable) functions."
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "relevance": 1,
+          "rationale": "This is a basic differentiation rule that is often presented alongside the rules for specific function types."
+        }
+      ],
+      "gold_keywords": [
+        "Exponential rule",
+        "Logarithmic rule",
+        "Trigonometric functions",
+        "Trigonometric rules",
+        "Differentiability",
+        "Instantaneous rate of change",
+        "Leibniz notation",
+        "Slope",
+        "Tangent line"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video presents the standard formulas for the derivatives of common functions, including trigonometric, exponential, and logarithmic types.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    },
+    {
+      "id": "uKfcS7-O6UE",
+      "url": "https://www.youtube.com/watch?v=uKfcS7-O6UE",
+      "mode": "quick",
+      "title": "Quotient Rule for Differentiation",
+      "summary": "This video explains the formula for the quotient rule, which is used to find the derivative of a function expressed as a fraction. A step-by-step example is worked through to demonstrate the application of the rule.",
+      "query_text": "Quotient Rule for Differentiation\n\nThis video explains the formula for the quotient rule, which is used to find the derivative of a function expressed as a fraction. A step-by-step example is worked through to demonstrate the application of the rule.",
+      "reference_keywords": [
+        "Quotient rule",
+        "Constant rule",
+        "Power rule",
+        "Sum/Difference rule",
+        "Leibniz notation"
+      ],
+      "reference_type": "graded_vlm_reference_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivatives",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "graded_reference": [
+        {
+          "keyword": "Derivative definition",
+          "relevance": 3,
+          "rationale": "The quotient rule is a method for finding the derivative of a function, which is a core concept in calculus."
+        },
+        {
+          "keyword": "Differentiability",
+          "relevance": 3,
+          "rationale": "The video is about a rule for differentiation, which applies to differentiable functions."
+        },
+        {
+          "keyword": "Quotient rule",
+          "relevance": 3,
+          "rationale": "This is the central topic of the video, as stated in the title and summary."
+        },
+        {
+          "keyword": "Chain rule",
+          "relevance": 2,
+          "rationale": "The chain rule is another primary differentiation rule that is often used in conjunction with the quotient rule for more complex functions."
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "relevance": 2,
+          "rationale": "This is the physical interpretation of the derivative, which the quotient rule is a tool to calculate."
+        },
+        {
+          "keyword": "Power rule",
+          "relevance": 2,
+          "rationale": "The power rule is a fundamental differentiation rule often used to differentiate the numerator and denominator when applying the quotient rule."
+        },
+        {
+          "keyword": "Product rule",
+          "relevance": 2,
+          "rationale": "The quotient rule is closely related to and can be derived from the product rule; they are both fundamental rules for differentiation."
+        },
+        {
+          "keyword": "Slope",
+          "relevance": 2,
+          "rationale": "The derivative, which the quotient rule calculates, represents the slope of the tangent line to the function."
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "relevance": 2,
+          "rationale": "This basic rule is often required when differentiating the numerator or denominator as part of the quotient rule process."
+        },
+        {
+          "keyword": "Critical point",
+          "relevance": 1,
+          "rationale": "Critical points are found by setting the first derivative to zero, which may have been calculated using the quotient rule."
+        },
+        {
+          "keyword": "First derivative test",
+          "relevance": 1,
+          "rationale": "This test uses the first derivative, which might be found using the quotient rule, to analyze a function's local extrema."
+        },
+        {
+          "keyword": "Leibniz notation",
+          "relevance": 1,
+          "rationale": "This notation (dy/dx) is commonly used when expressing and applying differentiation rules like the quotient rule."
+        },
+        {
+          "keyword": "Tangent line",
+          "relevance": 1,
+          "rationale": "A common application of finding a derivative using the quotient rule is to determine the equation of a tangent line."
+        }
+      ],
+      "gold_keywords": [
+        "Derivative definition",
+        "Differentiability",
+        "Quotient rule",
+        "Chain rule",
+        "Instantaneous rate of change",
+        "Power rule",
+        "Product rule",
+        "Slope",
+        "Sum/Difference rule"
+      ],
+      "reference_model_used": "gemini-2.5-pro",
+      "reference_summary": "The video explains the formula and provides a worked example for the quotient rule, a method used to find the derivative of a fractional function.",
+      "gold_warning": "gold_keywords are derived from graded VLM reference with relevance >= 2; not human ground truth."
+    }
+  ],
+  "failures": [],
+  "elapsed_s": 281.3
+}

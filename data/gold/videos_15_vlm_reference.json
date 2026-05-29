@@ -1,0 +1,434 @@
+{
+  "schema_version": "video-reference-v1",
+  "generated_at": "2026-05-13T01:08:42",
+  "mode": "quick",
+  "n_requested": 15,
+  "n_items": 15,
+  "n_failures": 0,
+  "reference_type": "vlm_keywords_not_human_gold",
+  "gold_from_vlm": true,
+  "items": [
+    {
+      "id": "KTNcYYHuBTY",
+      "url": "https://www.youtube.com/watch?v=KTNcYYHuBTY",
+      "mode": "quick",
+      "title": "Powers of the Imaginary Unit i",
+      "summary": "The video defines the imaginary unit i as the square root of -1. It then calculates the first several integer powers of i, revealing a repeating cycle of four values.",
+      "query_text": "Powers of the Imaginary Unit i\n\nThe video defines the imaginary unit i as the square root of -1. It then calculates the first several integer powers of i, revealing a repeating cycle of four values.",
+      "reference_keywords": [
+        "Powers of i",
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Roots of unity",
+        "Real part"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Powers and Roots",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Powers of i",
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Roots of unity",
+        "Real part"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "BZxZ_eEuJBM",
+      "url": "https://www.youtube.com/watch?v=BZxZ_eEuJBM",
+      "mode": "quick",
+      "title": "Complex Conjugates",
+      "summary": "The video defines the real and imaginary parts of a complex number, then introduces the concept of the complex conjugate. It demonstrates how to represent the conjugate on an Argand diagram and uses it to perform operations like addition and division of complex numbers.",
+      "query_text": "Complex Conjugates\n\nThe video defines the real and imaginary parts of a complex number, then introduces the concept of the complex conjugate. It demonstrates how to represent the conjugate on an Argand diagram and uses it to perform operations like addition and division of complex numbers.",
+      "reference_keywords": [
+        "Operations with complex numbers",
+        "Imaginary part",
+        "Conjugate number",
+        "Complex plane",
+        "Real part"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Arithmetic",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Operations with complex numbers",
+        "Imaginary part",
+        "Conjugate number",
+        "Complex plane",
+        "Real part"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "kpywdu1afas",
+      "url": "https://www.youtube.com/watch?v=kpywdu1afas",
+      "mode": "quick",
+      "title": "Introduction to Complex Numbers",
+      "summary": "This video defines complex numbers as numbers with a real and an imaginary part. It shows how to visualize them on the complex plane and perform basic arithmetic like addition, subtraction, and multiplication.",
+      "query_text": "Introduction to Complex Numbers\n\nThis video defines complex numbers as numbers with a real and an imaginary part. It shows how to visualize them on the complex plane and perform basic arithmetic like addition, subtraction, and multiplication.",
+      "reference_keywords": [
+        "Operations with complex numbers",
+        "Complex plane",
+        "Imaginary part",
+        "Rectangular form (Standard form)",
+        "Real part"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Operations with complex numbers",
+        "Complex plane",
+        "Imaginary part",
+        "Rectangular form (Standard form)",
+        "Real part"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "KeYfQ8Em9BU",
+      "url": "https://www.youtube.com/watch?v=KeYfQ8Em9BU",
+      "mode": "quick",
+      "title": "Regions in the Complex Plane",
+      "summary": "This video demonstrates how to represent inequalities involving complex numbers on the Argand diagram. It illustrates how to find the locus of a complex number by shading the region that satisfies conditions on its real and imaginary parts.",
+      "query_text": "Regions in the Complex Plane\n\nThis video demonstrates how to represent inequalities involving complex numbers on the Argand diagram. It illustrates how to find the locus of a complex number by shading the region that satisfies conditions on its real and imaginary parts.",
+      "reference_keywords": [
+        "Regions in the complex plane",
+        "Complex plane",
+        "Imaginary part",
+        "Argand diagram",
+        "Real part"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Regions in the complex plane",
+        "Complex plane",
+        "Imaginary part",
+        "Argand diagram",
+        "Real part"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "AqtgBbEI4wM",
+      "url": "https://www.youtube.com/watch?v=AqtgBbEI4wM",
+      "mode": "quick",
+      "title": "Locus of Complex Numbers",
+      "summary": "The video explains how to find and sketch the locus of a complex number based on equations involving its modulus. It shows that the locus can be a circle or a line, depending on the form of the equation.",
+      "query_text": "Locus of Complex Numbers\n\nThe video explains how to find and sketch the locus of a complex number based on equations involving its modulus. It shows that the locus can be a circle or a line, depending on the form of the equation.",
+      "reference_keywords": [
+        "Modulus of a complex number",
+        "Equations involving complex numbers",
+        "Regions in the complex plane",
+        "Argand diagram",
+        "Rectangular form (Standard form)"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Modulus of a complex number",
+        "Equations involving complex numbers",
+        "Regions in the complex plane",
+        "Argand diagram",
+        "Rectangular form (Standard form)"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "G8GAsYkZlpE",
+      "url": "https://www.youtube.com/watch?v=G8GAsYkZlpE",
+      "mode": "quick",
+      "title": "Using the Second Derivative Test",
+      "summary": "The video explains how to use the second derivative test to find relative extrema of a function. It demonstrates how the sign of the second derivative at a critical point determines if it is a local maximum or minimum.",
+      "query_text": "Using the Second Derivative Test\n\nThe video explains how to use the second derivative test to find relative extrema of a function. It demonstrates how the sign of the second derivative at a critical point determines if it is a local maximum or minimum.",
+      "reference_keywords": [
+        "Second derivative test",
+        "Local maximum",
+        "Local minimum",
+        "Critical point",
+        "Concavity"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Extrema and Concavity",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Second derivative test",
+        "Local maximum",
+        "Local minimum",
+        "Critical point",
+        "Concavity"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "8mjcnxGMwFo",
+      "url": "https://www.youtube.com/watch?v=8mjcnxGMwFo",
+      "mode": "quick",
+      "title": "Lagrange Multipliers",
+      "summary": "This video introduces the concept of constrained optimization, which involves finding the maximum or minimum of a function subject to a restriction. It explains the method of Lagrange multipliers, where the gradient vectors of the function and the constraint are parallel.",
+      "query_text": "Lagrange Multipliers\n\nThis video introduces the concept of constrained optimization, which involves finding the maximum or minimum of a function subject to a restriction. It explains the method of Lagrange multipliers, where the gradient vectors of the function and the constraint are parallel.",
+      "reference_keywords": [
+        "Lagrange multipliers",
+        "Constrained optimization",
+        "Optimization",
+        "Minimum",
+        "Maximum"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Lagrange multipliers",
+        "Constrained optimization",
+        "Optimization",
+        "Minimum",
+        "Maximum"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "LVLuqNH5iWw",
+      "url": "https://www.youtube.com/watch?v=LVLuqNH5iWw",
+      "mode": "quick",
+      "title": "Finding Local Extrema of a Multivariable Function",
+      "summary": "This video explains the process of finding local extrema for a function of two variables. It demonstrates how to locate critical points by setting partial derivatives to zero and then classifies them using the second derivative test.",
+      "query_text": "Finding Local Extrema of a Multivariable Function\n\nThis video explains the process of finding local extrema for a function of two variables. It demonstrates how to locate critical points by setting partial derivatives to zero and then classifies them using the second derivative test.",
+      "reference_keywords": [
+        "Local maximum",
+        "Local minimum",
+        "Critical point",
+        "Second derivative test",
+        "Saddle point"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Extrema and Concavity",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Local maximum",
+        "Local minimum",
+        "Critical point",
+        "Second derivative test",
+        "Saddle point"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "vwUV2IDLP8Q",
+      "url": "https://www.youtube.com/watch?v=vwUV2IDLP8Q",
+      "mode": "quick",
+      "title": "Introduction to Constrained Optimization",
+      "summary": "The video introduces constrained optimization, which involves finding the maximum or minimum of a function within a specific set of allowed inputs. It visualizes this concept by overlaying the constraint curve on the function's contour map, showing that the optimum occurs at a point of tangency.",
+      "query_text": "Introduction to Constrained Optimization\n\nThe video introduces constrained optimization, which involves finding the maximum or minimum of a function within a specific set of allowed inputs. It visualizes this concept by overlaying the constraint curve on the function's contour map, showing that the optimum occurs at a point of tangency.",
+      "reference_keywords": [
+        "Constrained optimization",
+        "Optimization",
+        "Lagrange multipliers",
+        "Global optimum",
+        "Maximum"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Constrained optimization",
+        "Optimization",
+        "Lagrange multipliers",
+        "Global optimum",
+        "Maximum"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "kv8pMEALdWo",
+      "url": "https://www.youtube.com/watch?v=kv8pMEALdWo",
+      "mode": "quick",
+      "title": "Introduction to Kuhn-Tucker Conditions",
+      "summary": "This video explains the intuition behind Kuhn-Tucker conditions for constrained optimization problems. It uses a simple example of a hiker on a mountain to illustrate corner solutions and interior solutions.",
+      "query_text": "Introduction to Kuhn-Tucker Conditions\n\nThis video explains the intuition behind Kuhn-Tucker conditions for constrained optimization problems. It uses a simple example of a hiker on a mountain to illustrate corner solutions and interior solutions.",
+      "reference_keywords": [
+        "Constrained optimization",
+        "Optimization",
+        "KKT conditions",
+        "Optimal solution",
+        "First derivative test"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Constrained optimization",
+        "Optimization",
+        "KKT conditions",
+        "Optimal solution",
+        "First derivative test"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "QqAPCIIdx-E",
+      "url": "https://www.youtube.com/watch?v=QqAPCIIdx-E",
+      "mode": "quick",
+      "title": "Derivative using Chain and Product Rules",
+      "summary": "This video demonstrates how to find the derivative of a function that is a product raised to a power. The speaker shows two different methods for solving the problem, one starting with the chain rule and the other with the product rule, to show they both lead to the same result.",
+      "query_text": "Derivative using Chain and Product Rules\n\nThis video demonstrates how to find the derivative of a function that is a product raised to a power. The speaker shows two different methods for solving the problem, one starting with the chain rule and the other with the product rule, to show they both lead to the same result.",
+      "reference_keywords": [
+        "Chain rule",
+        "Product rule",
+        "Power rule",
+        "Trigonometric rules",
+        "Leibniz notation"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Chain rule",
+        "Product rule",
+        "Power rule",
+        "Trigonometric rules",
+        "Leibniz notation"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "QhB481jPAa4",
+      "url": "https://www.youtube.com/watch?v=QhB481jPAa4",
+      "mode": "quick",
+      "title": "Differentiation of y = cos(ax)",
+      "summary": "This video demonstrates how to differentiate the function y = cos(ax) using the chain rule. It derives the general formula and applies it to an example that also requires the product rule.",
+      "query_text": "Differentiation of y = cos(ax)\n\nThis video demonstrates how to differentiate the function y = cos(ax) using the chain rule. It derives the general formula and applies it to an example that also requires the product rule.",
+      "reference_keywords": [
+        "Chain rule",
+        "Trigonometric rules",
+        "Product rule",
+        "Trigonometric functions",
+        "Power rule"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Chain rule",
+        "Trigonometric rules",
+        "Product rule",
+        "Trigonometric functions",
+        "Power rule"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "JTDa2uZS2gI",
+      "url": "https://www.youtube.com/watch?v=JTDa2uZS2gI",
+      "mode": "quick",
+      "title": "Calculating Partial Derivatives",
+      "summary": "The video defines partial differentiation and explains the core principle of treating other variables as constants. It then demonstrates how to calculate partial derivatives for a multivariable function using the chain rule.",
+      "query_text": "Calculating Partial Derivatives\n\nThe video defines partial differentiation and explains the core principle of treating other variables as constants. It then demonstrates how to calculate partial derivatives for a multivariable function using the chain rule.",
+      "reference_keywords": [
+        "Chain rule",
+        "Derivative definition",
+        "Higher-order derivatives",
+        "Trigonometric rules",
+        "Power rule"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Chain rule",
+        "Derivative definition",
+        "Higher-order derivatives",
+        "Trigonometric rules",
+        "Power rule"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "TDHI-aieyfk",
+      "url": "https://www.youtube.com/watch?v=TDHI-aieyfk",
+      "mode": "quick",
+      "title": "Derivatives of Common Functions",
+      "summary": "This video presents the derivative formulas for several common functions without providing proofs. It covers the derivatives of trigonometric functions (sine, cosine, tangent), the exponential function e^x, and the natural logarithm ln(x).",
+      "query_text": "Derivatives of Common Functions\n\nThis video presents the derivative formulas for several common functions without providing proofs. It covers the derivatives of trigonometric functions (sine, cosine, tangent), the exponential function e^x, and the natural logarithm ln(x).",
+      "reference_keywords": [
+        "Trigonometric rules",
+        "Exponential rule",
+        "Logarithmic rule",
+        "Tangent line",
+        "Slope"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivatives",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Trigonometric rules",
+        "Exponential rule",
+        "Logarithmic rule",
+        "Tangent line",
+        "Slope"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    },
+    {
+      "id": "uKfcS7-O6UE",
+      "url": "https://www.youtube.com/watch?v=uKfcS7-O6UE",
+      "mode": "quick",
+      "title": "Applying the Quotient Rule",
+      "summary": "The video explains the quotient rule for differentiating a function that is a ratio of two other functions. It demonstrates the rule by applying it to a specific rational function and simplifying the result.",
+      "query_text": "Applying the Quotient Rule\n\nThe video explains the quotient rule for differentiating a function that is a ratio of two other functions. It demonstrates the rule by applying it to a specific rational function and simplifying the result.",
+      "reference_keywords": [
+        "Quotient rule",
+        "Constant rule",
+        "Power rule",
+        "Sum/Difference rule",
+        "Leibniz notation"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "model_used": "gemini-2.5-pro",
+      "cached": false,
+      "gold_keywords": [
+        "Quotient rule",
+        "Constant rule",
+        "Power rule",
+        "Sum/Difference rule",
+        "Leibniz notation"
+      ],
+      "gold_warning": "VLM keywords copied as gold for agreement testing; not human ground truth."
+    }
+  ],
+  "failures": [],
+  "elapsed_s": 469.2
+}

@@ -1,0 +1,314 @@
+{
+  "schema_version": "video-reference-v1",
+  "generated_at": "2026-05-13T02:02:55",
+  "mode": "quick",
+  "n_requested": 15,
+  "n_items": 15,
+  "n_failures": 0,
+  "reference_type": "vlm_keywords_not_human_gold",
+  "gold_from_vlm": false,
+  "items": [
+    {
+      "id": "KTNcYYHuBTY",
+      "url": "https://www.youtube.com/watch?v=KTNcYYHuBTY",
+      "mode": "quick",
+      "title": "Powers of the Imaginary Unit i",
+      "summary": "This video introduces the imaginary unit i as the square root of -1 and calculates its integer powers. It demonstrates that the powers of i follow a repeating cycle of four values: i, -1, -i, and 1.",
+      "query_text": "Powers of the Imaginary Unit i\n\nThis video introduces the imaginary unit i as the square root of -1 and calculates its integer powers. It demonstrates that the powers of i follow a repeating cycle of four values: i, -1, -i, and 1.",
+      "reference_keywords": [
+        "Powers of i",
+        "Powers of complex numbers",
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Nth root"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Powers and Roots",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "BZxZ_eEuJBM",
+      "url": "https://www.youtube.com/watch?v=BZxZ_eEuJBM",
+      "mode": "quick",
+      "title": "Complex Conjugates",
+      "summary": "The video clarifies the formal definition of the real and imaginary parts of a complex number, a + bi. It then defines the complex conjugate, a - bi, and shows how it can be used to simplify the division of complex numbers.",
+      "query_text": "Complex Conjugates\n\nThe video clarifies the formal definition of the real and imaginary parts of a complex number, a + bi. It then defines the complex conjugate, a - bi, and shows how it can be used to simplify the division of complex numbers.",
+      "reference_keywords": [
+        "Operations with complex numbers",
+        "Imaginary part",
+        "Conjugate number",
+        "Real part",
+        "Argand diagram"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Arithmetic",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "kpywdu1afas",
+      "url": "https://www.youtube.com/watch?v=kpywdu1afas",
+      "mode": "quick",
+      "title": "Introduction to Complex Numbers",
+      "summary": "The video defines the imaginary unit 'i' as the square root of -1 and uses it to simplify roots of negative numbers. It then introduces complex numbers as having a real and an imaginary part, and shows how to plot them on the complex plane.",
+      "query_text": "Introduction to Complex Numbers\n\nThe video defines the imaginary unit 'i' as the square root of -1 and uses it to simplify roots of negative numbers. It then introduces complex numbers as having a real and an imaginary part, and shows how to plot them on the complex plane.",
+      "reference_keywords": [
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Complex plane",
+        "Powers of i",
+        "Real part"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "KeYfQ8Em9BU",
+      "url": "https://www.youtube.com/watch?v=KeYfQ8Em9BU",
+      "mode": "quick",
+      "title": "Regions in the complex plane",
+      "summary": "The video demonstrates how to represent inequalities involving complex numbers on the complex plane. It shows how to identify and shade the locus of points satisfying various conditions on their real and imaginary parts.",
+      "query_text": "Regions in the complex plane\n\nThe video demonstrates how to represent inequalities involving complex numbers on the complex plane. It shows how to identify and shade the locus of points satisfying various conditions on their real and imaginary parts.",
+      "reference_keywords": [
+        "Regions in the complex plane",
+        "Complex plane",
+        "Imaginary part",
+        "Real part",
+        "Rectangular form (Standard form)"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "AqtgBbEI4wM",
+      "url": "https://www.youtube.com/watch?v=AqtgBbEI4wM",
+      "mode": "quick",
+      "title": "Sketching the Locus of Complex Numbers",
+      "summary": "The video explains how to find the locus of points for a complex number z based on given equations. It demonstrates that an equation of the form |z - z_0| = r represents a circle and |z - z_1| = |z - z_2| represents a line.",
+      "query_text": "Sketching the Locus of Complex Numbers\n\nThe video explains how to find the locus of points for a complex number z based on given equations. It demonstrates that an equation of the form |z - z_0| = r represents a circle and |z - z_1| = |z - z_2| represents a line.",
+      "reference_keywords": [
+        "Equations involving complex numbers",
+        "Regions in the complex plane",
+        "Modulus of a complex number",
+        "Argand diagram",
+        "Algebraic form"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "G8GAsYkZlpE",
+      "url": "https://www.youtube.com/watch?v=G8GAsYkZlpE",
+      "mode": "quick",
+      "title": "Second Derivative Test for Relative Extrema",
+      "summary": "The video explains how to use the second derivative test to determine if a critical point is a local maximum or minimum. The method is demonstrated on a polynomial function, and the result is confirmed using the first derivative test.",
+      "query_text": "Second Derivative Test for Relative Extrema\n\nThe video explains how to use the second derivative test to determine if a critical point is a local maximum or minimum. The method is demonstrated on a polynomial function, and the result is confirmed using the first derivative test.",
+      "reference_keywords": [
+        "Second derivative test",
+        "Local maximum",
+        "Local minimum",
+        "Critical point",
+        "Concavity"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Extrema and Concavity",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "8mjcnxGMwFo",
+      "url": "https://www.youtube.com/watch?v=8mjcnxGMwFo",
+      "mode": "quick",
+      "title": "Lagrange Multipliers",
+      "summary": "This video introduces the concept of constrained optimization, where the goal is to find the maximum or minimum of a function subject to a constraint. It explains the method of Lagrange multipliers, which finds these optimal points by identifying where the gradient of the function is parallel to the gradient of the constraint.",
+      "query_text": "Lagrange Multipliers\n\nThis video introduces the concept of constrained optimization, where the goal is to find the maximum or minimum of a function subject to a constraint. It explains the method of Lagrange multipliers, which finds these optimal points by identifying where the gradient of the function is parallel to the gradient of the constraint.",
+      "reference_keywords": [
+        "Lagrange multipliers",
+        "Constrained optimization",
+        "Optimization",
+        "Minimum",
+        "Maximum"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "LVLuqNH5iWw",
+      "url": "https://www.youtube.com/watch?v=LVLuqNH5iWw",
+      "mode": "quick",
+      "title": "Local Extrema of a Multivariable Function",
+      "summary": "The video explains how to find the local extrema of a function with two variables. It demonstrates the process by first finding the critical points and then classifying them using the second derivative test.",
+      "query_text": "Local Extrema of a Multivariable Function\n\nThe video explains how to find the local extrema of a function with two variables. It demonstrates the process by first finding the critical points and then classifying them using the second derivative test.",
+      "reference_keywords": [
+        "Local maximum",
+        "Local minimum",
+        "Second derivative test",
+        "Critical point",
+        "Saddle point"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Extrema and Concavity",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "vwUV2IDLP8Q",
+      "url": "https://www.youtube.com/watch?v=vwUV2IDLP8Q",
+      "mode": "quick",
+      "title": "Constrained Optimization",
+      "summary": "The video introduces constrained optimization by seeking to maximize a multivariable function subject to a constraint equation. It visualizes the problem using the function's 3D graph and 2D contour lines, showing the solution occurs where a contour line is tangent to the constraint curve.",
+      "query_text": "Constrained Optimization\n\nThe video introduces constrained optimization by seeking to maximize a multivariable function subject to a constraint equation. It visualizes the problem using the function's 3D graph and 2D contour lines, showing the solution occurs where a contour line is tangent to the constraint curve.",
+      "reference_keywords": [
+        "Constrained optimization",
+        "Optimization",
+        "Lagrange multipliers",
+        "Feasible set",
+        "Maximum"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "kv8pMEALdWo",
+      "url": "https://www.youtube.com/watch?v=kv8pMEALdWo",
+      "mode": "quick",
+      "title": "Introduction to Kuhn-Tucker Conditions",
+      "summary": "The video explains the purpose of Kuhn-Tucker conditions for solving constrained optimization problems. It uses a simple hiking analogy to build intuition for how the conditions identify interior and corner solutions.",
+      "query_text": "Introduction to Kuhn-Tucker Conditions\n\nThe video explains the purpose of Kuhn-Tucker conditions for solving constrained optimization problems. It uses a simple hiking analogy to build intuition for how the conditions identify interior and corner solutions.",
+      "reference_keywords": [
+        "Constrained optimization",
+        "Optimization",
+        "KKT conditions",
+        "Optimal solution",
+        "Lagrange multipliers"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "QqAPCIIdx-E",
+      "url": "https://www.youtube.com/watch?v=QqAPCIIdx-E",
+      "mode": "quick",
+      "title": "Derivative using Chain and Product Rules",
+      "summary": "This video demonstrates how to find the derivative of a function that is a product of two functions raised to a power. It shows two different approaches, one starting with the chain rule and the other with the product rule, to arrive at the same solution.",
+      "query_text": "Derivative using Chain and Product Rules\n\nThis video demonstrates how to find the derivative of a function that is a product of two functions raised to a power. It shows two different approaches, one starting with the chain rule and the other with the product rule, to arrive at the same solution.",
+      "reference_keywords": [
+        "Chain rule",
+        "Product rule",
+        "Power rule",
+        "Trigonometric rules",
+        "Trigonometric functions"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "QhB481jPAa4",
+      "url": "https://www.youtube.com/watch?v=QhB481jPAa4",
+      "mode": "quick",
+      "title": "Differentiation of y = cos(ax)",
+      "summary": "This video explains how to find the derivative of the function y = cos(ax) by applying the chain rule. It then demonstrates how to use this result in a more complex example that also requires the product rule.",
+      "query_text": "Differentiation of y = cos(ax)\n\nThis video explains how to find the derivative of the function y = cos(ax) by applying the chain rule. It then demonstrates how to use this result in a more complex example that also requires the product rule.",
+      "reference_keywords": [
+        "Chain rule",
+        "Trigonometric rules",
+        "Product rule",
+        "Trigonometric functions",
+        "Power rule"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "JTDa2uZS2gI",
+      "url": "https://www.youtube.com/watch?v=JTDa2uZS2gI",
+      "mode": "quick",
+      "title": "Calculating Partial Derivatives",
+      "summary": "The video defines partial differentiation and explains the core principle of treating other variables as constants. It then demonstrates how to calculate partial derivatives for multivariable functions using standard differentiation rules.",
+      "query_text": "Calculating Partial Derivatives\n\nThe video defines partial differentiation and explains the core principle of treating other variables as constants. It then demonstrates how to calculate partial derivatives for multivariable functions using standard differentiation rules.",
+      "reference_keywords": [
+        "Chain rule",
+        "Constant rule",
+        "Derivative definition",
+        "Trigonometric rules",
+        "Power rule"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Partial Derivatives",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "TDHI-aieyfk",
+      "url": "https://www.youtube.com/watch?v=TDHI-aieyfk",
+      "mode": "quick",
+      "title": "Derivatives of Common Functions",
+      "summary": "This video lists the derivatives of common trigonometric, exponential, and logarithmic functions. The speaker presents the formulas for sine, cosine, tangent, e^x, and the natural logarithm without proof.",
+      "query_text": "Derivatives of Common Functions\n\nThis video lists the derivatives of common trigonometric, exponential, and logarithmic functions. The speaker presents the formulas for sine, cosine, tangent, e^x, and the natural logarithm without proof.",
+      "reference_keywords": [
+        "Trigonometric rules",
+        "Exponential rule",
+        "Logarithmic rule",
+        "Tangent line",
+        "Slope"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivatives",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    },
+    {
+      "id": "uKfcS7-O6UE",
+      "url": "https://www.youtube.com/watch?v=uKfcS7-O6UE",
+      "mode": "quick",
+      "title": "Quotient Rule for Differentiation",
+      "summary": "This video explains the formula for the quotient rule, which is used to find the derivative of a function expressed as a fraction. A step-by-step example is worked through to demonstrate the application of the rule.",
+      "query_text": "Quotient Rule for Differentiation\n\nThis video explains the formula for the quotient rule, which is used to find the derivative of a function expressed as a fraction. A step-by-step example is worked through to demonstrate the application of the rule.",
+      "reference_keywords": [
+        "Quotient rule",
+        "Constant rule",
+        "Power rule",
+        "Sum/Difference rule",
+        "Leibniz notation"
+      ],
+      "reference_type": "vlm_keywords_not_human_gold",
+      "topic": "Differentiation",
+      "subtopic": "Derivatives",
+      "model_used": "gemini-2.5-pro",
+      "cached": false
+    }
+  ],
+  "failures": [],
+  "elapsed_s": 306.2
+}
