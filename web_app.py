@@ -262,9 +262,15 @@ def _no_cache_for_ui(response):
 
 def _classify(line: str) -> dict:
     """Classify a log line into a typed SSE event."""
-    m = re.match(r"\[L(\d+b?)\]\s*(.*)", line)
+    m = re.match(r"\[(L\d+[A-Za-z]*|SIM)\]\s*(.*)", line)
     if m:
-        return {"type": "layer", "layer": m.group(1), "detail": m.group(2)}
+        token = m.group(1)
+        if token == "SIM":
+            layer = "sim"
+        else:
+            body = token[1:].lower()
+            layer = body if re.fullmatch(r"\d+b?", body) else token.lower()
+        return {"type": "layer", "layer": layer, "detail": m.group(2)}
     if "LLM:" in line or "VLM" in line:
         return {"type": "config", "text": line}
     if "Consensus" in line or "[OK]" in line:
@@ -651,6 +657,17 @@ if __name__ == "__main__":
     _log.info("  STEP Pipeline - Web UI")
     _log.info(f"  Max concurrent solves: {_MAX_CONCURRENT_SOLVES}")
     _log.info(f"  Web solver config: nougat={_WEB_USE_NOUGAT}, vlm={_WEB_USE_VLM}")
+    try:
+        from semantic_similarity import default_similarity_config
+
+        _sim_cfg = default_similarity_config()
+        _log.info(
+            f"  Video similarity: backend={_sim_cfg.backend}, metric={_sim_cfg.metric}, "
+            f"top_k={_sim_cfg.top_k}"
+        )
+    except Exception as e:
+        _log.info(f"  Video similarity: unavailable ({str(e)[:80]})")
+    _log.info(f"  Video cache disabled: {os.environ.get('STEP_DISABLE_VIDEO_CACHE', '')}")
     _log.info("  " + "=" * 44)
     _log.info("")
     _log.info("  Tarayiciya TAM su adresi yapistirin (http:// sart):")

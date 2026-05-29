@@ -671,6 +671,16 @@ body {
   margin-bottom: 8px;
   word-break: break-word;
 }
+.problem-text-plain {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text2);
+  background: rgba(255,255,255,.025);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .problem-kw-list {
   display: flex;
   flex-wrap: wrap;
@@ -1276,7 +1286,7 @@ body {
 
           <!-- Answer (primary focus) -->
           <div class="card" id="solutionCard">
-            <div class="card-head">Answer</div>
+            <div class="card-head" id="solutionCardHead">Answer</div>
             <div class="answer-box" id="answerBox"></div>
             <div class="compact-note" id="compactNote" style="display:none"></div>
             <div class="meta-pills" id="solutionMeta"></div>
@@ -1296,21 +1306,21 @@ body {
             </div>
           </div>
 
-          <!-- Problems detected (Deep video mode) -->
+          <!-- Scene keyword rankings (Deep video mode) -->
           <div class="card problems-card" id="problemsCard" style="display:none">
-            <div class="card-head">Problems detected</div>
+            <div class="card-head">Scene keyword rankings</div>
             <div class="card-body" id="problemsBody"></div>
           </div>
 
-          <!-- Classification (MathE style) -->
+          <!-- Video classification (MathE style) -->
           <div class="card class-card" id="classCard">
-            <div class="card-head">Classification</div>
+            <div class="card-head">Video classification</div>
             <div class="card-body" id="classBody"></div>
           </div>
 
-          <!-- Most relevant keywords (top 5 from the built-in taxonomy) -->
+          <!-- Global video keywords (top 5 from the built-in taxonomy) -->
           <div class="card relevant-card" id="topKwCard" style="display:none">
-            <div class="card-head">Most relevant keywords</div>
+            <div class="card-head">Global video keywords</div>
             <div class="card-body">
               <div class="relevant-list" id="topKwList"></div>
             </div>
@@ -1382,7 +1392,7 @@ function normalizePipelineText(s) {
 }
 
 // ── Constants ──
-const LAYERS = [
+const PDF_LAYERS = [
   {id:'0', name:'PDF processing', label:'L0'},
   {id:'1', name:'Profile analysis', label:'L1'},
   {id:'3', name:'VLM extraction', label:'L3'},
@@ -1393,7 +1403,20 @@ const LAYERS = [
   {id:'7', name:'Keyword evaluation', label:'L7'},
 ];
 
-const LAYER_ORDER = LAYERS.map(l => l.id);
+const VIDEO_LAYERS_QUICK = [
+  {id:'l3v', name:'Video summary', label:'L3v'},
+  {id:'sim', name:'Semantic keyword ranking', label:'SIM'},
+];
+
+const VIDEO_LAYERS_DEEP = [
+  {id:'l3v', name:'Video summary', label:'L3v'},
+  {id:'l0v', name:'Video download and frames', label:'L0v'},
+  {id:'l3vd', name:'Frame VLM scenes', label:'L3vd'},
+  {id:'sim', name:'Semantic keyword ranking', label:'SIM'},
+];
+
+let activeLayers = PDF_LAYERS;
+let activeLayerOrder = activeLayers.map(l => l.id);
 
 let currentTaskId = null;
 let eventSource = null;
@@ -1688,16 +1711,16 @@ function analyzeYoutube(url) {
 }
 
 function startVideoAnalysis({file, url}) {
-  resetPipeline();
-  loadingBar.classList.add('active');
-  startTimer();
-
   const fd = new FormData();
   if (url) fd.append('youtube_url', url);
   if (file) fd.append('video', file);
   const modeEl = document.querySelector('input[name="videoMode"]:checked');
   const mode = modeEl ? modeEl.value : 'quick';
   fd.append('mode', mode);
+
+  resetPipeline(mode === 'deep' ? VIDEO_LAYERS_DEEP : VIDEO_LAYERS_QUICK);
+  loadingBar.classList.add('active');
+  startTimer();
 
   // Show only the stages that actually run for video analysis.
   const stepsWrap = $('stepsWrap');
@@ -1960,7 +1983,10 @@ function startTimer() {
 function stopTimer() { clearInterval(timerInterval); }
 
 // ── Pipeline Reset ──
-function resetPipeline() {
+function resetPipeline(layers = PDF_LAYERS) {
+  activeLayers = layers;
+  activeLayerOrder = activeLayers.map(l => l.id);
+
   $('outputPlaceholder').style.display = 'none';
   $('pipelineView').style.display = 'block';
   $('cardsSection').style.display = 'none';
@@ -1975,7 +2001,7 @@ function resetPipeline() {
 
   const c = $('stepsContainer');
   c.innerHTML = '';
-  LAYERS.forEach(l => {
+  activeLayers.forEach(l => {
     const div = document.createElement('div');
     div.className = 'step pending';
     div.id = `step-${l.id}`;
@@ -2018,7 +2044,7 @@ function handleEvent(msg) {
     case 'layer': {
       const d = normalizePipelineText(msg.detail);
       updateLayer(msg.layer, d);
-      addTerminal(`[L${msg.layer}] ${d}`, 'layer');
+      addTerminal(`[${formatLayerLabel(msg.layer)}] ${d}`, 'layer');
       break;
     }
     case 'config':
@@ -2064,9 +2090,18 @@ function handleEvent(msg) {
 }
 
 // ── Layer Updates ──
+function formatLayerLabel(layerId) {
+  const id = String(layerId || '').toLowerCase();
+  if (id === 'sim') return 'SIM';
+  if (id.startsWith('l')) return id.toUpperCase();
+  return `L${id}`;
+}
+
 function updateLayer(layerId, detail) {
-  const idx = LAYER_ORDER.indexOf(layerId);
-  LAYERS.forEach((l, i) => {
+  layerId = String(layerId || '').toLowerCase();
+  const idx = activeLayerOrder.indexOf(layerId);
+  if (idx < 0) return;
+  activeLayers.forEach((l, i) => {
     const el = $(`step-${l.id}`);
     if (!el) return;
     if (i < idx) {
@@ -2105,11 +2140,14 @@ function toggleTerminal() {
 function toggleSolution() {
   const c = $('solutionContent');
   const btn = $('solToggle');
+  const isVideo = $('solutionCardHead')?.textContent === 'Video solution';
   c.classList.toggle('open');
   btn.classList.toggle('open');
   btn.querySelector('.arrow').textContent = c.classList.contains('open') ? '−' : '+';
   btn.childNodes[btn.childNodes.length - 1].textContent =
-    c.classList.contains('open') ? ' Hide full solution' : ' Show full solution';
+    c.classList.contains('open')
+      ? (isVideo ? ' Hide video solution' : ' Hide full solution')
+      : (isVideo ? ' Show video solution' : ' Show full solution');
   if (c.classList.contains('open') && window.MathJax) {
     MathJax.typesetPromise([c]);
   }
@@ -2136,14 +2174,14 @@ function toggleAnalysis() {
 // ── Show Result ──
 function showResult(data) {
   // Mark all steps done
-  LAYERS.forEach(l => {
+  activeLayers.forEach(l => {
     const el = $(`step-${l.id}`);
     if (el) el.className = 'step done';
   });
 
   $('cardsSection').style.display = 'flex';
 
-  // Video analysis has a different shape: no answer, no solution.
+  // Video analysis has a different shape from the PDF solver.
   if (data && data.media === 'video') {
     showVideoResult(data);
     return;
@@ -2153,6 +2191,8 @@ function showResult(data) {
   if (videoCard) videoCard.style.display = 'none';
   const solutionCard = $('solutionCard');
   if (solutionCard) solutionCard.style.display = '';
+  const solutionCardHead = $('solutionCardHead');
+  if (solutionCardHead) solutionCardHead.textContent = 'Answer';
 
   // ─ Answer (primary focus) ─
   const answer = data.final_answer || '?';
@@ -2366,9 +2406,36 @@ pseudoGoldObserver.observe(document.documentElement, {
 function showVideoResult(data) {
   if (data && typeof data === 'object') delete data.pseudo_gold_eval;
 
-  // Hide PDF-only cards that do not apply.
+  // Video solution: shown separately from keyword/classification metrics.
   const solutionCard = $('solutionCard');
-  if (solutionCard) solutionCard.style.display = 'none';
+  const solutionCardHead = $('solutionCardHead');
+  const answerBox = $('answerBox');
+  const solutionMeta = $('solutionMeta');
+  const solutionContent = $('solutionContent');
+  const solToggle = $('solToggle');
+  if (solutionCardHead) solutionCardHead.textContent = 'Video solution';
+  if (data.solution && solutionCard && answerBox && solutionContent) {
+    solutionCard.style.display = '';
+    answerBox.innerHTML = `
+      <div class="answer-label">Explanation</div>
+      <div class="answer-value">${esc(data.title || 'Video solution')}</div>
+    `;
+    if (solutionMeta) {
+      const meta = [];
+      if (data.model_used) meta.push(`<span class="pill pill-info">${esc(data.model_used)}</span>`);
+      if (typeof data.elapsed_s === 'number') meta.push(`<span class="pill pill-neutral">${data.elapsed_s}s</span>`);
+      solutionMeta.innerHTML = meta.join('');
+    }
+    solutionContent.innerHTML = renderSolution(data.solution);
+    solutionContent.classList.add('open');
+    if (solToggle) {
+      solToggle.classList.add('open');
+      solToggle.querySelector('.arrow').textContent = '−';
+      solToggle.childNodes[solToggle.childNodes.length - 1].textContent = ' Hide video solution';
+    }
+  } else if (solutionCard) {
+    solutionCard.style.display = 'none';
+  }
   const analysisCard = $('analysisCard');
   if (analysisCard) analysisCard.style.display = 'none';
   const noteCard = $('noteCard');
@@ -2381,6 +2448,9 @@ function showVideoResult(data) {
   // Video summary card
   const videoCard = $('videoCard');
   if (videoCard) videoCard.style.display = 'block';
+  if (videoCard && solutionCard) {
+    videoCard.insertAdjacentElement('afterend', solutionCard);
+  }
   const title = $('videoTitle');
   const summary = $('videoSummary');
   const link = $('videoLink');
@@ -2492,18 +2562,20 @@ function showVideoResult(data) {
     </dl>
   `;
 
-  // Compose mode: hide follow-up composer for video flow (no prior solution to chat about).
+  // Compose mode: hide follow-up composer for video flow.
   setComposerMode('initial');
 
-  // Re-render math inside the newly inserted problem cards.
-  if (window.MathJax && problems.length) {
-    MathJax.typesetPromise([problemsBody]).catch(() => {});
-  }
+  // Scene OCR snippets are displayed as escaped plain text. Do not pass them
+  // through MathJax; imperfect OCR often contains broken TeX fragments.
 
   scrubPseudoGoldUi(document);
 
-  // Scroll to the video card so the user sees the summary first.
-  if (videoCard) videoCard.scrollIntoView({behavior: 'smooth', block: 'start'});
+  // Scroll to the solution when available; otherwise show the summary first.
+  if (solutionCard && solutionCard.style.display !== 'none') {
+    solutionCard.scrollIntoView({behavior: 'smooth', block: 'start'});
+  } else if (videoCard) {
+    videoCard.scrollIntoView({behavior: 'smooth', block: 'start'});
+  }
 }
 
 function renderProblem(p) {
@@ -2517,9 +2589,11 @@ function renderProblem(p) {
     : '';
 
   const kws = Array.isArray(p.keywords) ? p.keywords : [];
-  const sim = p.keyword_similarity && Array.isArray(p.keyword_similarity.ranked)
-    ? p.keyword_similarity.ranked
-    : null;
+  const sim = Array.isArray(p.hybrid_ranking)
+    ? p.hybrid_ranking
+    : (p.keyword_similarity && Array.isArray(p.keyword_similarity.ranked)
+      ? p.keyword_similarity.ranked
+      : null);
   const scoreMap = sim
     ? new Map(sim.map(r => [String(r.keyword || ''), Number(r.score)]))
     : null;
@@ -2533,13 +2607,9 @@ function renderProblem(p) {
         .join('')}</div>`
     : '';
 
-  const text = cleanProblemText(p.text || '');
-  const bodyText = isRenderableProblemText(text)
-    ? (
-        isMathLikeProblemText(text)
-          ? `<div class="problem-text">$$\\displaystyle ${text}$$</div>`
-          : `<div class="problem-text problem-text-plain">${esc(text)}</div>`
-      )
+  const text = formatSceneDisplayText(p.text || '');
+  const bodyText = text
+    ? `<div class="problem-text problem-text-plain">${esc(text)}</div>`
     : '';
 
   return `
@@ -2559,11 +2629,39 @@ function cleanProblemText(text) {
     .replace(/`/g, ' ')
     .replace(/\$\$/g, ' ')
     .replace(/\$/g, ' ')
+    .replace(/#/g, ' ')
+    .replace(/%/g, ' ')
     .replace(/\\displaystyle/g, ' ')
     .replace(/\\textcircled\s*\{([^}]*)\}/g, '$1')
     .replace(/\\textcircled\s*([A-Za-z0-9])/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function formatSceneDisplayText(text) {
+  let s = cleanProblemText(text);
+  if (!s) return '';
+
+  s = s
+    .replace(/\\frac\s*\{\s*d\s*\}\s*\{\s*d\s*x\s*\}/gi, 'd/dx')
+    .replace(/\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g, '($1)/($2)')
+    .replace(/\\left|\\right/g, '')
+    .replace(/\\cdot/g, ' * ')
+    .replace(/\\times/g, ' x ')
+    .replace(/\\rightarrow|\\Rightarrow/g, ' -> ')
+    .replace(/\\sqrt\s*\{([^{}]+)\}/g, 'sqrt($1)')
+    .replace(/\\(sin|cos|tan|sec|csc|cot|ln|log)\b/g, '$1')
+    .replace(/\\[,;:!]/g, ' ')
+    .replace(/\\([()[\]{}|])/g, '$1')
+    .replace(/\\([A-Za-z]+)/g, '$1')
+    .replace(/[{}]/g, '')
+    .replace(/\s*(C\.R\.|P\.R\.)\s*/g, '\n$1 ')
+    .replace(/\s*->\s*/g, '\n-> ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n\s+/g, '\n')
+    .trim();
+
+  return s;
 }
 
 function hasBalancedBraces(text) {
@@ -2585,12 +2683,15 @@ function isRenderableProblemText(text) {
     lower.includes('missing superscript') ||
     lower.includes('missing subscript') ||
     lower.includes('undefined control sequence') ||
+    lower.includes('macro parameter character') ||
     lower.includes('math processing error') ||
     lower.includes('missing }')
   ) return false;
   if (!hasBalancedBraces(s)) return false;
   if (/[\^_](?:$|[+\-*/=,.;:|)\]}])/.test(s.replace(/\s+/g, ''))) return false;
   if (/\\(?:text|operatorname)\b(?!\s*\{)/.test(s)) return false;
+  if (/\\(?:bar|hat|vec|overline|underline|sqrt)\s*(?:$|[+\-*/=,.;:|)\]}])/.test(s)) return false;
+  if (/\\frac\b(?!\s*\{[^{}]*\}\s*\{[^{}]*\})/.test(s)) return false;
   const signal = s.replace(/[\\{}^_+\-*/=().,|[\]\s]/g, '');
   return signal.length >= 3;
 }
@@ -2601,6 +2702,18 @@ function isMathLikeProblemText(text) {
     /[_^=]/.test(s) ||
     /[+\-*/]/.test(s) ||
     /\b(?:lim|sin|cos|tan|log|ln|det|grad|partial|dx|dy)\b/i.test(s);
+}
+
+function isReadableSceneText(text) {
+  const s = cleanProblemText(text);
+  if (!s) return false;
+  // Deep-scene OCR often produces long raw LaTeX strings. They are useful for
+  // ranking, but noisy in the UI; show only readable natural-language snippets.
+  if (isMathLikeProblemText(s)) return false;
+  if (s.length > 160) return false;
+  const letters = (s.match(/[A-Za-z]/g) || []).length;
+  const symbols = (s.match(/[\\{}^_=+\-*/|[\]().]/g) || []).length;
+  return letters >= 8 && symbols <= Math.max(4, letters * 0.35);
 }
 
 function formatTimestamp(seconds) {
