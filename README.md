@@ -91,6 +91,10 @@ Prompt design matters: the VLM is instructed to **read only, not solve**—an ei
 
 **Video Deep mode and UI reliability:** Deep video analysis now handles YouTube downloads more robustly by trying alternate `yt-dlp` YouTube player clients when the default client reports a video as unavailable. When `STEP_DISABLE_VIDEO_CACHE=1` is set, the web app avoids both reading and writing video-analysis caches so manual tests measure real runtime. Frame-level OCR was broadened from formula-only LaTeX to visible math-relevant concepts and board text, which improves conceptual videos such as Kuhn-Tucker conditions. The UI filters malformed MathJax fragments, unsupported OCR macros, pseudo-gold evaluation fields, and stale explanatory text; problem timestamps now display scene ranges rather than only the first sampled frame.
 
+**Offline keyword evaluation:** Metrics live in `step_eval.py` (P@5, R@5, F1@5, Jaccard, nDCG@5) with no LLM or embedding imports. `tools/eval/build_video_reference.py` freezes VLM title/summary text for a video set; `build_graded_reference.py` adds LLM-judged relevance grades (1–3) to build a richer gold file. `videos_multi.py` compares BERT, Word2Vec, and GloVe on that fixed text while holding the 116-term pool constant; `word_vector_top5.py` exports raw static-embedding top-5 beside the production VLM hybrid. `tools/viz/semantic_model_report.py` turns eval JSON into summary CSV/MD and bar charts under `reports/figures/`. On the 15-video graded set (cosine, embedding-only ablation), BERT reaches P@5 ≈ 0.73 and nDCG@5 ≈ 0.78; Word2Vec and GloVe stay weak as raw rankers but improve once fused with the VLM rank signal in the hybrid path.
+
+**Production similarity backends and Deep scene scoping:** `STEP_SIMILARITY_BACKEND` selects the embedding backend in the live pipeline (`bert`, `word2vec`, `glove`, or `word2vec_glove`); default remains BERT with Manhattan distance (`STEP_SIMILARITY_METRIC`). Deep mode restricts per-scene keyword candidates to the video topic family from `taxonomy.py`, which cuts unrelated static-model hits on noisy frame OCR. Quick-mode VLM now returns a **SOLUTION** field (concise step-by-step explanation); the web UI separates global video keywords from per-scene rankings and shows mode-specific pipeline stages (L3v, SIM, and in Deep mode L0v / L3vd).
+
 ---
 
 #### Technology choices
@@ -171,6 +175,10 @@ Nougat: módulo falso + *patch* do `generate` + VLM quando há `[repetition]`. V
 **Ranking de palavras-chave em vídeo e expansão da taxonomia:** O vocabulário fechado de vídeo foi ampliado do conjunto inicial centrado em integrais para 116 termos alinhados com o MathE, cobrindo integração, derivação, extremos, otimização e números complexos. O ranking de produção para vídeo combina similaridade por embeddings normalizada com fusão de ranking LLM/VLM, usando os pesos encontrados por *grid search*: **0,45 embedding / 0,55 LLM-VLM**. A pontuação por regras deixou de fazer parte da decisão em vídeo. O módulo `taxonomy.py` foi expandido para que todas as palavras-chave do novo vocabulário tenham mapeamento para Tópico/Subtópico, incluindo Números Complexos, Otimização, Extremos e Concavidade, Regras de Derivação e Aplicações de Derivadas.
 
 **Modo Deep para vídeo e fiabilidade da interface:** A análise Deep de vídeos lida melhor com YouTube ao tentar clientes alternativos do `yt-dlp` quando o cliente padrão declara o vídeo indisponível. Com `STEP_DISABLE_VIDEO_CACHE=1`, a aplicação web não lê nem grava caches de análise de vídeo, permitindo medir o tempo real nos testes manuais. O OCR por frames deixou de procurar apenas LaTeX de fórmulas e passou a extrair também conceitos matemáticos visíveis e texto do quadro/slide, o que melhora vídeos conceituais como condições de Kuhn-Tucker. A interface filtra fragmentos MathJax inválidos, macros OCR não suportadas, campos de avaliação pseudo-gold e textos explicativos obsoletos; os tempos dos problemas agora mostram intervalos de cena em vez de apenas o primeiro frame amostrado.
+
+**Avaliação offline de palavras-chave:** As métricas estão em `step_eval.py` (P@5, R@5, F1@5, Jaccard, nDCG@5), sem importar LLM nem embeddings. `tools/eval/build_video_reference.py` fixa título/resumo VLM para um conjunto de vídeos; `build_graded_reference.py` acrescenta graus de relevância (1–3) julgados por LLM para um *gold* mais rico. `videos_multi.py` compara BERT, Word2Vec e GloVe sobre esse texto fixo mantendo o vocabulário de 116 termos; `word_vector_top5.py` exporta o top-5 bruto dos embeddings estáticos junto do híbrido VLM de produção. `tools/viz/semantic_model_report.py` gera CSV/MD resumo e gráficos em `reports/figures/`. No conjunto de 15 vídeos com *gold* graduado (cosseno, ablação só com embedding), o BERT atinge P@5 ≈ 0,73 e nDCG@5 ≈ 0,78; Word2Vec e GloVe continuam fracos como rankers brutos, mas melhoram quando fundidos com o sinal de ranking VLM no caminho híbrido.
+
+**Backends de similaridade e escopo de cenas Deep:** `STEP_SIMILARITY_BACKEND` escolhe o backend de embedding no pipeline em execução (`bert`, `word2vec`, `glove` ou `word2vec_glove`); o padrão mantém-se BERT com distância Manhattan (`STEP_SIMILARITY_METRIC`). O modo Deep restringe candidatos por cena à família de tópicos do vídeo em `taxonomy.py`, reduzindo acertos irrelevantes de modelos estáticos em OCR ruidoso. O VLM em modo Quick passa a devolver um campo **SOLUTION** (explicação passo a passo); a interface separa palavras-chave globais do vídeo dos rankings por cena e mostra etapas de pipeline específicas do modo (L3v, SIM e, em Deep, L0v / L3vd).
 
 ---
 
@@ -257,6 +265,10 @@ Nougat: sahte modül + `generate` yaması + VLM yedek. VLM: `clean_output()` en 
 
 **Video Deep modu ve arayüz güvenilirliği:** Deep video analizi, varsayılan `yt-dlp` istemcisi bir videoyu kullanılamaz gösterdiğinde alternatif YouTube player client’larını deneyerek indirme dayanıklılığını artırır. `STEP_DISABLE_VIDEO_CACHE=1` ayarında web uygulaması video analiz cache’lerini ne okur ne de yazar; böylece manuel testlerde gerçek çalışma süresi ölçülür. Frame OCR, yalnızca formül LaTeX’i aramak yerine ekrandaki matematiksel kavramları ve tahta/slayt metinlerini de çıkaracak şekilde genişletildi; bu, Kuhn-Tucker koşulları gibi kavramsal videolarda sahne yakalamayı iyileştirir. Arayüz bozuk MathJax parçalarını, desteklenmeyen OCR makrolarını, pseudo-gold değerlendirme alanlarını ve eski açıklama metinlerini filtreler; problem zamanları artık yalnızca ilk frame’i değil sahne aralıklarını gösterir.
 
+**Offline keyword değerlendirmesi:** Metrikler `step_eval.py` içinde (P@5, R@5, F1@5, Jaccard, nDCG@5); LLM veya embedding import etmez. `tools/eval/build_video_reference.py` bir video seti için VLM title/summary metnini sabitler; `build_graded_reference.py` LLM-judge ile relevance dereceleri (1–3) ekleyerek daha zengin bir gold dosyası üretir. `videos_multi.py`, 116 terimlik havuz sabitken BERT, Word2Vec ve GloVe’u bu metin üzerinde karşılaştırır; `word_vector_top5.py` ham statik embedding top-5’i üretim VLM hibrit sonucuyla yan yana dışa aktarır. `tools/viz/semantic_model_report.py` eval JSON’undan özet CSV/MD ve grafik üretir (`reports/figures/`). 15 videoluk graded gold setinde (cosine, yalnızca embedding ablation) BERT P@5 ≈ 0,73 ve nDCG@5 ≈ 0,78; Word2Vec ve GloVe ham sıralayıcı olarak zayıf kalır, VLM rank sinyaliyle hibrit yolda belirgin iyileşir.
+
+**Üretim embedding backend’leri ve Deep sahne kapsamı:** `STEP_SIMILARITY_BACKEND` canlı pipeline’da embedding backend’ini seçer (`bert`, `word2vec`, `glove`, `word2vec_glove`); varsayılan BERT + Manhattan (`STEP_SIMILARITY_METRIC`). Deep mod, sahne bazlı aday keyword’leri `taxonomy.py` içindeki video topic ailesiyle sınırlar; gürültülü frame OCR’da alakasız statik model eşleşmelerini azaltır. Quick mod VLM artık **SOLUTION** alanı döndürür (kısa adım adım açıklama); web arayüzü global video keyword’lerini sahne sıralamalarından ayırır ve moda özel pipeline aşamalarını gösterir (L3v, SIM; Deep’te L0v / L3vd).
+
 ---
 
 #### Teknoloji seçimleri
@@ -288,6 +300,20 @@ Optional tuning (all optional; defaults work for a typical single-user setup):
 
 - `STEP_VLM_PAGE_WORKERS` — cap parallel per-page vision calls (use `1` if you prefer serial VLM or need to stay under strict API rate limits).
 - `STEP_WEB_MAX_CONCURRENT_SOLVES` — cap overlapping PDF solves in the Flask app (lower it when GPU-backed Nougat runs alongside the web UI).
+- `STEP_SIMILARITY_BACKEND` / `STEP_SIMILARITY_METRIC` — video keyword embedding backend and distance metric.
+- `STEP_DISABLE_VIDEO_CACHE` — set to `1` for live UI tests without reading or writing video caches.
+- `STEP_VIDEO_FRAME_INTERVAL` / `STEP_VIDEO_MAX_FRAMES` — Deep mode frame sampling (defaults: 30 s, 24 frames).
+
+**Offline keyword evaluation** (from project root; outputs go to `reports/`):
+
+```bash
+python tools/eval/build_video_reference.py --urls-file data/videos_15_urls.txt --mode quick --no-cache --out data/gold/videos_15_vlm_reference_nocache.json
+python tools/eval/build_graded_reference.py --input data/gold/videos_15_nocache_graded_run_base.json --out data/gold/videos_15_graded_vlm_reference_nocache.json
+python tools/eval/videos_multi.py --gold data/gold/videos_15_graded_vlm_reference_nocache.json --metrics cosine --strict-queries --report-out reports/semantic_model_comparison_15videos_graded_nocache.json
+python tools/viz/semantic_model_report.py reports/semantic_model_comparison_15videos_graded_nocache.json --prefix semantic_model_comparison_15videos_graded_nocache
+python tools/eval/videos.py --report-out reports/final_video_evaluation.json
+python step_eval.py
+```
 
 ### Run
 
