@@ -39,3 +39,6 @@ nougat/
 .idea/
 .vscode/
 *.swp
+
+# Node (local viz/export helpers)
+node_modules/

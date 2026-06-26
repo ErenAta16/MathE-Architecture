@@ -1,0 +1,20 @@
+{
+  "video_id": "KTNcYYHuBTY",
+  "url": "https://www.youtube.com/watch?v=KTNcYYHuBTY",
+  "title_hint": "Powers of the Imaginary Unit i",
+  "method": "gemini_upload_transcription",
+  "model_used": "gemini-3.5-flash",
+  "primary_model": "gemini-3-flash-preview",
+  "fallback_used": true,
+  "prompt_version": "mathe-transcribe-v4-readable",
+  "temperature": 0.0,
+  "max_output_tokens": 16384,
+  "elapsed_s": 25.7,
+  "duration_s": 279.22,
+  "real_time_factor": 0.092,
+  "audio_file": "KTNcYYHuBTY.mp4",
+  "media_bytes": 6696674,
+  "word_count": 659,
+  "char_count": 3446,
+  "transcript_path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\KTNcYYHuBTY_gemini.txt"
+}

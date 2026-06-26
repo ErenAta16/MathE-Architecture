@@ -2,16 +2,46 @@
   {
     "video_id": "KTNcYYHuBTY",
     "ok": true,
-    "path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\KTNcYYHuBTY_whisper.txt"
+    "path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\KTNcYYHuBTY_whisper.txt",
+    "language": "en",
+    "duration_s": 279.22,
+    "elapsed_s": 13.4,
+    "real_time_factor": 0.048,
+    "model": "distil-large-v3",
+    "device": "cuda",
+    "compute_type": "float16",
+    "beam_size": 5,
+    "prompt_version": "mathe-transcribe-v2",
+    "segment_count": 67
   },
   {
     "video_id": "LVLuqNH5iWw",
     "ok": true,
-    "path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\LVLuqNH5iWw_whisper.txt"
+    "path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\LVLuqNH5iWw_whisper.txt",
+    "language": "en",
+    "duration_s": 441.85,
+    "elapsed_s": 19.2,
+    "real_time_factor": 0.043,
+    "model": "distil-large-v3",
+    "device": "cuda",
+    "compute_type": "float16",
+    "beam_size": 5,
+    "prompt_version": "mathe-transcribe-v2",
+    "segment_count": 34
   },
   {
     "video_id": "uKfcS7-O6UE",
     "ok": true,
-    "path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\uKfcS7-O6UE_whisper.txt"
+    "path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\uKfcS7-O6UE_whisper.txt",
+    "language": "en",
+    "duration_s": 252.08,
+    "elapsed_s": 10.8,
+    "real_time_factor": 0.043,
+    "model": "distil-large-v3",
+    "device": "cuda",
+    "compute_type": "float16",
+    "beam_size": 5,
+    "prompt_version": "mathe-transcribe-v2",
+    "segment_count": 18
   }
 ]

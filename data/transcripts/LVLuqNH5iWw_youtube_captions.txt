@@ -1,7 +1,15 @@
 video_id: LVLuqNH5iWw
+url: https://www.youtube.com/watch?v=LVLuqNH5iWw
 method: youtube_captions
+caption_type: auto
+caption_lang: en-orig
 vtt_file: LVLuqNH5iWw.en-orig.vtt
+vtt_bytes: 28080
+duration_s: 442.0
+elapsed_s: 3.4
+words_per_minute: 78.3
 word_count: 577
+char_count: 2412
 ========================================================================
 
 find the local extrema of the function f r 2 into R real function f depending by two variables X and Y which will be X to the^ of 4 + y ^ of 4 - x^ 2 - y^ 2 + three so first of all we have to find the critical points yeah let's write the critical points are the Solutions of the system consisting of the partial derivatives of f with respect to X and Y but this is equivalent to in our case 4X cubus 2x = to 0 and for y Cub - 2 y = to 0 or equivalently 2x multili by H 2x^ 2- - 1 = to 0 and 2 Y 2 y^ 2 - 1 = to 0 so in this case we have the following Solutions X1 equal to 0 X1 1/ radical of 2 and X2 = -1 / radical of 2 y1 = to 0 Y2 1 / radical of 2 Y3 - 1 / radical of two so totally we have nine points so we have nine critical points which are M let's say m i j of x i y j where I and J runs over 1 2 3 so the points are R M11 is 0 0 M12 is 0 and 1 over radical of 2 M13 is 0 and minus one / radical of 2 M 21 is 1 / radical of 2 n0 and 22 1/ radical of 2 1 over radical of 2 M23 it is 1 / radical of 2 andus 1 / radical of 2 m 31 is -1 / radical of 2 n0 M32 -1/ radical of 2 and 1/ radical of 2 and finally m33 which is minus minus minus one over radical of 2 - 1 / radical of 2 in order to decide which of these points are local extrema for our function we'll calculate the second differential of the function f so the second differential of the function f in a point M will be D2 f dx2 dx^ 2 plus 2 * D d2f DX Dy DX MTI d y plus D2 F Dy Y 2 dy^ 2 so in order to do this we need the second partial derivatives of the function f the first partial derivative will be 12 x^2 minus 2 then with respect to Y is sric is 12 y^ 2us 2 and of course the second partial derivative with respect the mixed derivative is zero so consequently we have that d2f in uh M11 when X and Y are zero will be will be 12 it is 12 * 0us 2 so this is - 2 dx^ 2 minus 2 dy^ 2 and as we can see this is negatively defined and consequently M11 the point M11 by 0 is local maximum Point similarly d2f in the points M12 and d2f in the point M13 will be - 2 dx^ 2 + 4 dy^ 2 and also for d2f in uh M21 and M31 we'll have 4 dx^ 2 minus 2 dy^ 2 and in all cases these points will be subtle points for the points without 0 0 in other words M22 M32 and m33 we have 4 dx2 + 4 Dy 2 and this is positively Define it and consequently all these points will be minimum local minimum points so M 22 M32 and M 33 are local minimum points and that's all

@@ -1,0 +1,20 @@
+{
+  "video_id": "LVLuqNH5iWw",
+  "url": "https://www.youtube.com/watch?v=LVLuqNH5iWw",
+  "title_hint": "Local Extrema of a Multivariable Function",
+  "method": "gemini_upload_transcription",
+  "model_used": "gemini-3-flash-preview",
+  "primary_model": "gemini-3-flash-preview",
+  "fallback_used": false,
+  "prompt_version": "mathe-transcribe-v4-readable",
+  "temperature": 0.0,
+  "max_output_tokens": 16384,
+  "elapsed_s": 84.3,
+  "duration_s": 441.85,
+  "real_time_factor": 0.191,
+  "audio_file": "LVLuqNH5iWw.mp4",
+  "media_bytes": 11049539,
+  "word_count": 564,
+  "char_count": 2734,
+  "transcript_path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\transcripts\\LVLuqNH5iWw_gemini.txt"
+}

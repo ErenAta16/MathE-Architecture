@@ -14,6 +14,7 @@ import argparse
 import json
 import re
 import sys
+import time
 from pathlib import Path
 
 _HERE = Path(__file__).resolve()
@@ -62,9 +63,10 @@ def _vtt_to_text(vtt: str) -> str:
     return " ".join(lines)
 
 
-def download_captions(url: str, out_dir: Path) -> tuple[Path, str, str]:
+def download_captions(url: str, out_dir: Path) -> tuple[Path, str, str, dict]:
     import yt_dlp
 
+    t0 = time.time()
     canon = canonical_youtube_url(url)
     if not canon:
         raise ValueError(f"Not a valid YouTube URL: {url!r}")
@@ -98,7 +100,19 @@ def download_captions(url: str, out_dir: Path) -> tuple[Path, str, str]:
     text = _vtt_to_text(vtt_path.read_text(encoding="utf-8", errors="replace"))
     if not text.strip():
         raise RuntimeError(f"Caption file empty for {vid}: {vtt_path.name}")
-    return vtt_path, text, caption_type
+    duration_s = None
+    if isinstance(info, dict):
+        duration_s = info.get("duration")
+        if duration_s is not None:
+            duration_s = round(float(duration_s), 2)
+    elapsed_s = round(time.time() - t0, 1)
+    meta = {
+        "elapsed_s": elapsed_s,
+        "duration_s": duration_s,
+        "vtt_bytes": vtt_path.stat().st_size,
+        "caption_lang": vtt_path.stem.replace(f"{vid}.", ""),
+    }
+    return vtt_path, text, caption_type, meta
 
 
 def main() -> int:
@@ -124,22 +138,43 @@ def main() -> int:
         vid = youtube_video_id(canon) or "unknown"
         print(f"\n=== {vid} (youtube captions) ===")
         try:
-            vtt_path, text, caption_type = download_captions(canon, out_dir / "captions")
+            vtt_path, text, caption_type, cap_meta = download_captions(canon, out_dir / "captions")
             txt_path = out_dir / f"{vid}_youtube_captions.txt"
+            wc = len(text.split())
+            cc = len(text)
+            wpm = ""
+            if cap_meta.get("duration_s"):
+                wpm = round(wc / (float(cap_meta["duration_s"]) / 60.0), 1)
             header = (
                 f"video_id: {vid}\n"
                 f"url: {canon}\n"
                 f"method: youtube_captions\n"
                 f"caption_type: {caption_type}\n"
+                f"caption_lang: {cap_meta.get('caption_lang', '')}\n"
                 f"vtt_file: {vtt_path.name}\n"
-                f"word_count: {len(text.split())}\n"
-                f"char_count: {len(text)}\n"
+                f"vtt_bytes: {cap_meta.get('vtt_bytes', '')}\n"
+                f"duration_s: {cap_meta.get('duration_s') or ''}\n"
+                f"elapsed_s: {cap_meta.get('elapsed_s')}\n"
+                f"words_per_minute: {wpm}\n"
+                f"word_count: {wc}\n"
+                f"char_count: {cc}\n"
                 f"{'=' * 72}\n\n"
             )
             txt_path.write_text(header + text + "\n", encoding="utf-8")
-            print(f"  type: {caption_type}, words: {len(text.split())}")
+            print(
+                f"  type: {caption_type}, words: {wc}, "
+                f"elapsed: {cap_meta.get('elapsed_s')}s"
+            )
             print(f"  wrote: {txt_path}")
-            results.append({"video_id": vid, "ok": True, "path": str(txt_path), "caption_type": caption_type})
+            results.append({
+                "video_id": vid,
+                "ok": True,
+                "path": str(txt_path),
+                "caption_type": caption_type,
+                **cap_meta,
+                "word_count": wc,
+                "char_count": cc,
+            })
         except Exception as e:
             print(f"  FAIL: {e}")
             results.append({"video_id": vid, "ok": False, "error": str(e)})
