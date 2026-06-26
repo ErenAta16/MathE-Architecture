@@ -230,6 +230,205 @@ class VideoAnalyzer:
         return "", "none"
 
     @staticmethod
+    def _keyword_context_mode() -> str:
+        raw = os.getenv("STEP_KEYWORD_CONTEXT_MODE", "current").strip().lower()
+        aliases = {
+            "baseline": "current",
+            "default": "current",
+            "scene": "scene_only",
+            "no_summary": "scene_only",
+            "late_fusion": "summary_late_fusion",
+            "fusion": "summary_late_fusion",
+            "shortlist": "summary_shortlist",
+            "shortlist_fusion": "summary_shortlist_fusion",
+            "summary_fusion": "summary_shortlist_fusion",
+        }
+        mode = aliases.get(raw, raw)
+        allowed = {
+            "current",
+            "scene_only",
+            "summary_late_fusion",
+            "summary_shortlist",
+            "summary_shortlist_fusion",
+        }
+        return mode if mode in allowed else "current"
+
+    @staticmethod
+    def _summary_fusion_weights() -> tuple[float, float]:
+        raw = os.getenv("STEP_SUMMARY_FUSION_WEIGHTS", "").strip()
+        if raw:
+            parts = [p.strip() for p in raw.split(",") if p.strip()]
+            if len(parts) >= 2:
+                try:
+                    primary = float(parts[0])
+                    summary = float(parts[1])
+                    if primary >= 0 and summary >= 0 and primary + summary > 0:
+                        total = primary + summary
+                        return primary / total, summary / total
+                except ValueError:
+                    pass
+        return 0.75, 0.25
+
+    @staticmethod
+    def _summary_shortlist_size() -> int:
+        try:
+            value = int(os.getenv("STEP_SUMMARY_SHORTLIST_SIZE", "25"))
+        except ValueError:
+            value = 25
+        return max(5, min(value, 80))
+
+    @staticmethod
+    def _score_map(ranked: list[dict]) -> dict[str, float]:
+        out: dict[str, float] = {}
+        for row in ranked or []:
+            if not isinstance(row, dict):
+                continue
+            kw = str(row.get("keyword") or "").strip()
+            if not kw:
+                continue
+            try:
+                out[kw] = float(row.get("score"))
+            except Exception:
+                out[kw] = 0.0
+        return out
+
+    @staticmethod
+    def _minmax_scores(scores: dict[str, float], pool: list[str]) -> dict[str, float]:
+        values = [float(scores.get(kw, 0.0)) for kw in pool]
+        if not values:
+            return {}
+        lo = min(values)
+        hi = max(values)
+        span = hi - lo
+        if span <= 1e-12:
+            return {kw: 0.0 for kw in pool}
+        return {kw: (float(scores.get(kw, 0.0)) - lo) / span for kw in pool}
+
+    @staticmethod
+    def _fuse_score_maps(
+        primary_scores: dict[str, float],
+        summary_scores: dict[str, float],
+        pool: list[str],
+        *,
+        primary_weight: float,
+        summary_weight: float,
+    ) -> dict[str, float]:
+        p_norm = VideoAnalyzer._minmax_scores(primary_scores, pool)
+        s_norm = VideoAnalyzer._minmax_scores(summary_scores, pool)
+        return {
+            kw: (primary_weight * p_norm.get(kw, 0.0)) + (summary_weight * s_norm.get(kw, 0.0))
+            for kw in pool
+        }
+
+    @staticmethod
+    def _summary_shortlist(
+        *,
+        pool: list[str],
+        title: str,
+        summary: str,
+        taxonomy: dict,
+        llm_keywords: list[str],
+        cfg,
+    ) -> tuple[list[str], str]:
+        """Use the video summary as a guardrail, not as a final judge.
+
+        The shortlist keeps the most summary-relevant pool terms, taxonomy
+        terms, and VLM-selected terms. Scoring still happens afterward with the
+        configured embedding backend and VLM rank fusion.
+        """
+        query = VideoAnalyzer._short_query_text(title, summary)
+        if not query:
+            return pool, "full_pool"
+        try:
+            ranked = top_k_keywords(
+                query, pool, cfg=cfg, query_source="summary_shortlist"
+            ).get("ranked") or []
+        except Exception:
+            ranked = []
+
+        original = {str(k).strip().lower(): str(k).strip() for k in pool if str(k).strip()}
+        scoped: list[str] = []
+        seen: set[str] = set()
+
+        def add(name: str) -> None:
+            key = str(name or "").strip().lower()
+            canonical = original.get(key)
+            if canonical and canonical not in seen:
+                seen.add(canonical)
+                scoped.append(canonical)
+
+        for row in ranked[: VideoAnalyzer._summary_shortlist_size()]:
+            if isinstance(row, dict):
+                add(str(row.get("keyword") or ""))
+        for name in keywords_for_taxonomy(
+            taxonomy.get("topic") if isinstance(taxonomy, dict) else None,
+            taxonomy.get("subtopic") if isinstance(taxonomy, dict) else None,
+            include_topic=True,
+        ):
+            add(name)
+        for name in llm_keywords or []:
+            add(name)
+
+        if len(scoped) >= 5:
+            return scoped, f"summary_shortlist:{len(scoped)}"
+        return pool, "full_pool"
+
+    @staticmethod
+    def _rank_with_context_mode(
+        *,
+        mode: str,
+        primary_query: str,
+        summary_query: str,
+        pool: list[str],
+        cfg,
+        query_source: str,
+    ) -> tuple[dict, dict[str, float]]:
+        """Return a top_k_keywords-like payload and the score map used by rerank."""
+        if mode in ("summary_late_fusion", "summary_shortlist_fusion") and summary_query:
+            primary_sim = top_k_keywords(
+                primary_query, pool, cfg=cfg, query_source=query_source
+            )
+            summary_sim = top_k_keywords(
+                summary_query, pool, cfg=cfg, query_source="summary_context"
+            )
+            primary_scores = VideoAnalyzer._score_map(primary_sim.get("ranked") or [])
+            summary_scores = VideoAnalyzer._score_map(summary_sim.get("ranked") or [])
+            pw, sw = VideoAnalyzer._summary_fusion_weights()
+            fused_scores = VideoAnalyzer._fuse_score_maps(
+                primary_scores,
+                summary_scores,
+                pool,
+                primary_weight=pw,
+                summary_weight=sw,
+            )
+            ranked = [
+                {
+                    "keyword": kw,
+                    "score": round(fused_scores.get(kw, 0.0), 6),
+                    "components": {
+                        "primary": round(primary_scores.get(kw, 0.0), 6),
+                        "summary": round(summary_scores.get(kw, 0.0), 6),
+                    },
+                }
+                for kw in pool
+            ]
+            ranked.sort(key=lambda d: (-float(d["score"]), str(d["keyword"]).lower()))
+            payload = {
+                **primary_sim,
+                "query_source": f"{query_source}+summary_late_fusion",
+                "ranked": ranked,
+                "summary_context": {
+                    "query_source": "summary_context",
+                    "primary_weight": pw,
+                    "summary_weight": sw,
+                },
+            }
+            return payload, fused_scores
+
+        sim = top_k_keywords(primary_query, pool, cfg=cfg, query_source=query_source)
+        return sim, VideoAnalyzer._score_map(sim.get("ranked") or [])
+
+    @staticmethod
     def _scoped_scene_pool(result: dict, pool: list[str]) -> tuple[list[str], str]:
         """Keep per-scene static embeddings inside the global video topic.
 
@@ -287,25 +486,59 @@ class VideoAnalyzer:
             return
 
         cfg = default_similarity_config()
+        context_mode = self._keyword_context_mode()
+        result["keyword_context_mode"] = context_mode
 
         # Preserve the original model-selected keyword list for debugging/ablation.
         if "keywords_llm" not in result and isinstance(result.get("keywords"), list):
             result["keywords_llm"] = list(result.get("keywords") or [])
 
         # Global selection (Quick or overall video in Deep): hybrid re-ranker.
-        q = self._short_query_text(result.get("title", ""), result.get("summary", ""))
+        title = str(result.get("title") or "")
+        summary = str(result.get("summary") or "")
+        q = self._short_query_text(title, summary)
         if q:
             try:
-                sim = top_k_keywords(q, pool, cfg=cfg, query_source="title+summary")
-                result["keyword_similarity"] = sim
-                ranked = sim.get("ranked") or []
-
-                cosine_scores = {
-                    r["keyword"]: float(r["score"])
-                    for r in ranked
-                    if isinstance(r, dict) and r.get("keyword")
-                }
+                global_pool = pool
+                global_pool_scope = "full_pool"
                 llm_order = list(result.get("keywords_llm") or result.get("keywords") or [])
+                if context_mode in ("summary_shortlist", "summary_shortlist_fusion"):
+                    tax_for_shortlist = result.get("taxonomy")
+                    global_pool, global_pool_scope = self._summary_shortlist(
+                        pool=pool,
+                        title=title,
+                        summary=summary,
+                        taxonomy=tax_for_shortlist if isinstance(tax_for_shortlist, dict) else {},
+                        llm_keywords=llm_order,
+                        cfg=cfg,
+                    )
+
+                if context_mode == "scene_only":
+                    primary_query = title.strip() or q
+                    query_source = "title_only"
+                elif context_mode == "summary_shortlist":
+                    primary_query = q
+                    query_source = "title+summary_in_summary_shortlist"
+                elif context_mode == "summary_shortlist_fusion":
+                    primary_query = title.strip() or q
+                    query_source = "title_in_summary_shortlist"
+                elif context_mode == "summary_late_fusion":
+                    primary_query = title.strip() or q
+                    query_source = "title+summary_late_fusion"
+                else:
+                    primary_query = q
+                    query_source = "title+summary"
+
+                sim, cosine_scores = self._rank_with_context_mode(
+                    mode=context_mode,
+                    primary_query=primary_query,
+                    summary_query=summary,
+                    pool=global_pool,
+                    cfg=cfg,
+                    query_source=query_source,
+                )
+                result["keyword_similarity"] = sim
+                result["keyword_pool_scope"] = global_pool_scope
                 rcfg = default_rerank_config()
                 hybrid = rerank_pool(
                     cosine_scores=cosine_scores, llm_ranking=llm_order,
@@ -342,33 +575,50 @@ class VideoAnalyzer:
         # Deep mode: per-problem ranking; one bad scene must not abort the rest.
         problems = result.get("problems")
         if isinstance(problems, list) and problems:
-            scene_pool, scene_pool_scope = self._scoped_scene_pool(result, pool)
+            if context_mode in ("summary_shortlist", "summary_shortlist_fusion"):
+                scene_pool, scene_pool_scope = self._summary_shortlist(
+                    pool=pool,
+                    title=str(result.get("title") or ""),
+                    summary=str(result.get("summary") or ""),
+                    taxonomy=result.get("taxonomy") if isinstance(result.get("taxonomy"), dict) else {},
+                    llm_keywords=list(result.get("keywords_llm") or result.get("keywords") or []),
+                    cfg=cfg,
+                )
+            else:
+                scene_pool, scene_pool_scope = self._scoped_scene_pool(result, pool)
             for p in problems:
                 if not isinstance(p, dict):
                     continue
                 if "keywords_llm" not in p and isinstance(p.get("keywords"), list):
                     p["keywords_llm"] = list(p.get("keywords") or [])
                 scene_text = (p.get("text") or "").strip()
-                q_sc, q_src = self._scene_similarity_query(
-                    scene_text,
-                    str(result.get("title") or ""),
-                    str(result.get("summary") or ""),
-                )
+                if context_mode in ("scene_only", "summary_late_fusion", "summary_shortlist", "summary_shortlist_fusion"):
+                    q_sc = normalize_embedding_query(scene_text)
+                    q_src = "scene_text"
+                    if not q_sc and str(result.get("summary") or "").strip():
+                        q_sc = self._short_query_text(str(result.get("title") or ""), str(result.get("summary") or ""))
+                        q_src = "video_context_fallback"
+                else:
+                    q_sc, q_src = self._scene_similarity_query(
+                        scene_text,
+                        str(result.get("title") or ""),
+                        str(result.get("summary") or ""),
+                    )
                 if not (q_sc or "").strip():
                     p.setdefault("keywords_source", "llm")
                     continue
                 try:
-                    sim_p = top_k_keywords(
-                        q_sc, scene_pool, cfg=cfg, query_source=q_src
+                    sim_p, cos_sc = self._rank_with_context_mode(
+                        mode=context_mode,
+                        primary_query=q_sc,
+                        summary_query=str(result.get("summary") or ""),
+                        pool=scene_pool,
+                        cfg=cfg,
+                        query_source=q_src,
                     )
                     p["keyword_similarity"] = sim_p
                     p["keyword_pool_scope"] = scene_pool_scope
-                    ranked_p = sim_p.get("ranked") or []
-                    cos_sc = {
-                        r["keyword"]: float(r["score"])
-                        for r in ranked_p
-                        if isinstance(r, dict) and r.get("keyword")
-                    }
+                    p["keyword_context_mode"] = context_mode
                     scene_llm = list(p.get("keywords_llm") or p.get("keywords") or [])
                     rcfg = default_rerank_config()
                     scene_hybrid = rerank_pool(

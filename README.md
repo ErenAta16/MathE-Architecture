@@ -307,6 +307,8 @@ Optional tuning (all optional; defaults work for a typical single-user setup):
 - `STEP_VLM_PAGE_WORKERS` — cap parallel per-page vision calls (use `1` if you prefer serial VLM or need to stay under strict API rate limits).
 - `STEP_WEB_MAX_CONCURRENT_SOLVES` — cap overlapping PDF solves in the Flask app (lower it when GPU-backed Nougat runs alongside the web UI).
 - `STEP_SIMILARITY_BACKEND` / `STEP_SIMILARITY_METRIC` — video keyword embedding backend and distance metric.
+- `STEP_KEYWORD_CONTEXT_MODE` — summary-context strategy for video keyword ranking: `current`, `scene_only`, `summary_late_fusion`, `summary_shortlist`, or `summary_shortlist_fusion`.
+- `STEP_SUMMARY_SHORTLIST_SIZE` / `STEP_SUMMARY_FUSION_WEIGHTS` — candidate-pool size and `primary,summary` weights for summary-assisted keyword experiments.
 - `STEP_DISABLE_VIDEO_CACHE` — set to `1` for live UI tests without reading or writing video caches.
 - `STEP_VIDEO_FRAME_INTERVAL` / `STEP_VIDEO_MAX_FRAMES` — Deep mode frame sampling (defaults: 30 s, 24 frames).
 
@@ -316,6 +318,7 @@ Optional tuning (all optional; defaults work for a typical single-user setup):
 python tools/eval/build_video_reference.py --urls-file data/videos_15_urls.txt --mode quick --no-cache --out data/gold/videos_15_vlm_reference_nocache.json
 python tools/eval/build_graded_reference.py --input data/gold/videos_15_nocache_graded_run_base.json --out data/gold/videos_15_graded_vlm_reference_nocache.json
 python tools/eval/videos_multi.py --gold data/gold/videos_15_graded_vlm_reference_nocache.json --metrics cosine --strict-queries --report-out reports/semantic_model_comparison_15videos_graded_nocache.json
+python tools/eval/summary_context_ablation.py
 python tools/viz/semantic_model_report.py reports/semantic_model_comparison_15videos_graded_nocache.json --prefix semantic_model_comparison_15videos_graded_nocache
 python tools/eval/videos.py --report-out reports/final_video_evaluation.json
 python step_eval.py

@@ -2547,6 +2547,8 @@ function showVideoResult(data) {
   if (data.file) rows.push(['File', esc(data.file)]);
   if (data.video_id) rows.push(['Video id', esc(data.video_id)]);
   rows.push(['Model used', esc(data.model_used || '-')]);
+  if (data.keyword_context_mode) rows.push(['Keyword context', esc(data.keyword_context_mode)]);
+  if (data.keyword_pool_scope) rows.push(['Keyword pool scope', esc(data.keyword_pool_scope)]);
   if (data.rerank_weights) {
     const w = data.rerank_weights;
     rows.push(['Keyword ranking', `hybrid: ${Number(w.w_cos || 0).toFixed(2)} embedding / ${Number(w.w_llm || 0).toFixed(2)} LLM-VLM`]);
