@@ -1,0 +1,4495 @@
+{
+  "schema_version": "word-vector-top5-v1",
+  "input_path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\gold\\videos_15_graded_vlm_reference_nocache.json",
+  "pool_path": "keyword_eval.DEFAULT_KEYWORD_POOL",
+  "metric": "cosine",
+  "top_k": 5,
+  "pool_size": 116,
+  "items": [
+    {
+      "video_no": 1,
+      "video_id": "KTNcYYHuBTY",
+      "url": "https://www.youtube.com/watch?v=KTNcYYHuBTY",
+      "title": "Powers of the Imaginary Unit i",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Powers and Roots",
+      "vlm_order": [
+        "Powers of i",
+        "Powers of complex numbers",
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Nth root"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Powers of i",
+          "score": 0.650338
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.60269
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.593071
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.587742
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.53922
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Powers of i",
+          "score": 0.861748
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.825197
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.814571
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.78574
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.782016
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Powers of i",
+          "score": 1.0,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.650338,
+            "glove_raw": 0.861748
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.944311,
+          "components": {
+            "word2vec_norm": 0.926733,
+            "glove_norm": 0.961888,
+            "word2vec_raw": 0.60269,
+            "glove_raw": 0.814571
+          }
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.937111,
+          "components": {
+            "word2vec_norm": 0.903749,
+            "glove_norm": 0.970473,
+            "word2vec_raw": 0.587742,
+            "glove_raw": 0.825197
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.894318,
+          "components": {
+            "word2vec_norm": 0.911943,
+            "glove_norm": 0.876694,
+            "word2vec_raw": 0.593071,
+            "glove_raw": 0.709112
+          }
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.882364,
+          "components": {
+            "word2vec_norm": 0.829138,
+            "glove_norm": 0.935589,
+            "word2vec_raw": 0.53922,
+            "glove_raw": 0.782016
+          }
+        }
+      ],
+      "raw_overlap_count": 4,
+      "vlm_word2vec": [
+        {
+          "keyword": "Powers of i",
+          "score": 1.0,
+          "components": {
+            "embedding_raw": 0.650338,
+            "embedding": 1.0,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.87767,
+          "components": {
+            "embedding_raw": 0.486367,
+            "embedding": 0.747868,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.813546,
+          "components": {
+            "embedding_raw": 0.406109,
+            "embedding": 0.624458,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.77439,
+          "components": {
+            "embedding_raw": 0.361547,
+            "embedding": 0.555937,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Nth root",
+          "score": 0.773208,
+          "components": {
+            "embedding_raw": 0.371493,
+            "embedding": 0.571231,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Powers of i",
+          "score": 1.0,
+          "components": {
+            "embedding_raw": 0.861748,
+            "embedding": 1.0,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.963498,
+          "components": {
+            "embedding_raw": 0.78574,
+            "embedding": 0.938598,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.915701,
+          "components": {
+            "embedding_raw": 0.700776,
+            "embedding": 0.86996,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.898892,
+          "components": {
+            "embedding_raw": 0.63165,
+            "embedding": 0.814117,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Nth root",
+          "score": 0.711092,
+          "components": {
+            "embedding_raw": 0.160122,
+            "embedding": 0.433197,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Powers of i",
+          "score": 1.0,
+          "components": {
+            "embedding_raw": 1.0,
+            "embedding": 1.0,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.915935,
+          "components": {
+            "embedding_raw": 0.843233,
+            "embedding": 0.832902,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.847895,
+          "components": {
+            "embedding_raw": 0.719288,
+            "embedding": 0.700789,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.836533,
+          "components": {
+            "embedding_raw": 0.712949,
+            "embedding": 0.694032,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Nth root",
+          "score": 0.727388,
+          "components": {
+            "embedding_raw": 0.502214,
+            "embedding": 0.469409,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 2,
+      "video_id": "BZxZ_eEuJBM",
+      "url": "https://www.youtube.com/watch?v=BZxZ_eEuJBM",
+      "title": "Complex Conjugates",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Arithmetic",
+      "vlm_order": [
+        "Operations with complex numbers",
+        "Imaginary part",
+        "Conjugate number",
+        "Real part",
+        "Argand diagram"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.696437
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.632062
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.604825
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.600447
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.575399
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.849348
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.821402
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.818325
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.80922
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.797158
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.983091,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 0.966182,
+            "word2vec_raw": 0.696437,
+            "glove_raw": 0.80922
+          }
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.953783,
+          "components": {
+            "word2vec_norm": 0.907565,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.632062,
+            "glove_raw": 0.849348
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.908467,
+          "components": {
+            "word2vec_norm": 0.86217,
+            "glove_norm": 0.954763,
+            "word2vec_raw": 0.600447,
+            "glove_raw": 0.79567
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.90003,
+          "components": {
+            "word2vec_norm": 0.826204,
+            "glove_norm": 0.973856,
+            "word2vec_raw": 0.575399,
+            "glove_raw": 0.818325
+          }
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.859321,
+          "components": {
+            "word2vec_norm": 0.868456,
+            "glove_norm": 0.850186,
+            "word2vec_raw": 0.604825,
+            "glove_raw": 0.671579
+          }
+        }
+      ],
+      "raw_overlap_count": 3,
+      "vlm_word2vec": [
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.876096,
+          "components": {
+            "embedding_raw": 0.504678,
+            "embedding": 0.724657,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.796246,
+          "components": {
+            "embedding_raw": 0.394828,
+            "embedding": 0.566926,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Conjugate number",
+          "score": 0.779042,
+          "components": {
+            "embedding_raw": 0.381496,
+            "embedding": 0.547782,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.760498,
+          "components": {
+            "embedding_raw": 0.365674,
+            "embedding": 0.525064,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Argand diagram",
+          "score": 0.751321,
+          "components": {
+            "embedding_raw": 0.363954,
+            "embedding": 0.522594,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.980208,
+          "components": {
+            "embedding_raw": 0.797158,
+            "embedding": 0.956017,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.942254,
+          "components": {
+            "embedding_raw": 0.76506,
+            "embedding": 0.928967,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.894832,
+          "components": {
+            "embedding_raw": 0.595424,
+            "embedding": 0.786007,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Conjugate number",
+          "score": 0.810067,
+          "components": {
+            "embedding_raw": 0.394555,
+            "embedding": 0.616727,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Argand diagram",
+          "score": 0.620795,
+          "components": {
+            "embedding_raw": -0.061327,
+            "embedding": 0.232535,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.928763,
+          "components": {
+            "embedding_raw": 0.840337,
+            "embedding": 0.841695,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.846431,
+          "components": {
+            "embedding_raw": 0.727015,
+            "embedding": 0.716028,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.838117,
+          "components": {
+            "embedding_raw": 0.676467,
+            "embedding": 0.659974,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Conjugate number",
+          "score": 0.782514,
+          "components": {
+            "embedding_raw": 0.582255,
+            "embedding": 0.555499,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Argand diagram",
+          "score": 0.663984,
+          "components": {
+            "embedding_raw": 0.377565,
+            "embedding": 0.328511,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 3,
+      "video_id": "kpywdu1afas",
+      "url": "https://www.youtube.com/watch?v=kpywdu1afas",
+      "title": "Introduction to Complex Numbers",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "vlm_order": [
+        "Imaginary part",
+        "Operations with complex numbers",
+        "Complex plane",
+        "Powers of i",
+        "Real part"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.593463
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.581108
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.563827
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.55742
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.549217
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.844011
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.808934
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.804712
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.793577
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.790791
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.975031,
+          "components": {
+            "word2vec_norm": 0.950063,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.563827,
+            "glove_raw": 0.844011
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.973597,
+          "components": {
+            "word2vec_norm": 0.979182,
+            "glove_norm": 0.968013,
+            "word2vec_raw": 0.581108,
+            "glove_raw": 0.804712
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.962194,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 0.924388,
+            "word2vec_raw": 0.593463,
+            "glove_raw": 0.751116
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.941063,
+          "components": {
+            "word2vec_norm": 0.925444,
+            "glove_norm": 0.956682,
+            "word2vec_raw": 0.549217,
+            "glove_raw": 0.790791
+          }
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.925775,
+          "components": {
+            "word2vec_norm": 0.892602,
+            "glove_norm": 0.958949,
+            "word2vec_raw": 0.529726,
+            "glove_raw": 0.793577
+          }
+        }
+      ],
+      "raw_overlap_count": 3,
+      "vlm_word2vec": [
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.9428,
+          "components": {
+            "embedding_raw": 0.529726,
+            "embedding": 0.892602,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.877997,
+          "components": {
+            "embedding_raw": 0.432564,
+            "embedding": 0.728881,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Powers of i",
+          "score": 0.841349,
+          "components": {
+            "embedding_raw": 0.418234,
+            "embedding": 0.704735,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.820479,
+          "components": {
+            "embedding_raw": 0.401346,
+            "embedding": 0.676278,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Complex plane",
+          "score": 0.777183,
+          "components": {
+            "embedding_raw": 0.322637,
+            "embedding": 0.543651,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.972656,
+          "components": {
+            "embedding_raw": 0.793577,
+            "embedding": 0.958949,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.945683,
+          "components": {
+            "embedding_raw": 0.788123,
+            "embedding": 0.95451,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Powers of i",
+          "score": 0.94178,
+          "components": {
+            "embedding_raw": 0.755447,
+            "embedding": 0.927913,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.925942,
+          "components": {
+            "embedding_raw": 0.64182,
+            "embedding": 0.835427,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Complex plane",
+          "score": 0.894978,
+          "components": {
+            "embedding_raw": 0.604952,
+            "embedding": 0.805418,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.96692,
+          "components": {
+            "embedding_raw": 0.925775,
+            "embedding": 0.946201,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.9052,
+          "components": {
+            "embedding_raw": 0.782154,
+            "embedding": 0.789334,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Powers of i",
+          "score": 0.896214,
+          "components": {
+            "embedding_raw": 0.816324,
+            "embedding": 0.826655,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.887692,
+          "components": {
+            "embedding_raw": 0.815394,
+            "embedding": 0.825639,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Complex plane",
+          "score": 0.834845,
+          "components": {
+            "embedding_raw": 0.674535,
+            "embedding": 0.671789,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 4,
+      "video_id": "KeYfQ8Em9BU",
+      "url": "https://www.youtube.com/watch?v=KeYfQ8Em9BU",
+      "title": "Regions in the complex plane",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "vlm_order": [
+        "Regions in the complex plane",
+        "Complex plane",
+        "Imaginary part",
+        "Real part",
+        "Rectangular form (Standard form)"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.635967
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.59917
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.570702
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.569925
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.559844
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.874873
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.855102
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.807974
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.790991
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.745461
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 1.0,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.635967,
+            "glove_raw": 0.874873
+          }
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.96306,
+          "components": {
+            "word2vec_norm": 0.94214,
+            "glove_norm": 0.983979,
+            "word2vec_raw": 0.59917,
+            "glove_raw": 0.855102
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.920973,
+          "components": {
+            "word2vec_norm": 0.896155,
+            "glove_norm": 0.945791,
+            "word2vec_raw": 0.569925,
+            "glove_raw": 0.807974
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.884046,
+          "components": {
+            "word2vec_norm": 0.880304,
+            "glove_norm": 0.887788,
+            "word2vec_raw": 0.559844,
+            "glove_raw": 0.736392
+          }
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.878964,
+          "components": {
+            "word2vec_norm": 0.825898,
+            "glove_norm": 0.93203,
+            "word2vec_raw": 0.525244,
+            "glove_raw": 0.790991
+          }
+        }
+      ],
+      "raw_overlap_count": 3,
+      "vlm_word2vec": [
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 1.0,
+          "components": {
+            "embedding_raw": 0.635967,
+            "embedding": 1.0,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Complex plane",
+          "score": 0.792893,
+          "components": {
+            "embedding_raw": 0.355808,
+            "embedding": 0.559476,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.778573,
+          "components": {
+            "embedding_raw": 0.347709,
+            "embedding": 0.546741,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.763725,
+          "components": {
+            "embedding_raw": 0.338485,
+            "embedding": 0.532237,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "score": 0.692451,
+          "components": {
+            "embedding_raw": 0.249154,
+            "embedding": 0.391772,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 1.0,
+          "components": {
+            "embedding_raw": 0.874873,
+            "embedding": 1.0,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.92703,
+          "components": {
+            "embedding_raw": 0.745461,
+            "embedding": 0.895137,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Complex plane",
+          "score": 0.910269,
+          "components": {
+            "embedding_raw": 0.653117,
+            "embedding": 0.82031,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.877223,
+          "components": {
+            "embedding_raw": 0.586046,
+            "embedding": 0.765962,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "score": 0.845856,
+          "components": {
+            "embedding_raw": 0.544963,
+            "embedding": 0.732672,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 1.0,
+          "components": {
+            "embedding_raw": 1.0,
+            "embedding": 1.0,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Complex plane",
+          "score": 0.84143,
+          "components": {
+            "embedding_raw": 0.689893,
+            "embedding": 0.667336,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Real part",
+          "score": 0.836006,
+          "components": {
+            "embedding_raw": 0.713687,
+            "embedding": 0.692861,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Imaginary part",
+          "score": 0.816649,
+          "components": {
+            "embedding_raw": 0.656351,
+            "embedding": 0.631355,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "score": 0.754824,
+          "components": {
+            "embedding_raw": 0.562222,
+            "embedding": 0.530379,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 5,
+      "video_id": "AqtgBbEI4wM",
+      "url": "https://www.youtube.com/watch?v=AqtgBbEI4wM",
+      "title": "Sketching the Locus of Complex Numbers",
+      "topic": "Complex Numbers",
+      "subtopic": "Complex Plane and Loci",
+      "vlm_order": [
+        "Equations involving complex numbers",
+        "Regions in the complex plane",
+        "Modulus of a complex number",
+        "Argand diagram",
+        "Algebraic form"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.638479
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.631877
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.596737
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.528188
+        },
+        {
+          "keyword": "Area of a planar region",
+          "score": 0.507446
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.814211
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.776163
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.752558
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.728915
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.722189
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.99483,
+          "components": {
+            "word2vec_norm": 0.98966,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.631877,
+            "glove_raw": 0.814211
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.972619,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 0.945237,
+            "word2vec_raw": 0.638479,
+            "glove_raw": 0.752558
+          }
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.950414,
+          "components": {
+            "word2vec_norm": 0.934623,
+            "glove_norm": 0.966204,
+            "word2vec_raw": 0.596737,
+            "glove_raw": 0.776163
+          }
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.853246,
+          "components": {
+            "word2vec_norm": 0.790707,
+            "glove_norm": 0.915785,
+            "word2vec_raw": 0.50485,
+            "glove_raw": 0.7194
+          }
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.83629,
+          "components": {
+            "word2vec_norm": 0.82726,
+            "glove_norm": 0.845319,
+            "word2vec_raw": 0.528188,
+            "glove_raw": 0.640068
+          }
+        }
+      ],
+      "raw_overlap_count": 3,
+      "vlm_word2vec": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.98254,
+          "components": {
+            "embedding_raw": 0.638479,
+            "embedding": 1.0,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.922267,
+          "components": {
+            "embedding_raw": 0.528188,
+            "embedding": 0.82726,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Algebraic form",
+          "score": 0.853142,
+          "components": {
+            "embedding_raw": 0.478133,
+            "embedding": 0.748863,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Argand diagram",
+          "score": 0.835477,
+          "components": {
+            "embedding_raw": 0.441627,
+            "embedding": 0.691686,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.799177,
+          "components": {
+            "embedding_raw": 0.366129,
+            "embedding": 0.573439,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.957897,
+          "components": {
+            "embedding_raw": 0.752558,
+            "embedding": 0.945237,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.954347,
+          "components": {
+            "embedding_raw": 0.722189,
+            "embedding": 0.918262,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.930394,
+          "components": {
+            "embedding_raw": 0.640068,
+            "embedding": 0.845319,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Algebraic form",
+          "score": 0.830812,
+          "components": {
+            "embedding_raw": 0.475609,
+            "embedding": 0.69924,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Argand diagram",
+          "score": 0.659672,
+          "components": {
+            "embedding_raw": 0.027269,
+            "embedding": 0.301007,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.971796,
+          "components": {
+            "embedding_raw": 0.972619,
+            "embedding": 0.976126,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.923314,
+          "components": {
+            "embedding_raw": 0.83629,
+            "embedding": 0.829588,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.870698,
+          "components": {
+            "embedding_raw": 0.745851,
+            "embedding": 0.732376,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Algebraic form",
+          "score": 0.835178,
+          "components": {
+            "embedding_raw": 0.724051,
+            "embedding": 0.708943,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Argand diagram",
+          "score": 0.733103,
+          "components": {
+            "embedding_raw": 0.496347,
+            "embedding": 0.464187,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 6,
+      "video_id": "G8GAsYkZlpE",
+      "url": "https://www.youtube.com/watch?v=G8GAsYkZlpE",
+      "title": "Second Derivative Test for Relative Extrema",
+      "topic": "Differentiation",
+      "subtopic": "Extrema and Concavity",
+      "vlm_order": [
+        "Second derivative test",
+        "Local maximum",
+        "Local minimum",
+        "Critical point",
+        "Concavity"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "First derivative test",
+          "score": 0.642574
+        },
+        {
+          "keyword": "Second derivative test",
+          "score": 0.633637
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.571868
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.54802
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.540193
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.812182
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.784566
+        },
+        {
+          "keyword": "First derivative test",
+          "score": 0.761137
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.759591
+        },
+        {
+          "keyword": "Second derivative test",
+          "score": 0.752444
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "First derivative test",
+          "score": 0.977945,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 0.95589,
+            "word2vec_raw": 0.642574,
+            "glove_raw": 0.761137
+          }
+        },
+        {
+          "keyword": "Second derivative test",
+          "score": 0.967235,
+          "components": {
+            "word2vec_norm": 0.986092,
+            "glove_norm": 0.948378,
+            "word2vec_raw": 0.633637,
+            "glove_raw": 0.752444
+          }
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.926426,
+          "components": {
+            "word2vec_norm": 0.852851,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.54802,
+            "glove_raw": 0.812182
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.911785,
+          "components": {
+            "word2vec_norm": 0.889964,
+            "glove_norm": 0.933605,
+            "word2vec_raw": 0.571868,
+            "glove_raw": 0.735349
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.908403,
+          "components": {
+            "word2vec_norm": 0.84067,
+            "glove_norm": 0.976136,
+            "word2vec_raw": 0.540193,
+            "glove_raw": 0.784566
+          }
+        }
+      ],
+      "raw_overlap_count": 4,
+      "vlm_word2vec": [
+        {
+          "keyword": "Second derivative test",
+          "score": 0.993741,
+          "components": {
+            "embedding_raw": 0.633637,
+            "embedding": 0.986092,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local maximum",
+          "score": 0.808414,
+          "components": {
+            "embedding_raw": 0.381668,
+            "embedding": 0.593967,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Critical point",
+          "score": 0.801809,
+          "components": {
+            "embedding_raw": 0.396383,
+            "embedding": 0.616867,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local minimum",
+          "score": 0.794525,
+          "components": {
+            "embedding_raw": 0.3741,
+            "embedding": 0.58219,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Concavity",
+          "score": 0.663546,
+          "components": {
+            "embedding_raw": 0.210468,
+            "embedding": 0.327539,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Second derivative test",
+          "score": 0.97677,
+          "components": {
+            "embedding_raw": 0.752444,
+            "embedding": 0.948378,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Critical point",
+          "score": 0.918597,
+          "components": {
+            "embedding_raw": 0.669146,
+            "embedding": 0.876397,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local maximum",
+          "score": 0.917267,
+          "components": {
+            "embedding_raw": 0.622238,
+            "embedding": 0.835862,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local minimum",
+          "score": 0.901559,
+          "components": {
+            "embedding_raw": 0.603933,
+            "embedding": 0.820043,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Concavity",
+          "score": 0.578032,
+          "components": {
+            "embedding_raw": -0.185911,
+            "embedding": 0.137507,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Second derivative test",
+          "score": 0.994642,
+          "components": {
+            "embedding_raw": 0.967235,
+            "embedding": 0.988094,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local maximum",
+          "score": 0.859547,
+          "components": {
+            "embedding_raw": 0.714914,
+            "embedding": 0.707595,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Critical point",
+          "score": 0.858503,
+          "components": {
+            "embedding_raw": 0.746632,
+            "embedding": 0.742855,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local minimum",
+          "score": 0.844055,
+          "components": {
+            "embedding_raw": 0.701117,
+            "embedding": 0.692257,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Concavity",
+          "score": 0.593253,
+          "components": {
+            "embedding_raw": 0.232523,
+            "embedding": 0.171332,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 7,
+      "video_id": "8mjcnxGMwFo",
+      "url": "https://www.youtube.com/watch?v=8mjcnxGMwFo",
+      "title": "Lagrange Multipliers",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "vlm_order": [
+        "Lagrange multipliers",
+        "Constrained optimization",
+        "Optimization",
+        "Minimum",
+        "Maximum"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.618022
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.603988
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.586951
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "score": 0.558522
+        },
+        {
+          "keyword": "Multi-objective optimization",
+          "score": 0.500882
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.820237
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.775213
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.763652
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.750312
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.741783
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 1.0,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.618022,
+            "glove_raw": 0.820237
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.96368,
+          "components": {
+            "word2vec_norm": 0.977292,
+            "glove_norm": 0.950068,
+            "word2vec_raw": 0.603988,
+            "glove_raw": 0.763652
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.954998,
+          "components": {
+            "word2vec_norm": 0.949725,
+            "glove_norm": 0.96027,
+            "word2vec_raw": 0.586951,
+            "glove_raw": 0.775213
+          }
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "score": 0.894567,
+          "components": {
+            "word2vec_norm": 0.903725,
+            "glove_norm": 0.885409,
+            "word2vec_raw": 0.558522,
+            "glove_raw": 0.690377
+          }
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.861905,
+          "components": {
+            "word2vec_norm": 0.785512,
+            "glove_norm": 0.938297,
+            "word2vec_raw": 0.485464,
+            "glove_raw": 0.750312
+          }
+        }
+      ],
+      "raw_overlap_count": 3,
+      "vlm_word2vec": [
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.860715,
+          "components": {
+            "embedding_raw": 0.42673,
+            "embedding": 0.690477,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.829385,
+          "components": {
+            "embedding_raw": 0.395885,
+            "embedding": 0.640568,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Maximum",
+          "score": 0.778354,
+          "components": {
+            "embedding_raw": 0.360101,
+            "embedding": 0.582667,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.772746,
+          "components": {
+            "embedding_raw": 0.329895,
+            "embedding": 0.533792,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Minimum",
+          "score": 0.768799,
+          "components": {
+            "embedding_raw": 0.335902,
+            "embedding": 0.543511,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Minimum",
+          "score": 0.829718,
+          "components": {
+            "embedding_raw": 0.456336,
+            "embedding": 0.678887,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Maximum",
+          "score": 0.825139,
+          "components": {
+            "embedding_raw": 0.465116,
+            "embedding": 0.686635,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.788234,
+          "components": {
+            "embedding_raw": 0.30928,
+            "embedding": 0.549122,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.757946,
+          "components": {
+            "embedding_raw": 0.254636,
+            "embedding": 0.500903,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.710121,
+          "components": {
+            "embedding_raw": 0.090225,
+            "embedding": 0.355824,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.793003,
+          "components": {
+            "embedding_raw": 0.594845,
+            "embedding": 0.559719,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Maximum",
+          "score": 0.787493,
+          "components": {
+            "embedding_raw": 0.634651,
+            "embedding": 0.602976,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Minimum",
+          "score": 0.78409,
+          "components": {
+            "embedding_raw": 0.611199,
+            "embedding": 0.577491,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.766814,
+          "components": {
+            "embedding_raw": 0.52315,
+            "embedding": 0.481808,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.746516,
+          "components": {
+            "embedding_raw": 0.517347,
+            "embedding": 0.475502,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 8,
+      "video_id": "LVLuqNH5iWw",
+      "url": "https://www.youtube.com/watch?v=LVLuqNH5iWw",
+      "title": "Local Extrema of a Multivariable Function",
+      "topic": "Differentiation",
+      "subtopic": "Extrema and Concavity",
+      "vlm_order": [
+        "Local maximum",
+        "Local minimum",
+        "Second derivative test",
+        "Critical point",
+        "Saddle point"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.636457
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.626335
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.589774
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.509274
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "score": 0.495826
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.838191
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.779921
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.768075
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.767982
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.739112
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.992048,
+          "components": {
+            "word2vec_norm": 0.984096,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.626335,
+            "glove_raw": 0.838191
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.957636,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 0.915273,
+            "word2vec_raw": 0.636457,
+            "glove_raw": 0.739112
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.938411,
+          "components": {
+            "word2vec_norm": 0.926652,
+            "glove_norm": 0.95017,
+            "word2vec_raw": 0.589774,
+            "glove_raw": 0.779921
+          }
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.870066,
+          "components": {
+            "word2vec_norm": 0.80017,
+            "glove_norm": 0.939961,
+            "word2vec_raw": 0.509274,
+            "glove_raw": 0.767982
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.834179,
+          "components": {
+            "word2vec_norm": 0.75519,
+            "glove_norm": 0.913168,
+            "word2vec_raw": 0.480646,
+            "glove_raw": 0.736651
+          }
+        }
+      ],
+      "raw_overlap_count": 4,
+      "vlm_word2vec": [
+        {
+          "keyword": "Second derivative test",
+          "score": 0.856779,
+          "components": {
+            "embedding_raw": 0.458588,
+            "embedding": 0.720533,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local maximum",
+          "score": 0.816986,
+          "components": {
+            "embedding_raw": 0.377611,
+            "embedding": 0.593302,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local minimum",
+          "score": 0.810118,
+          "components": {
+            "embedding_raw": 0.380444,
+            "embedding": 0.597753,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Critical point",
+          "score": 0.809351,
+          "components": {
+            "embedding_raw": 0.403276,
+            "embedding": 0.633626,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Saddle point",
+          "score": 0.69909,
+          "components": {
+            "embedding_raw": 0.258735,
+            "embedding": 0.406524,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Critical point",
+          "score": 0.913419,
+          "components": {
+            "embedding_raw": 0.680196,
+            "embedding": 0.864891,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Second derivative test",
+          "score": 0.912158,
+          "components": {
+            "embedding_raw": 0.655296,
+            "embedding": 0.843597,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local maximum",
+          "score": 0.910344,
+          "components": {
+            "embedding_raw": 0.605209,
+            "embedding": 0.800765,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local minimum",
+          "score": 0.897902,
+          "components": {
+            "embedding_raw": 0.595929,
+            "embedding": 0.79283,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Saddle point",
+          "score": 0.793355,
+          "components": {
+            "embedding_raw": 0.389151,
+            "embedding": 0.616003,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Second derivative test",
+          "score": 0.880702,
+          "components": {
+            "embedding_raw": 0.782065,
+            "embedding": 0.773693,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local maximum",
+          "score": 0.856923,
+          "components": {
+            "embedding_raw": 0.697034,
+            "embedding": 0.682052,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Critical point",
+          "score": 0.85647,
+          "components": {
+            "embedding_raw": 0.749258,
+            "embedding": 0.738336,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Local minimum",
+          "score": 0.847207,
+          "components": {
+            "embedding_raw": 0.695291,
+            "embedding": 0.680173,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Saddle point",
+          "score": 0.732982,
+          "components": {
+            "embedding_raw": 0.511264,
+            "embedding": 0.48184,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 9,
+      "video_id": "vwUV2IDLP8Q",
+      "url": "https://www.youtube.com/watch?v=vwUV2IDLP8Q",
+      "title": "Constrained Optimization",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "vlm_order": [
+        "Constrained optimization",
+        "Optimization",
+        "Lagrange multipliers",
+        "Feasible set",
+        "Maximum"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Multi-objective optimization",
+          "score": 0.563258
+        },
+        {
+          "keyword": "Unconstrained optimization",
+          "score": 0.543066
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.541779
+        },
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.541755
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.528553
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.769786
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.753939
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.721207
+        },
+        {
+          "keyword": "Area of a planar region",
+          "score": 0.694832
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.69376
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.980933,
+          "components": {
+            "word2vec_norm": 0.961866,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.541779,
+            "glove_raw": 0.769786
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.948048,
+          "components": {
+            "word2vec_norm": 0.911934,
+            "glove_norm": 0.984162,
+            "word2vec_raw": 0.513654,
+            "glove_raw": 0.753939
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.944918,
+          "components": {
+            "word2vec_norm": 0.938385,
+            "glove_norm": 0.95145,
+            "word2vec_raw": 0.528553,
+            "glove_raw": 0.721207
+          }
+        },
+        {
+          "keyword": "Increasing function",
+          "score": 0.890317,
+          "components": {
+            "word2vec_norm": 0.870061,
+            "glove_norm": 0.910573,
+            "word2vec_raw": 0.490069,
+            "glove_raw": 0.680306
+          }
+        },
+        {
+          "keyword": "Multi-objective optimization",
+          "score": 0.889241,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 0.778481,
+            "word2vec_raw": 0.563258,
+            "glove_raw": 0.548135
+          }
+        }
+      ],
+      "raw_overlap_count": 2,
+      "vlm_word2vec": [
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.982821,
+          "components": {
+            "embedding_raw": 0.541755,
+            "embedding": 0.961824,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.899965,
+          "components": {
+            "embedding_raw": 0.44915,
+            "embedding": 0.797414,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Feasible set",
+          "score": 0.817674,
+          "components": {
+            "embedding_raw": 0.367313,
+            "embedding": 0.652122,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.759853,
+          "components": {
+            "embedding_raw": 0.284524,
+            "embedding": 0.50514,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Maximum",
+          "score": 0.752,
+          "components": {
+            "embedding_raw": 0.295205,
+            "embedding": 0.524103,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Feasible set",
+          "score": 0.868067,
+          "components": {
+            "embedding_raw": 0.533752,
+            "embedding": 0.764107,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.843107,
+          "components": {
+            "embedding_raw": 0.420927,
+            "embedding": 0.651349,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.808177,
+          "components": {
+            "embedding_raw": 0.362982,
+            "embedding": 0.593439,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Maximum",
+          "score": 0.805893,
+          "components": {
+            "embedding_raw": 0.413437,
+            "embedding": 0.643864,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.65924,
+          "components": {
+            "embedding_raw": 0.050912,
+            "embedding": 0.281556,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.912572,
+          "components": {
+            "embedding_raw": 0.806587,
+            "embedding": 0.805717,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.847959,
+          "components": {
+            "embedding_raw": 0.695427,
+            "embedding": 0.681845,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Feasible set",
+          "score": 0.837411,
+          "components": {
+            "embedding_raw": 0.708115,
+            "embedding": 0.695984,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Maximum",
+          "score": 0.767099,
+          "components": {
+            "embedding_raw": 0.583983,
+            "embedding": 0.557657,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.687889,
+          "components": {
+            "embedding_raw": 0.393348,
+            "embedding": 0.345222,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 10,
+      "video_id": "kv8pMEALdWo",
+      "url": "https://www.youtube.com/watch?v=kv8pMEALdWo",
+      "title": "Introduction to Kuhn-Tucker Conditions",
+      "topic": "Optimization",
+      "subtopic": "Constrained Optimization",
+      "vlm_order": [
+        "Constrained optimization",
+        "Optimization",
+        "KKT conditions",
+        "Optimal solution",
+        "Lagrange multipliers"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.519644
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.485184
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.479635
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "score": 0.464906
+        },
+        {
+          "keyword": "Multi-objective optimization",
+          "score": 0.448125
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.778462
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.716102
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.703982
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.694459
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.693223
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 1.0,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.519644,
+            "glove_raw": 0.778462
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.928726,
+          "components": {
+            "word2vec_norm": 0.933685,
+            "glove_norm": 0.923767,
+            "word2vec_raw": 0.485184,
+            "glove_raw": 0.694459
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.901464,
+          "components": {
+            "word2vec_norm": 0.923007,
+            "glove_norm": 0.879922,
+            "word2vec_raw": 0.479635,
+            "glove_raw": 0.646145
+          }
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "score": 0.884578,
+          "components": {
+            "word2vec_norm": 0.84651,
+            "glove_norm": 0.922645,
+            "word2vec_raw": 0.439884,
+            "glove_raw": 0.693223
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.878176,
+          "components": {
+            "word2vec_norm": 0.835938,
+            "glove_norm": 0.920414,
+            "word2vec_raw": 0.43439,
+            "glove_raw": 0.690764
+          }
+        }
+      ],
+      "raw_overlap_count": 2,
+      "vlm_word2vec": [
+        {
+          "keyword": "KKT conditions",
+          "score": 0.909731,
+          "components": {
+            "embedding_raw": 0.435567,
+            "embedding": 0.838203,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.891561,
+          "components": {
+            "embedding_raw": 0.394422,
+            "embedding": 0.759023,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimal solution",
+          "score": 0.857996,
+          "components": {
+            "embedding_raw": 0.385434,
+            "embedding": 0.741727,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.823197,
+          "components": {
+            "embedding_raw": 0.325722,
+            "embedding": 0.626818,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.747386,
+          "components": {
+            "embedding_raw": 0.267019,
+            "embedding": 0.51385,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "KKT conditions",
+          "score": 0.90372,
+          "components": {
+            "embedding_raw": 0.585455,
+            "embedding": 0.824845,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimal solution",
+          "score": 0.864197,
+          "components": {
+            "embedding_raw": 0.50905,
+            "embedding": 0.755507,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.796931,
+          "components": {
+            "embedding_raw": 0.281203,
+            "embedding": 0.548735,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.766694,
+          "components": {
+            "embedding_raw": 0.228885,
+            "embedding": 0.501256,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.611605,
+          "components": {
+            "embedding_raw": -0.089727,
+            "embedding": 0.212114,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "KKT conditions",
+          "score": 0.902458,
+          "components": {
+            "embedding_raw": 0.831524,
+            "embedding": 0.82204,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimal solution",
+          "score": 0.854729,
+          "components": {
+            "embedding_raw": 0.748617,
+            "embedding": 0.734466,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constrained optimization",
+          "score": 0.835478,
+          "components": {
+            "embedding_raw": 0.653879,
+            "embedding": 0.634395,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Optimization",
+          "score": 0.783902,
+          "components": {
+            "embedding_raw": 0.564037,
+            "embedding": 0.539496,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "score": 0.663359,
+          "components": {
+            "embedding_raw": 0.362982,
+            "embedding": 0.327123,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 11,
+      "video_id": "QqAPCIIdx-E",
+      "url": "https://www.youtube.com/watch?v=QqAPCIIdx-E",
+      "title": "Derivative using Chain and Product Rules",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "vlm_order": [
+        "Chain rule",
+        "Product rule",
+        "Power rule",
+        "Trigonometric rules",
+        "Trigonometric functions"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.632075
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.592564
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.556597
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.511364
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "score": 0.474857
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.868282
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.79163
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.787155
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.780667
+        },
+        {
+          "keyword": "Powers of i",
+          "score": 0.754867
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 1.0,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.632075,
+            "glove_raw": 0.868282
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.913093,
+          "components": {
+            "word2vec_norm": 0.93749,
+            "glove_norm": 0.888696,
+            "word2vec_raw": 0.592564,
+            "glove_raw": 0.732
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.907165,
+          "components": {
+            "word2vec_norm": 0.880587,
+            "glove_norm": 0.933742,
+            "word2vec_raw": 0.556597,
+            "glove_raw": 0.787155
+          }
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.873211,
+          "components": {
+            "word2vec_norm": 0.809024,
+            "glove_norm": 0.937397,
+            "word2vec_raw": 0.511364,
+            "glove_raw": 0.79163
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.826024,
+          "components": {
+            "word2vec_norm": 0.746013,
+            "glove_norm": 0.906036,
+            "word2vec_raw": 0.471536,
+            "glove_raw": 0.753231
+          }
+        }
+      ],
+      "raw_overlap_count": 3,
+      "vlm_word2vec": [
+        {
+          "keyword": "Chain rule",
+          "score": 0.845942,
+          "components": {
+            "embedding_raw": 0.415684,
+            "embedding": 0.65765,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Product rule",
+          "score": 0.839558,
+          "components": {
+            "embedding_raw": 0.419176,
+            "embedding": 0.663174,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.828332,
+          "components": {
+            "embedding_raw": 0.427161,
+            "embedding": 0.675807,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.793272,
+          "components": {
+            "embedding_raw": 0.366227,
+            "embedding": 0.579404,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.779977,
+          "components": {
+            "embedding_raw": 0.370569,
+            "embedding": 0.586274,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Product rule",
+          "score": 0.932493,
+          "components": {
+            "embedding_raw": 0.708738,
+            "embedding": 0.869698,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Chain rule",
+          "score": 0.903076,
+          "components": {
+            "embedding_raw": 0.60456,
+            "embedding": 0.784614,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.88763,
+          "components": {
+            "embedding_raw": 0.610041,
+            "embedding": 0.78909,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.751838,
+          "components": {
+            "embedding_raw": 0.263202,
+            "embedding": 0.505821,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.715729,
+          "components": {
+            "embedding_raw": 0.186897,
+            "embedding": 0.443501,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Product rule",
+          "score": 0.880154,
+          "components": {
+            "embedding_raw": 0.766436,
+            "embedding": 0.753389,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Chain rule",
+          "score": 0.867499,
+          "components": {
+            "embedding_raw": 0.721132,
+            "embedding": 0.705554,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.832514,
+          "components": {
+            "embedding_raw": 0.684247,
+            "embedding": 0.666609,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.779799,
+          "components": {
+            "embedding_raw": 0.590814,
+            "embedding": 0.567957,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.735659,
+          "components": {
+            "embedding_raw": 0.514887,
+            "embedding": 0.487788,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 12,
+      "video_id": "QhB481jPAa4",
+      "url": "https://www.youtube.com/watch?v=QhB481jPAa4",
+      "title": "Differentiation of y = cos(ax)",
+      "topic": "Differentiation",
+      "subtopic": "Derivative Rules",
+      "vlm_order": [
+        "Chain rule",
+        "Trigonometric rules",
+        "Product rule",
+        "Trigonometric functions",
+        "Power rule"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.572299
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.555859
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.515318
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.473828
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "score": 0.472518
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.820684
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.775598
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.757454
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.747568
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.746356
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 1.0,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.572299,
+            "glove_raw": 0.820684
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.945024,
+          "components": {
+            "word2vec_norm": 0.971274,
+            "glove_norm": 0.918775,
+            "word2vec_raw": 0.555859,
+            "glove_raw": 0.725876
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.930904,
+          "components": {
+            "word2vec_norm": 0.900435,
+            "glove_norm": 0.961373,
+            "word2vec_raw": 0.515318,
+            "glove_raw": 0.775598
+          }
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.882649,
+          "components": {
+            "word2vec_norm": 0.827938,
+            "glove_norm": 0.937359,
+            "word2vec_raw": 0.473828,
+            "glove_raw": 0.747568
+          }
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.848524,
+          "components": {
+            "word2vec_norm": 0.760726,
+            "glove_norm": 0.936321,
+            "word2vec_raw": 0.435363,
+            "glove_raw": 0.746356
+          }
+        }
+      ],
+      "raw_overlap_count": 3,
+      "vlm_word2vec": [
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.873535,
+          "components": {
+            "embedding_raw": 0.422746,
+            "embedding": 0.73868,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Chain rule",
+          "score": 0.836229,
+          "components": {
+            "embedding_raw": 0.364019,
+            "embedding": 0.636064,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.809755,
+          "components": {
+            "embedding_raw": 0.363138,
+            "embedding": 0.634525,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Product rule",
+          "score": 0.78476,
+          "components": {
+            "embedding_raw": 0.320768,
+            "embedding": 0.56049,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.757157,
+          "components": {
+            "embedding_raw": 0.306502,
+            "embedding": 0.535563,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Product rule",
+          "score": 0.934781,
+          "components": {
+            "embedding_raw": 0.696805,
+            "embedding": 0.893869,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Chain rule",
+          "score": 0.91213,
+          "components": {
+            "embedding_raw": 0.592763,
+            "embedding": 0.804733,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.87686,
+          "components": {
+            "embedding_raw": 0.589069,
+            "embedding": 0.801569,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.789603,
+          "components": {
+            "embedding_raw": 0.297958,
+            "embedding": 0.552165,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.744395,
+          "components": {
+            "embedding_raw": 0.224557,
+            "embedding": 0.48928,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Chain rule",
+          "score": 0.865552,
+          "components": {
+            "embedding_raw": 0.720399,
+            "embedding": 0.701226,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Product rule",
+          "score": 0.851352,
+          "components": {
+            "embedding_raw": 0.72718,
+            "embedding": 0.708472,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.820628,
+          "components": {
+            "embedding_raw": 0.645423,
+            "embedding": 0.621109,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.806781,
+          "components": {
+            "embedding_raw": 0.668566,
+            "embedding": 0.645839,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.763557,
+          "components": {
+            "embedding_raw": 0.561903,
+            "embedding": 0.531862,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 13,
+      "video_id": "JTDa2uZS2gI",
+      "url": "https://www.youtube.com/watch?v=JTDa2uZS2gI",
+      "title": "Calculating Partial Derivatives",
+      "topic": "Differentiation",
+      "subtopic": "Partial Derivatives",
+      "vlm_order": [
+        "Chain rule",
+        "Constant rule",
+        "Derivative definition",
+        "Trigonometric rules",
+        "Power rule"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.582984
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.549351
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.512991
+        },
+        {
+          "keyword": "Right-endpoint approximation",
+          "score": 0.509369
+        },
+        {
+          "keyword": "Trigonometric form",
+          "score": 0.498693
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Increasing function",
+          "score": 0.706089
+        },
+        {
+          "keyword": "Higher-order derivatives",
+          "score": 0.695553
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.693622
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.683096
+        },
+        {
+          "keyword": "Mean Value Theorem for Integrals",
+          "score": 0.681648
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.924902,
+          "components": {
+            "word2vec_norm": 0.87994,
+            "glove_norm": 0.969863,
+            "word2vec_raw": 0.512991,
+            "glove_raw": 0.676949
+          }
+        },
+        {
+          "keyword": "Increasing function",
+          "score": 0.915562,
+          "components": {
+            "word2vec_norm": 0.831124,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.484532,
+            "glove_raw": 0.706089
+          }
+        },
+        {
+          "keyword": "Mean Value Theorem for Integrals",
+          "score": 0.914552,
+          "components": {
+            "word2vec_norm": 0.85438,
+            "glove_norm": 0.974723,
+            "word2vec_raw": 0.49809,
+            "glove_raw": 0.681648
+          }
+        },
+        {
+          "keyword": "Higher-order derivatives",
+          "score": 0.899541,
+          "components": {
+            "word2vec_norm": 0.809979,
+            "glove_norm": 0.989104,
+            "word2vec_raw": 0.472205,
+            "glove_raw": 0.695553
+          }
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "score": 0.88711,
+          "components": {
+            "word2vec_norm": 0.823345,
+            "glove_norm": 0.950874,
+            "word2vec_raw": 0.479997,
+            "glove_raw": 0.658588
+          }
+        }
+      ],
+      "raw_overlap_count": 0,
+      "vlm_word2vec": [
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.974219,
+          "components": {
+            "embedding_raw": 0.582984,
+            "embedding": 1.0,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Derivative definition",
+          "score": 0.871315,
+          "components": {
+            "embedding_raw": 0.43889,
+            "embedding": 0.752834,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constant rule",
+          "score": 0.800557,
+          "components": {
+            "embedding_raw": 0.336094,
+            "embedding": 0.576506,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Chain rule",
+          "score": 0.790476,
+          "components": {
+            "embedding_raw": 0.311542,
+            "embedding": 0.534392,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.731894,
+          "components": {
+            "embedding_raw": 0.279496,
+            "embedding": 0.479423,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Derivative definition",
+          "score": 0.945611,
+          "components": {
+            "embedding_raw": 0.626739,
+            "embedding": 0.917935,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constant rule",
+          "score": 0.92628,
+          "components": {
+            "embedding_raw": 0.566746,
+            "embedding": 0.85589,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Chain rule",
+          "score": 0.906569,
+          "components": {
+            "embedding_raw": 0.505333,
+            "embedding": 0.792376,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.878972,
+          "components": {
+            "embedding_raw": 0.518761,
+            "embedding": 0.806263,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.85939,
+          "components": {
+            "embedding_raw": 0.459354,
+            "embedding": 0.744824,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.944662,
+          "components": {
+            "embedding_raw": 0.872412,
+            "embedding": 0.934318,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Derivative definition",
+          "score": 0.932133,
+          "components": {
+            "embedding_raw": 0.835385,
+            "embedding": 0.887986,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constant rule",
+          "score": 0.873609,
+          "components": {
+            "embedding_raw": 0.716198,
+            "embedding": 0.738844,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Chain rule",
+          "score": 0.852741,
+          "components": {
+            "embedding_raw": 0.663384,
+            "embedding": 0.672757,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.807328,
+          "components": {
+            "embedding_raw": 0.642843,
+            "embedding": 0.647054,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 14,
+      "video_id": "TDHI-aieyfk",
+      "url": "https://www.youtube.com/watch?v=TDHI-aieyfk",
+      "title": "Derivatives of Common Functions",
+      "topic": "Differentiation",
+      "subtopic": "Derivatives",
+      "vlm_order": [
+        "Trigonometric rules",
+        "Exponential rule",
+        "Logarithmic rule",
+        "Tangent line",
+        "Slope"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.622806
+        },
+        {
+          "keyword": "Trigonometric form",
+          "score": 0.58697
+        },
+        {
+          "keyword": "Logarithmic rule",
+          "score": 0.582596
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.537976
+        },
+        {
+          "keyword": "Direct integrals",
+          "score": 0.531162
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Increasing function",
+          "score": 0.712009
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "score": 0.69672
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.693126
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.684005
+        },
+        {
+          "keyword": "Mean Value Theorem for Integrals",
+          "score": 0.681456
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Trigonometric functions",
+          "score": 0.923505,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 0.847011,
+            "word2vec_raw": 0.622806,
+            "glove_raw": 0.573628
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.921459,
+          "components": {
+            "word2vec_norm": 0.863794,
+            "glove_norm": 0.979124,
+            "word2vec_raw": 0.537976,
+            "glove_raw": 0.693126
+          }
+        },
+        {
+          "keyword": "Mean Value Theorem for Integrals",
+          "score": 0.89821,
+          "components": {
+            "word2vec_norm": 0.830198,
+            "glove_norm": 0.966222,
+            "word2vec_raw": 0.517052,
+            "glove_raw": 0.681456
+          }
+        },
+        {
+          "keyword": "Trigonometric form",
+          "score": 0.891912,
+          "components": {
+            "word2vec_norm": 0.94246,
+            "glove_norm": 0.841363,
+            "word2vec_raw": 0.58697,
+            "glove_raw": 0.568519
+          }
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.890685,
+          "components": {
+            "word2vec_norm": 0.81233,
+            "glove_norm": 0.96904,
+            "word2vec_raw": 0.505924,
+            "glove_raw": 0.684005
+          }
+        }
+      ],
+      "raw_overlap_count": 1,
+      "vlm_word2vec": [
+        {
+          "keyword": "Logarithmic rule",
+          "score": 0.953486,
+          "components": {
+            "embedding_raw": 0.582596,
+            "embedding": 0.935437,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.932735,
+          "components": {
+            "embedding_raw": 0.52971,
+            "embedding": 0.850522,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Exponential rule",
+          "score": 0.839562,
+          "components": {
+            "embedding_raw": 0.413035,
+            "embedding": 0.663184,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Tangent line",
+          "score": 0.663085,
+          "components": {
+            "embedding_raw": 0.192193,
+            "embedding": 0.308592,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Slope",
+          "score": 0.631549,
+          "components": {
+            "embedding_raw": 0.159708,
+            "embedding": 0.256433,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Exponential rule",
+          "score": 0.91193,
+          "components": {
+            "embedding_raw": 0.552817,
+            "embedding": 0.824003,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.904882,
+          "components": {
+            "embedding_raw": 0.520819,
+            "embedding": 0.788627,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Logarithmic rule",
+          "score": 0.8711,
+          "components": {
+            "embedding_raw": 0.488011,
+            "embedding": 0.752356,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Tangent line",
+          "score": 0.84689,
+          "components": {
+            "embedding_raw": 0.456074,
+            "embedding": 0.717048,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Slope",
+          "score": 0.736042,
+          "components": {
+            "embedding_raw": 0.249476,
+            "embedding": 0.48864,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Trigonometric rules",
+          "score": 0.94212,
+          "components": {
+            "embedding_raw": 0.819574,
+            "embedding": 0.871377,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Logarithmic rule",
+          "score": 0.938205,
+          "components": {
+            "embedding_raw": 0.843897,
+            "embedding": 0.901479,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Exponential rule",
+          "score": 0.890934,
+          "components": {
+            "embedding_raw": 0.743594,
+            "embedding": 0.777345,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Tangent line",
+          "score": 0.745503,
+          "components": {
+            "embedding_raw": 0.51282,
+            "embedding": 0.491743,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Slope",
+          "score": 0.659313,
+          "components": {
+            "embedding_raw": 0.372537,
+            "embedding": 0.318132,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    },
+    {
+      "video_no": 15,
+      "video_id": "uKfcS7-O6UE",
+      "url": "https://www.youtube.com/watch?v=uKfcS7-O6UE",
+      "title": "Quotient Rule for Differentiation",
+      "topic": "Differentiation",
+      "subtopic": "Derivatives",
+      "vlm_order": [
+        "Quotient rule",
+        "Constant rule",
+        "Power rule",
+        "Sum/Difference rule",
+        "Leibniz notation"
+      ],
+      "raw_word2vec": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.569526
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.566616
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.562946
+        },
+        {
+          "keyword": "Quotient rule",
+          "score": 0.50347
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.495121
+        }
+      ],
+      "raw_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 0.835116
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.800773
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.78385
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "score": 0.750352
+        },
+        {
+          "keyword": "Powers of i",
+          "score": 0.74343
+        }
+      ],
+      "raw_word2vec_glove": [
+        {
+          "keyword": "Area of a region between two or more curves",
+          "score": 1.0,
+          "components": {
+            "word2vec_norm": 1.0,
+            "glove_norm": 1.0,
+            "word2vec_raw": 0.569526,
+            "glove_raw": 0.835116
+          }
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "score": 0.97978,
+          "components": {
+            "word2vec_norm": 0.988447,
+            "glove_norm": 0.971113,
+            "word2vec_raw": 0.562946,
+            "glove_raw": 0.800773
+          }
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "score": 0.952652,
+          "components": {
+            "word2vec_norm": 0.99489,
+            "glove_norm": 0.910414,
+            "word2vec_raw": 0.566616,
+            "glove_raw": 0.728609
+          }
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "score": 0.913118,
+          "components": {
+            "word2vec_norm": 0.869356,
+            "glove_norm": 0.956879,
+            "word2vec_raw": 0.495121,
+            "glove_raw": 0.78385
+          }
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "score": 0.863102,
+          "components": {
+            "word2vec_norm": 0.865493,
+            "glove_norm": 0.86071,
+            "word2vec_raw": 0.492921,
+            "glove_raw": 0.669516
+          }
+        }
+      ],
+      "raw_overlap_count": 3,
+      "vlm_word2vec": [
+        {
+          "keyword": "Quotient rule",
+          "score": 0.947807,
+          "components": {
+            "embedding_raw": 0.50347,
+            "embedding": 0.884016,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constant rule",
+          "score": 0.851456,
+          "components": {
+            "embedding_raw": 0.392754,
+            "embedding": 0.689616,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.843599,
+          "components": {
+            "embedding_raw": 0.393681,
+            "embedding": 0.691243,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "score": 0.821743,
+          "components": {
+            "embedding_raw": 0.376551,
+            "embedding": 0.661166,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Leibniz notation",
+          "score": 0.667819,
+          "components": {
+            "embedding_raw": 0.191949,
+            "embedding": 0.337033,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_glove": [
+        {
+          "keyword": "Constant rule",
+          "score": 0.914093,
+          "components": {
+            "embedding_raw": 0.63159,
+            "embedding": 0.828809,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "score": 0.908555,
+          "components": {
+            "embedding_raw": 0.661636,
+            "embedding": 0.854082,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.90317,
+          "components": {
+            "embedding_raw": 0.625425,
+            "embedding": 0.823624,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Quotient rule",
+          "score": 0.865695,
+          "components": {
+            "embedding_raw": 0.480286,
+            "embedding": 0.701544,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Leibniz notation",
+          "score": 0.691022,
+          "components": {
+            "embedding_raw": 0.108228,
+            "embedding": 0.388596,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_word2vec_glove": [
+        {
+          "keyword": "Quotient rule",
+          "score": 0.900473,
+          "components": {
+            "embedding_raw": 0.79278,
+            "embedding": 0.778828,
+            "rrf_llm": 1.0,
+            "rule": 0.0,
+            "llm_rank": 1,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Constant rule",
+          "score": 0.875479,
+          "components": {
+            "embedding_raw": 0.759212,
+            "embedding": 0.743,
+            "rrf_llm": 0.983871,
+            "rule": 0.0,
+            "llm_rank": 2,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Power rule",
+          "score": 0.866035,
+          "components": {
+            "embedding_raw": 0.757433,
+            "embedding": 0.741101,
+            "rrf_llm": 0.968254,
+            "rule": 0.0,
+            "llm_rank": 3,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "score": 0.857806,
+          "components": {
+            "embedding_raw": 0.757624,
+            "embedding": 0.741305,
+            "rrf_llm": 0.953125,
+            "rule": 0.0,
+            "llm_rank": 4,
+            "hits": 0
+          }
+        },
+        {
+          "keyword": "Leibniz notation",
+          "score": 0.660115,
+          "components": {
+            "embedding_raw": 0.362815,
+            "embedding": 0.319913,
+            "rrf_llm": 0.938462,
+            "rule": 0.0,
+            "llm_rank": 5,
+            "hits": 0
+          }
+        }
+      ],
+      "vlm_overlap_count": 5
+    }
+  ]
+}

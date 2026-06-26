@@ -1,0 +1,9 @@
+video_id,title,method,model,prompt_version,word_count,char_count,duration_s,elapsed_s,real_time_factor,words_per_minute,paragraph_count,keyword_recall_pct,keyword_hit_count,keyword_total
+KTNcYYHuBTY,Powers of the Imaginary Unit i,gemini,gemini-3.5-flash,mathe-transcribe-v4-readable,659,3446,279.2,25.7,0.092,141.6,11,20.0,1,5
+KTNcYYHuBTY,Powers of the Imaginary Unit i,whisper,distil-large-v3,mathe-transcribe-v2,646,3220,279.2,13.4,0.048,138.8,1,20.0,1,5
+LVLuqNH5iWw,Local Extrema of a Multivariable Function,gemini,gemini-3-flash-preview,mathe-transcribe-v4-readable,564,2734,441.9,84.3,0.191,76.6,9,80.0,4,5
+LVLuqNH5iWw,Local Extrema of a Multivariable Function,whisper,distil-large-v3,mathe-transcribe-v2,628,2954,441.9,19.2,0.043,85.3,1,60.0,3,5
+LVLuqNH5iWw,Local Extrema of a Multivariable Function,youtube,,,577,2412,442.0,3.4,0.008,78.3,1,60.0,3,5
+uKfcS7-O6UE,Quotient Rule for Differentiation,gemini,gemini-3-flash-preview,mathe-transcribe-v4-readable,455,2163,252.1,32.4,0.129,108.3,9,20.0,1,5
+uKfcS7-O6UE,Quotient Rule for Differentiation,whisper,distil-large-v3,mathe-transcribe-v2,506,2346,252.1,10.8,0.043,120.4,1,20.0,1,5
+uKfcS7-O6UE,Quotient Rule for Differentiation,youtube,,,448,2036,252.0,3.4,0.013,106.7,1,20.0,1,5
