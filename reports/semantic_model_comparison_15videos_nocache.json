@@ -1,0 +1,5514 @@
+{
+  "schema_version": "semantic-model-comparison-v2",
+  "generated_at": "2026-05-13T01:39:47",
+  "task": "Compare BERT, Word2Vec, and GloVe semantic keyword ranking on a fixed video set.",
+  "inputs": {
+    "gold_path": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\data\\gold\\videos_15_vlm_reference_nocache.json",
+    "gold_hash": "sha256:5b70b25dc9b7f940631e2ba365cb48802e80c28975b629e8d9a697daa87fe47b",
+    "pool_source": "keyword_eval.DEFAULT_KEYWORD_POOL",
+    "pool_size": 116,
+    "pool_hash": "sha256:14ea2bdee033a73d3d7ee5a5f3c5f0cc4fd1051a0cabe53932fdc8e4bcd3d8e0",
+    "query_source": "auto",
+    "cache_dir": "C:\\Users\\erena\\Desktop\\MathE_Research\\Step_Project\\step_pipeline\\video_cache",
+    "cache_mode": "quick",
+    "top_k": 5,
+    "models": [
+      "bert",
+      "word2vec",
+      "glove"
+    ],
+    "metrics": [
+      "cosine"
+    ]
+  },
+  "n_videos": 15,
+  "queries": [
+    {
+      "item_id": "KTNcYYHuBTY",
+      "source": "query_text",
+      "query_text": "Powers of the Imaginary Unit i\n\nThis video explains how to calculate integer powers of the imaginary unit, i. It demonstrates that the results follow a repeating cycle of four values: i, -1, -i, and 1.",
+      "query_hash": "sha256:af46ec0e9754db6f0f70ab70094eef6c43499e4f6d4bf4eaee5a7871b528e640",
+      "n_chars": 201
+    },
+    {
+      "item_id": "BZxZ_eEuJBM",
+      "source": "query_text",
+      "query_text": "Complex Conjugates\n\nThe video defines the complex conjugate of a number a + bi as a - bi and shows its representation on the complex plane. It then demonstrates how to use the conjugate to simplify the division of two complex numbers by making the denominator a real number.",
+      "query_hash": "sha256:4e181dcc534093c9cc054ec29d4b30f0923541a2b4603e623866d764bb238123",
+      "n_chars": 274
+    },
+    {
+      "item_id": "kpywdu1afas",
+      "source": "query_text",
+      "query_text": "Operations with Complex Numbers\n\nThe video introduces complex numbers as numbers containing both a real and an imaginary part. It then demonstrates how to perform addition, subtraction, and multiplication with complex numbers by combining their respective parts.",
+      "query_hash": "sha256:6ef23480fb22e6dfcf5d1172a3e5dfa9a7f969c3aba206acbe1bd4c33f4d40c0",
+      "n_chars": 262
+    },
+    {
+      "item_id": "KeYfQ8Em9BU",
+      "source": "query_text",
+      "query_text": "Regions in the Complex Plane\n\nThis video explains how to graphically represent the locus of a complex number based on given inequalities. It demonstrates how to shade regions in the complex plane corresponding to conditions on the real and imaginary parts, using solid or dashed lines for boundaries.",
+      "query_hash": "sha256:9c30b703c73bfccbedbc3aa07b8c666acd0a4ecb1c0c2fb6465c819211217862",
+      "n_chars": 300
+    },
+    {
+      "item_id": "AqtgBbEI4wM",
+      "source": "query_text",
+      "query_text": "Sketching the Locus of Complex Numbers\n\nThe video explains how to find the locus of points for a complex number z based on given equations. It demonstrates that an equation of the form |z - z_0| = r represents a circle and |z - z_1| = |z - z_2| represents a line.",
+      "query_hash": "sha256:c98a36b4e1faf7b9c131ba12b1b68a282d7a1561b12c2f326124aa16fd1a7b47",
+      "n_chars": 263
+    },
+    {
+      "item_id": "G8GAsYkZlpE",
+      "source": "query_text",
+      "query_text": "Second Derivative Test for Relative Extrema\n\nThis video explains how to use the second derivative test to determine if a critical point of a function is a local maximum or minimum. The method is then applied to find the relative extrema of a polynomial function.",
+      "query_hash": "sha256:511152e5082729d3e0fe317248c4d27e7f4e857c4472af8246b38fd4b9b01d90",
+      "n_chars": 262
+    },
+    {
+      "item_id": "8mjcnxGMwFo",
+      "source": "query_text",
+      "query_text": "Lagrange Multipliers\n\nThis video introduces the method of Lagrange multipliers for finding the maximum or minimum of a function subject to a constraint. The method is based on the geometric insight that at an optimal point, the gradient of the function is parallel to the gradient of the constraint.",
+      "query_hash": "sha256:9525a804b04d32a633b7defab90daddd9e649a70e7dd19f213fdeec7784afee3",
+      "n_chars": 299
+    },
+    {
+      "item_id": "LVLuqNH5iWw",
+      "source": "query_text",
+      "query_text": "Local Extrema of a Function of Two Variables\n\nThe video explains how to find the local extrema of a real function of two variables. It demonstrates the process by finding the critical points and then using the second derivative test to classify them.",
+      "query_hash": "sha256:16f1bc41a7a688947c062a55438bc86ff698a4df2c1637150d4d57062246bef7",
+      "n_chars": 250
+    },
+    {
+      "item_id": "vwUV2IDLP8Q",
+      "source": "query_text",
+      "query_text": "Constrained Optimization\n\nThe video introduces constrained optimization, where a multivariable function is maximized or minimized subject to a constraint. It visualizes the problem using both a 3D graph and a 2D contour map, showing the solution occurs where a contour line is tangent to the constraint curve.",
+      "query_hash": "sha256:dfeb2028f0e9767320d990092befc1848684cfcb73981516b5532fafe92b6a24",
+      "n_chars": 309
+    },
+    {
+      "item_id": "kv8pMEALdWo",
+      "source": "query_text",
+      "query_text": "Kuhn-Tucker Conditions Explained\n\nThis video explains the purpose of Kuhn-Tucker (K-T) conditions in solving constrained optimization problems. It uses a motivating example of a hiker to illustrate how K-T conditions identify whether an optimal solution is an interior point or a corner solution.",
+      "query_hash": "sha256:e007df3da72ccd3064008e40404e9b8e2315181362358158a941fd1b2d2ab245",
+      "n_chars": 296
+    },
+    {
+      "item_id": "QqAPCIIdx-E",
+      "source": "query_text",
+      "query_text": "Derivative using Chain and Product Rules\n\nThis video demonstrates how to find the derivative of a function that is a product of two functions raised to a power. The problem is solved using two different approaches, one starting with the chain rule and the other with the product rule, to show they yield the same result.",
+      "query_hash": "sha256:8f9c479cfc4dd6585fb57d44939277453ad4118fb3a8cefdf917810d834db0b9",
+      "n_chars": 320
+    },
+    {
+      "item_id": "QhB481jPAa4",
+      "source": "query_text",
+      "query_text": "Differentiation of the Cosine Function\n\nThis video explains how to find the derivative of y = cos(ax) using the chain rule. It also demonstrates how to solve a more complex problem by combining the chain rule with the product rule.",
+      "query_hash": "sha256:829a200dde44cc05eb3e31131fd71397994bd1da4129d866d4927e6310aa7bca",
+      "n_chars": 231
+    },
+    {
+      "item_id": "JTDa2uZS2gI",
+      "source": "query_text",
+      "query_text": "Calculating Partial Derivatives\n\nThe video defines partial differentiation and explains the core principle of treating other variables as constants. It then demonstrates how to calculate partial derivatives for multivariable functions using standard differentiation rules.",
+      "query_hash": "sha256:0f12b81706bbf544b87289fb760bc8f7919d40f99759e629949b319422ce88ab",
+      "n_chars": 272
+    },
+    {
+      "item_id": "TDHI-aieyfk",
+      "source": "query_text",
+      "query_text": "Derivatives of Common Functions\n\nThis video presents the derivatives for several common trigonometric, exponential, and logarithmic functions. The rules are stated without proof, and the special case of the derivative of e^x is explained graphically.",
+      "query_hash": "sha256:f4b8683b9413be150a02893c5281a70d79cdff571b31bdeb0380c4ed487a4eeb",
+      "n_chars": 250
+    },
+    {
+      "item_id": "uKfcS7-O6UE",
+      "source": "query_text",
+      "query_text": "The Quotient Rule\n\nThis video introduces the quotient rule for finding the derivative of a function that is the ratio of two other functions. The presenter demonstrates the formula by applying it to a rational function and simplifying the result.",
+      "query_hash": "sha256:2893c4dc3a4b894db353eec3da291c099ade13a1b056dd1bd28142d7e9606d5c",
+      "n_chars": 246
+    }
+  ],
+  "coverage": {
+    "bert": {
+      "model": "bert",
+      "note": "BERT uses subword tokenization; OOV coverage is not measured as static word vectors."
+    },
+    "word2vec": {
+      "model": "word2vec",
+      "query_coverage_mean": 1.0,
+      "keyword_coverage_mean": 0.9555,
+      "zero_vector_keywords": [
+        "Differentiability"
+      ],
+      "n_zero_vector_keywords": 1,
+      "queries": [
+        {
+          "item_id": "KTNcYYHuBTY",
+          "model": "word2vec",
+          "total_tokens": 36,
+          "matched_tokens": 36,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "BZxZ_eEuJBM",
+          "model": "word2vec",
+          "total_tokens": 47,
+          "matched_tokens": 47,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "kpywdu1afas",
+          "model": "word2vec",
+          "total_tokens": 37,
+          "matched_tokens": 37,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "KeYfQ8Em9BU",
+          "model": "word2vec",
+          "total_tokens": 48,
+          "matched_tokens": 48,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "AqtgBbEI4wM",
+          "model": "word2vec",
+          "total_tokens": 50,
+          "matched_tokens": 50,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "G8GAsYkZlpE",
+          "model": "word2vec",
+          "total_tokens": 45,
+          "matched_tokens": 45,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "8mjcnxGMwFo",
+          "model": "word2vec",
+          "total_tokens": 49,
+          "matched_tokens": 49,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "LVLuqNH5iWw",
+          "model": "word2vec",
+          "total_tokens": 43,
+          "matched_tokens": 43,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "vwUV2IDLP8Q",
+          "model": "word2vec",
+          "total_tokens": 49,
+          "matched_tokens": 49,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "kv8pMEALdWo",
+          "model": "word2vec",
+          "total_tokens": 47,
+          "matched_tokens": 47,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "QqAPCIIdx-E",
+          "model": "word2vec",
+          "total_tokens": 56,
+          "matched_tokens": 56,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "QhB481jPAa4",
+          "model": "word2vec",
+          "total_tokens": 40,
+          "matched_tokens": 40,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "JTDa2uZS2gI",
+          "model": "word2vec",
+          "total_tokens": 34,
+          "matched_tokens": 34,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "TDHI-aieyfk",
+          "model": "word2vec",
+          "total_tokens": 36,
+          "matched_tokens": 36,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "uKfcS7-O6UE",
+          "model": "word2vec",
+          "total_tokens": 40,
+          "matched_tokens": 40,
+          "coverage": 1.0,
+          "oov_tokens": []
+        }
+      ],
+      "keywords": [
+        {
+          "keyword": "Total area",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Riemann sum",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Left-endpoint approximation",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Right-endpoint approximation",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Midpoint rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Partition",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Integrable function",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Mean Value Theorem for Integrals",
+          "model": "word2vec",
+          "total_tokens": 5,
+          "matched_tokens": 5,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Average value",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Additivity property",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "Additivity"
+          ]
+        },
+        {
+          "keyword": "Symmetry property",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "model": "word2vec",
+          "total_tokens": 6,
+          "matched_tokens": 6,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "model": "word2vec",
+          "total_tokens": 8,
+          "matched_tokens": 8,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Expected value (Mean)",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Fundamental theorem of Calculus",
+          "model": "word2vec",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Direct integrals",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Integration by parts",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Trigonometric substitution",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Partial fractions decomposition",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Area of a planar region",
+          "model": "word2vec",
+          "total_tokens": 5,
+          "matched_tokens": 5,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Volume of revolution",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Substitution",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "model": "word2vec",
+          "total_tokens": 9,
+          "matched_tokens": 9,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Region decomposition",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Acceleration",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Algebraic form",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Argand diagram",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Chain rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex coefficients",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex exponentiation",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "exponentiation"
+          ]
+        },
+        {
+          "keyword": "Complex logarithm",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex plane",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex plane rotation",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Concavity",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Conjugate number",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Constant rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Constrained optimization",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Continuity",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Critical point",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Curvature",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "De Moivre formulas",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 2,
+          "coverage": 0.6667,
+          "oov_tokens": [
+            "Moivre"
+          ]
+        },
+        {
+          "keyword": "Decreasing function",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Derivative definition",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Differentiability",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 0,
+          "coverage": 0.0,
+          "oov_tokens": [
+            "Differentiability"
+          ]
+        },
+        {
+          "keyword": "Differential",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "model": "word2vec",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Euler's formula",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "Euler's"
+          ]
+        },
+        {
+          "keyword": "Exponential form",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Exponential rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Feasible set",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "First derivative test",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Global extremum",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "extremum"
+          ]
+        },
+        {
+          "keyword": "Global optimum",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Gradient descent",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Hessian matrix",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Higher-order derivatives",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Imaginary part",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Increasing function",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Inflection point",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "model": "word2vec",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Interior point methods",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Jacobian matrix",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "Jacobian"
+          ]
+        },
+        {
+          "keyword": "KKT conditions",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Leibniz notation",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "L'Hopital's Rule",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 2,
+          "coverage": 0.6667,
+          "oov_tokens": [
+            "L'Hopital"
+          ]
+        },
+        {
+          "keyword": "Local maximum",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Local minimum",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Logarithmic rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Marginal cost",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Marginal revenue",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Maximizer",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Maximum",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Mean Value Theorem",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Minimizer",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Minimum",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "model": "word2vec",
+          "total_tokens": 5,
+          "matched_tokens": 5,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Monotonic function",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Multi-objective optimization",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Newton's method",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "Newton's"
+          ]
+        },
+        {
+          "keyword": "Normal line",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Nth root",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "model": "word2vec",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Optimal solution",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Optimization",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Pareto front",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Polar form",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Power rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "model": "word2vec",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Powers of i",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Principal argument",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Product rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Quasi-Newton methods",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Quotient rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Real part",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "model": "word2vec",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "model": "word2vec",
+          "total_tokens": 5,
+          "matched_tokens": 5,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Rolle's Theorem",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "Rolle's"
+          ]
+        },
+        {
+          "keyword": "Roots of unity",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Saddle point",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Scaling",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Second derivative test",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Second order",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Sensitivity analysis",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Slope",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Smooth function",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Stationary point",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Steepest descent",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Sum rule",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "model": "word2vec",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Tangent line",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Trigonometric form",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Unconstrained optimization",
+          "model": "word2vec",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Velocity",
+          "model": "word2vec",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        }
+      ]
+    },
+    "glove": {
+      "model": "glove",
+      "query_coverage_mean": 1.0,
+      "keyword_coverage_mean": 0.9799,
+      "zero_vector_keywords": [],
+      "n_zero_vector_keywords": 0,
+      "queries": [
+        {
+          "item_id": "KTNcYYHuBTY",
+          "model": "glove",
+          "total_tokens": 36,
+          "matched_tokens": 36,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "BZxZ_eEuJBM",
+          "model": "glove",
+          "total_tokens": 47,
+          "matched_tokens": 47,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "kpywdu1afas",
+          "model": "glove",
+          "total_tokens": 37,
+          "matched_tokens": 37,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "KeYfQ8Em9BU",
+          "model": "glove",
+          "total_tokens": 48,
+          "matched_tokens": 48,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "AqtgBbEI4wM",
+          "model": "glove",
+          "total_tokens": 50,
+          "matched_tokens": 50,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "G8GAsYkZlpE",
+          "model": "glove",
+          "total_tokens": 45,
+          "matched_tokens": 45,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "8mjcnxGMwFo",
+          "model": "glove",
+          "total_tokens": 49,
+          "matched_tokens": 49,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "LVLuqNH5iWw",
+          "model": "glove",
+          "total_tokens": 43,
+          "matched_tokens": 43,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "vwUV2IDLP8Q",
+          "model": "glove",
+          "total_tokens": 49,
+          "matched_tokens": 49,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "kv8pMEALdWo",
+          "model": "glove",
+          "total_tokens": 47,
+          "matched_tokens": 47,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "QqAPCIIdx-E",
+          "model": "glove",
+          "total_tokens": 56,
+          "matched_tokens": 56,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "QhB481jPAa4",
+          "model": "glove",
+          "total_tokens": 40,
+          "matched_tokens": 40,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "JTDa2uZS2gI",
+          "model": "glove",
+          "total_tokens": 34,
+          "matched_tokens": 34,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "TDHI-aieyfk",
+          "model": "glove",
+          "total_tokens": 36,
+          "matched_tokens": 36,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "item_id": "uKfcS7-O6UE",
+          "model": "glove",
+          "total_tokens": 40,
+          "matched_tokens": 40,
+          "coverage": 1.0,
+          "oov_tokens": []
+        }
+      ],
+      "keywords": [
+        {
+          "keyword": "Total area",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Riemann sum",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Left-endpoint approximation",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Right-endpoint approximation",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Midpoint rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Partition",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Integrable function",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Mean Value Theorem for Integrals",
+          "model": "glove",
+          "total_tokens": 5,
+          "matched_tokens": 5,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Average value",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Additivity property",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Symmetry property",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Volume of a solid of revolution",
+          "model": "glove",
+          "total_tokens": 6,
+          "matched_tokens": 6,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Center of mass of a 1D object",
+          "model": "glove",
+          "total_tokens": 8,
+          "matched_tokens": 8,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Expected value (Mean)",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Fundamental theorem of Calculus",
+          "model": "glove",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Direct integrals",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Integration by parts",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Trigonometric substitution",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Partial fractions decomposition",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Trigonometric functions",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Area of a planar region",
+          "model": "glove",
+          "total_tokens": 5,
+          "matched_tokens": 5,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Volume of revolution",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Substitution",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Area of a region between two or more curves",
+          "model": "glove",
+          "total_tokens": 9,
+          "matched_tokens": 9,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Region decomposition",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Acceleration",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Algebraic form",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Argand diagram",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Chain rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex coefficients",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex exponentiation",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex logarithm",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex plane",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Complex plane rotation",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Concavity",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Conjugate number",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Constant rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Constrained optimization",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Continuity",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Critical point",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Curvature",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "De Moivre formulas",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Decreasing function",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Derivative definition",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Differentiability",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Differential",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Equations involving complex numbers",
+          "model": "glove",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Euler's formula",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "Euler's"
+          ]
+        },
+        {
+          "keyword": "Exponential form",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Exponential rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Feasible set",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "First derivative test",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Global extremum",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Global optimum",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Gradient descent",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Hessian matrix",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Higher-order derivatives",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Imaginary part",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Increasing function",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Inflection point",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Instantaneous rate of change",
+          "model": "glove",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Interior point methods",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Jacobian matrix",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "KKT conditions",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "KKT"
+          ]
+        },
+        {
+          "keyword": "Lagrange multipliers",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Leibniz notation",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "L'Hopital's Rule",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 2,
+          "coverage": 0.6667,
+          "oov_tokens": [
+            "L'Hopital"
+          ]
+        },
+        {
+          "keyword": "Local maximum",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Local minimum",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Logarithmic rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Marginal cost",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Marginal revenue",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Maximizer",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Maximum",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Mean Value Theorem",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Minimizer",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Minimum",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Modulus of a complex number",
+          "model": "glove",
+          "total_tokens": 5,
+          "matched_tokens": 5,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Monotonic function",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Multi-objective optimization",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Newton's method",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "Newton's"
+          ]
+        },
+        {
+          "keyword": "Normal line",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Nth root",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Operations with complex numbers",
+          "model": "glove",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Optimal solution",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Optimization",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Pareto front",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Polar form",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Power rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Powers of complex numbers",
+          "model": "glove",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Powers of i",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Principal argument",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Product rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Quasi-Newton methods",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Quotient rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Real part",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Rectangular form (Standard form)",
+          "model": "glove",
+          "total_tokens": 4,
+          "matched_tokens": 4,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Regions in the complex plane",
+          "model": "glove",
+          "total_tokens": 5,
+          "matched_tokens": 5,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Rolle's Theorem",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 1,
+          "coverage": 0.5,
+          "oov_tokens": [
+            "Rolle's"
+          ]
+        },
+        {
+          "keyword": "Roots of unity",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Saddle point",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Scaling",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Second derivative test",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Second order",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Sensitivity analysis",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Slope",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Smooth function",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Stationary point",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Steepest descent",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Sum rule",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Sum/Difference rule",
+          "model": "glove",
+          "total_tokens": 3,
+          "matched_tokens": 3,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Tangent line",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Trigonometric form",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Trigonometric rules",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Unconstrained optimization",
+          "model": "glove",
+          "total_tokens": 2,
+          "matched_tokens": 2,
+          "coverage": 1.0,
+          "oov_tokens": []
+        },
+        {
+          "keyword": "Velocity",
+          "model": "glove",
+          "total_tokens": 1,
+          "matched_tokens": 1,
+          "coverage": 1.0,
+          "oov_tokens": []
+        }
+      ]
+    }
+  },
+  "combos": [
+    {
+      "model": "bert",
+      "metric": "cosine",
+      "aggregate": {
+        "n_total": 15,
+        "n_graded": 15,
+        "precision_at_5_mean": 0.56,
+        "recall_at_5_mean": 0.56,
+        "f1_at_5_mean": 0.56,
+        "jaccard_mean": 0.3995,
+        "topic_accuracy": 1.0,
+        "subtopic_accuracy": 1.0
+      },
+      "items": [
+        {
+          "item_id": "KTNcYYHuBTY",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:af46ec0e9754db6f0f70ab70094eef6c43499e4f6d4bf4eaee5a7871b528e640",
+          "gold_keywords": [
+            "Powers of i",
+            "Operations with complex numbers",
+            "Imaginary part",
+            "Nth root",
+            "Rectangular form (Standard form)"
+          ],
+          "top_keywords": [
+            "Powers of complex numbers",
+            "Powers of i",
+            "Imaginary part",
+            "Complex exponentiation",
+            "Operations with complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.636003
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.624908
+            },
+            {
+              "keyword": "Imaginary part",
+              "score": 0.517498
+            },
+            {
+              "keyword": "Complex exponentiation",
+              "score": 0.517074
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.511537
+            },
+            {
+              "keyword": "De Moivre formulas",
+              "score": 0.492646
+            },
+            {
+              "keyword": "Complex coefficients",
+              "score": 0.459351
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.455243
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.424122
+            },
+            {
+              "keyword": "Complex logarithm",
+              "score": 0.419076
+            }
+          ]
+        },
+        {
+          "item_id": "BZxZ_eEuJBM",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:4e181dcc534093c9cc054ec29d4b30f0923541a2b4603e623866d764bb238123",
+          "gold_keywords": [
+            "Operations with complex numbers",
+            "Conjugate number",
+            "Imaginary part",
+            "Real part",
+            "Argand diagram"
+          ],
+          "top_keywords": [
+            "Operations with complex numbers",
+            "Imaginary part",
+            "Conjugate number",
+            "Equations involving complex numbers",
+            "Complex plane"
+          ],
+          "ranking": [
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.627754
+            },
+            {
+              "keyword": "Imaginary part",
+              "score": 0.561639
+            },
+            {
+              "keyword": "Conjugate number",
+              "score": 0.560108
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.519713
+            },
+            {
+              "keyword": "Complex plane",
+              "score": 0.510032
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.49509
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.47748
+            },
+            {
+              "keyword": "Complex exponentiation",
+              "score": 0.466333
+            },
+            {
+              "keyword": "Complex plane rotation",
+              "score": 0.463696
+            },
+            {
+              "keyword": "Complex logarithm",
+              "score": 0.451627
+            }
+          ]
+        },
+        {
+          "item_id": "kpywdu1afas",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.4,
+          "recall_at_5": 0.4,
+          "f1_at_5": 0.4,
+          "jaccard": 0.25,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:6ef23480fb22e6dfcf5d1172a3e5dfa9a7f969c3aba206acbe1bd4c33f4d40c0",
+          "gold_keywords": [
+            "Operations with complex numbers",
+            "Imaginary part",
+            "Complex plane",
+            "Rectangular form (Standard form)",
+            "Real part"
+          ],
+          "top_keywords": [
+            "Operations with complex numbers",
+            "Imaginary part",
+            "Equations involving complex numbers",
+            "Complex exponentiation",
+            "Powers of complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.808415
+            },
+            {
+              "keyword": "Imaginary part",
+              "score": 0.567907
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.516822
+            },
+            {
+              "keyword": "Complex exponentiation",
+              "score": 0.515449
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.514459
+            },
+            {
+              "keyword": "Complex plane",
+              "score": 0.464931
+            },
+            {
+              "keyword": "Complex logarithm",
+              "score": 0.45338
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.427337
+            },
+            {
+              "keyword": "Complex plane rotation",
+              "score": 0.410993
+            },
+            {
+              "keyword": "Complex coefficients",
+              "score": 0.37881
+            }
+          ]
+        },
+        {
+          "item_id": "KeYfQ8Em9BU",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:9c30b703c73bfccbedbc3aa07b8c666acd0a4ecb1c0c2fb6465c819211217862",
+          "gold_keywords": [
+            "Regions in the complex plane",
+            "Complex plane",
+            "Imaginary part",
+            "Argand diagram",
+            "Real part"
+          ],
+          "top_keywords": [
+            "Regions in the complex plane",
+            "Complex plane",
+            "Complex plane rotation",
+            "Imaginary part",
+            "Equations involving complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.735822
+            },
+            {
+              "keyword": "Complex plane",
+              "score": 0.610005
+            },
+            {
+              "keyword": "Complex plane rotation",
+              "score": 0.472076
+            },
+            {
+              "keyword": "Imaginary part",
+              "score": 0.459139
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.434405
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.404305
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.399137
+            },
+            {
+              "keyword": "Complex coefficients",
+              "score": 0.375904
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.370285
+            },
+            {
+              "keyword": "Region decomposition",
+              "score": 0.362467
+            }
+          ]
+        },
+        {
+          "item_id": "AqtgBbEI4wM",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:c98a36b4e1faf7b9c131ba12b1b68a282d7a1561b12c2f326124aa16fd1a7b47",
+          "gold_keywords": [
+            "Equations involving complex numbers",
+            "Regions in the complex plane",
+            "Modulus of a complex number",
+            "Argand diagram",
+            "Algebraic form"
+          ],
+          "top_keywords": [
+            "Equations involving complex numbers",
+            "Complex plane",
+            "Modulus of a complex number",
+            "Complex plane rotation",
+            "Regions in the complex plane"
+          ],
+          "ranking": [
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.573626
+            },
+            {
+              "keyword": "Complex plane",
+              "score": 0.55778
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.468476
+            },
+            {
+              "keyword": "Complex plane rotation",
+              "score": 0.462467
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.423907
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.422633
+            },
+            {
+              "keyword": "Complex coefficients",
+              "score": 0.415189
+            },
+            {
+              "keyword": "Imaginary part",
+              "score": 0.376776
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.361492
+            },
+            {
+              "keyword": "Complex logarithm",
+              "score": 0.333162
+            }
+          ]
+        },
+        {
+          "item_id": "G8GAsYkZlpE",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:511152e5082729d3e0fe317248c4d27e7f4e857c4472af8246b38fd4b9b01d90",
+          "gold_keywords": [
+            "Second derivative test",
+            "Local maximum",
+            "Local minimum",
+            "Critical point",
+            "Concavity"
+          ],
+          "top_keywords": [
+            "Second derivative test",
+            "First derivative test",
+            "Global extremum",
+            "Local maximum",
+            "Local minimum"
+          ],
+          "ranking": [
+            {
+              "keyword": "Second derivative test",
+              "score": 0.646739
+            },
+            {
+              "keyword": "First derivative test",
+              "score": 0.54526
+            },
+            {
+              "keyword": "Global extremum",
+              "score": 0.541267
+            },
+            {
+              "keyword": "Local maximum",
+              "score": 0.526611
+            },
+            {
+              "keyword": "Local minimum",
+              "score": 0.513407
+            },
+            {
+              "keyword": "Critical point",
+              "score": 0.459124
+            },
+            {
+              "keyword": "Stationary point",
+              "score": 0.40339
+            },
+            {
+              "keyword": "Inflection point",
+              "score": 0.384506
+            },
+            {
+              "keyword": "Higher-order derivatives",
+              "score": 0.360602
+            },
+            {
+              "keyword": "Hessian matrix",
+              "score": 0.336215
+            }
+          ]
+        },
+        {
+          "item_id": "8mjcnxGMwFo",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:9525a804b04d32a633b7defab90daddd9e649a70e7dd19f213fdeec7784afee3",
+          "gold_keywords": [
+            "Lagrange multipliers",
+            "Constrained optimization",
+            "Optimization",
+            "Minimum",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Lagrange multipliers",
+            "Constrained optimization",
+            "Optimization",
+            "Global extremum",
+            "Unconstrained optimization"
+          ],
+          "ranking": [
+            {
+              "keyword": "Lagrange multipliers",
+              "score": 0.743956
+            },
+            {
+              "keyword": "Constrained optimization",
+              "score": 0.632091
+            },
+            {
+              "keyword": "Optimization",
+              "score": 0.538302
+            },
+            {
+              "keyword": "Global extremum",
+              "score": 0.492444
+            },
+            {
+              "keyword": "Unconstrained optimization",
+              "score": 0.487223
+            },
+            {
+              "keyword": "Minimizer",
+              "score": 0.47967
+            },
+            {
+              "keyword": "Maximizer",
+              "score": 0.470345
+            },
+            {
+              "keyword": "Gradient descent",
+              "score": 0.4354
+            },
+            {
+              "keyword": "Global optimum",
+              "score": 0.428805
+            },
+            {
+              "keyword": "Optimal solution",
+              "score": 0.423615
+            }
+          ]
+        },
+        {
+          "item_id": "LVLuqNH5iWw",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.8,
+          "recall_at_5": 0.8,
+          "f1_at_5": 0.8,
+          "jaccard": 0.6667,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:16f1bc41a7a688947c062a55438bc86ff698a4df2c1637150d4d57062246bef7",
+          "gold_keywords": [
+            "Local maximum",
+            "Second derivative test",
+            "Local minimum",
+            "Critical point",
+            "Saddle point"
+          ],
+          "top_keywords": [
+            "Global extremum",
+            "Local maximum",
+            "Local minimum",
+            "Second derivative test",
+            "Critical point"
+          ],
+          "ranking": [
+            {
+              "keyword": "Global extremum",
+              "score": 0.613211
+            },
+            {
+              "keyword": "Local maximum",
+              "score": 0.566477
+            },
+            {
+              "keyword": "Local minimum",
+              "score": 0.549614
+            },
+            {
+              "keyword": "Second derivative test",
+              "score": 0.530761
+            },
+            {
+              "keyword": "Critical point",
+              "score": 0.498963
+            },
+            {
+              "keyword": "First derivative test",
+              "score": 0.448681
+            },
+            {
+              "keyword": "Stationary point",
+              "score": 0.427971
+            },
+            {
+              "keyword": "Lagrange multipliers",
+              "score": 0.418757
+            },
+            {
+              "keyword": "Hessian matrix",
+              "score": 0.399747
+            },
+            {
+              "keyword": "Inflection point",
+              "score": 0.380897
+            }
+          ]
+        },
+        {
+          "item_id": "vwUV2IDLP8Q",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:dfeb2028f0e9767320d990092befc1848684cfcb73981516b5532fafe92b6a24",
+          "gold_keywords": [
+            "Constrained optimization",
+            "Optimization",
+            "Lagrange multipliers",
+            "Feasible set",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Constrained optimization",
+            "Unconstrained optimization",
+            "Optimization",
+            "Lagrange multipliers",
+            "Minimizer"
+          ],
+          "ranking": [
+            {
+              "keyword": "Constrained optimization",
+              "score": 0.709476
+            },
+            {
+              "keyword": "Unconstrained optimization",
+              "score": 0.615685
+            },
+            {
+              "keyword": "Optimization",
+              "score": 0.577762
+            },
+            {
+              "keyword": "Lagrange multipliers",
+              "score": 0.512945
+            },
+            {
+              "keyword": "Minimizer",
+              "score": 0.44608
+            },
+            {
+              "keyword": "Multi-objective optimization",
+              "score": 0.433872
+            },
+            {
+              "keyword": "Maximizer",
+              "score": 0.398234
+            },
+            {
+              "keyword": "Global optimum",
+              "score": 0.384569
+            },
+            {
+              "keyword": "Global extremum",
+              "score": 0.379418
+            },
+            {
+              "keyword": "Gradient descent",
+              "score": 0.368458
+            }
+          ]
+        },
+        {
+          "item_id": "kv8pMEALdWo",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:e007df3da72ccd3064008e40404e9b8e2315181362358158a941fd1b2d2ab245",
+          "gold_keywords": [
+            "Constrained optimization",
+            "KKT conditions",
+            "Optimization",
+            "Optimal solution",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Constrained optimization",
+            "Unconstrained optimization",
+            "Optimization",
+            "KKT conditions",
+            "Minimizer"
+          ],
+          "ranking": [
+            {
+              "keyword": "Constrained optimization",
+              "score": 0.566041
+            },
+            {
+              "keyword": "Unconstrained optimization",
+              "score": 0.499985
+            },
+            {
+              "keyword": "Optimization",
+              "score": 0.484277
+            },
+            {
+              "keyword": "KKT conditions",
+              "score": 0.477715
+            },
+            {
+              "keyword": "Minimizer",
+              "score": 0.420686
+            },
+            {
+              "keyword": "Optimal solution",
+              "score": 0.404318
+            },
+            {
+              "keyword": "Multi-objective optimization",
+              "score": 0.400159
+            },
+            {
+              "keyword": "Global optimum",
+              "score": 0.397737
+            },
+            {
+              "keyword": "Interior point methods",
+              "score": 0.394305
+            },
+            {
+              "keyword": "Maximizer",
+              "score": 0.34579
+            }
+          ]
+        },
+        {
+          "item_id": "QqAPCIIdx-E",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:8f9c479cfc4dd6585fb57d44939277453ad4118fb3a8cefdf917810d834db0b9",
+          "gold_keywords": [
+            "Chain rule",
+            "Product rule",
+            "Power rule",
+            "Trigonometric rules",
+            "Trigonometric functions"
+          ],
+          "top_keywords": [
+            "Chain rule",
+            "Product rule",
+            "Power rule",
+            "Exponential rule",
+            "Higher-order derivatives"
+          ],
+          "ranking": [
+            {
+              "keyword": "Chain rule",
+              "score": 0.709969
+            },
+            {
+              "keyword": "Product rule",
+              "score": 0.636914
+            },
+            {
+              "keyword": "Power rule",
+              "score": 0.592182
+            },
+            {
+              "keyword": "Exponential rule",
+              "score": 0.571446
+            },
+            {
+              "keyword": "Higher-order derivatives",
+              "score": 0.509175
+            },
+            {
+              "keyword": "Derivative definition",
+              "score": 0.494553
+            },
+            {
+              "keyword": "Logarithmic rule",
+              "score": 0.463978
+            },
+            {
+              "keyword": "Sum/Difference rule",
+              "score": 0.439402
+            },
+            {
+              "keyword": "Quotient rule",
+              "score": 0.437462
+            },
+            {
+              "keyword": "Second derivative test",
+              "score": 0.427422
+            }
+          ]
+        },
+        {
+          "item_id": "QhB481jPAa4",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.4,
+          "recall_at_5": 0.4,
+          "f1_at_5": 0.4,
+          "jaccard": 0.25,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:829a200dde44cc05eb3e31131fd71397994bd1da4129d866d4927e6310aa7bca",
+          "gold_keywords": [
+            "Trigonometric rules",
+            "Chain rule",
+            "Product rule",
+            "Power rule",
+            "Substitution"
+          ],
+          "top_keywords": [
+            "Trigonometric rules",
+            "Chain rule",
+            "Trigonometric functions",
+            "Trigonometric form",
+            "Exponential rule"
+          ],
+          "ranking": [
+            {
+              "keyword": "Trigonometric rules",
+              "score": 0.489998
+            },
+            {
+              "keyword": "Chain rule",
+              "score": 0.444517
+            },
+            {
+              "keyword": "Trigonometric functions",
+              "score": 0.425083
+            },
+            {
+              "keyword": "Trigonometric form",
+              "score": 0.376332
+            },
+            {
+              "keyword": "Exponential rule",
+              "score": 0.370331
+            },
+            {
+              "keyword": "Product rule",
+              "score": 0.346178
+            },
+            {
+              "keyword": "Derivative definition",
+              "score": 0.343002
+            },
+            {
+              "keyword": "Trigonometric substitution",
+              "score": 0.337921
+            },
+            {
+              "keyword": "De Moivre formulas",
+              "score": 0.316753
+            },
+            {
+              "keyword": "Tangent line",
+              "score": 0.312363
+            }
+          ]
+        },
+        {
+          "item_id": "JTDa2uZS2gI",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:0f12b81706bbf544b87289fb760bc8f7919d40f99759e629949b319422ce88ab",
+          "gold_keywords": [
+            "Chain rule",
+            "Constant rule",
+            "Derivative definition",
+            "Trigonometric rules",
+            "Power rule"
+          ],
+          "top_keywords": [
+            "Chain rule",
+            "Product rule",
+            "Derivative definition",
+            "Constant rule",
+            "Higher-order derivatives"
+          ],
+          "ranking": [
+            {
+              "keyword": "Chain rule",
+              "score": 0.451687
+            },
+            {
+              "keyword": "Product rule",
+              "score": 0.425341
+            },
+            {
+              "keyword": "Derivative definition",
+              "score": 0.423937
+            },
+            {
+              "keyword": "Constant rule",
+              "score": 0.422405
+            },
+            {
+              "keyword": "Higher-order derivatives",
+              "score": 0.401878
+            },
+            {
+              "keyword": "Differential",
+              "score": 0.370334
+            },
+            {
+              "keyword": "Hessian matrix",
+              "score": 0.365274
+            },
+            {
+              "keyword": "Jacobian matrix",
+              "score": 0.343732
+            },
+            {
+              "keyword": "Exponential rule",
+              "score": 0.331948
+            },
+            {
+              "keyword": "Fundamental theorem of Calculus",
+              "score": 0.31081
+            }
+          ]
+        },
+        {
+          "item_id": "TDHI-aieyfk",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.6,
+          "recall_at_5": 0.6,
+          "f1_at_5": 0.6,
+          "jaccard": 0.4286,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:f4b8683b9413be150a02893c5281a70d79cdff571b31bdeb0380c4ed487a4eeb",
+          "gold_keywords": [
+            "Exponential rule",
+            "Trigonometric rules",
+            "Logarithmic rule",
+            "Tangent line",
+            "Slope"
+          ],
+          "top_keywords": [
+            "Exponential rule",
+            "Higher-order derivatives",
+            "Logarithmic rule",
+            "Trigonometric rules",
+            "Trigonometric functions"
+          ],
+          "ranking": [
+            {
+              "keyword": "Exponential rule",
+              "score": 0.576925
+            },
+            {
+              "keyword": "Higher-order derivatives",
+              "score": 0.483069
+            },
+            {
+              "keyword": "Logarithmic rule",
+              "score": 0.466852
+            },
+            {
+              "keyword": "Trigonometric rules",
+              "score": 0.455978
+            },
+            {
+              "keyword": "Trigonometric functions",
+              "score": 0.45126
+            },
+            {
+              "keyword": "Derivative definition",
+              "score": 0.430966
+            },
+            {
+              "keyword": "Chain rule",
+              "score": 0.398065
+            },
+            {
+              "keyword": "Exponential form",
+              "score": 0.387946
+            },
+            {
+              "keyword": "L'Hopital's Rule",
+              "score": 0.38086
+            },
+            {
+              "keyword": "Fundamental theorem of Calculus",
+              "score": 0.365841
+            }
+          ]
+        },
+        {
+          "item_id": "uKfcS7-O6UE",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:2893c4dc3a4b894db353eec3da291c099ade13a1b056dd1bd28142d7e9606d5c",
+          "gold_keywords": [
+            "Quotient rule",
+            "Power rule",
+            "Sum/Difference rule",
+            "Slope",
+            "Leibniz notation"
+          ],
+          "top_keywords": [
+            "Quotient rule",
+            "Partial fractions decomposition",
+            "Chain rule",
+            "Product rule",
+            "Exponential rule"
+          ],
+          "ranking": [
+            {
+              "keyword": "Quotient rule",
+              "score": 0.737237
+            },
+            {
+              "keyword": "Partial fractions decomposition",
+              "score": 0.475469
+            },
+            {
+              "keyword": "Chain rule",
+              "score": 0.461863
+            },
+            {
+              "keyword": "Product rule",
+              "score": 0.454647
+            },
+            {
+              "keyword": "Exponential rule",
+              "score": 0.443384
+            },
+            {
+              "keyword": "Constant rule",
+              "score": 0.415619
+            },
+            {
+              "keyword": "Power rule",
+              "score": 0.410081
+            },
+            {
+              "keyword": "Logarithmic rule",
+              "score": 0.40791
+            },
+            {
+              "keyword": "Sum/Difference rule",
+              "score": 0.389272
+            },
+            {
+              "keyword": "Derivative definition",
+              "score": 0.378005
+            }
+          ]
+        }
+      ],
+      "failures": 0,
+      "elapsed_s": 10.4,
+      "coverage_summary": {
+        "model": "bert",
+        "note": "BERT uses subword tokenization; OOV coverage is not measured as static word vectors."
+      }
+    },
+    {
+      "model": "word2vec",
+      "metric": "cosine",
+      "aggregate": {
+        "n_total": 15,
+        "n_graded": 15,
+        "precision_at_5_mean": 0.0933,
+        "recall_at_5_mean": 0.0933,
+        "f1_at_5_mean": 0.0933,
+        "jaccard_mean": 0.0537,
+        "topic_accuracy": 1.0,
+        "subtopic_accuracy": 1.0
+      },
+      "items": [
+        {
+          "item_id": "KTNcYYHuBTY",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:af46ec0e9754db6f0f70ab70094eef6c43499e4f6d4bf4eaee5a7871b528e640",
+          "gold_keywords": [
+            "Powers of i",
+            "Operations with complex numbers",
+            "Imaginary part",
+            "Nth root",
+            "Rectangular form (Standard form)"
+          ],
+          "top_keywords": [
+            "Powers of i",
+            "Modulus of a complex number",
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Volume of a solid of revolution"
+          ],
+          "ranking": [
+            {
+              "keyword": "Powers of i",
+              "score": 0.632908
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.606869
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.584454
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.583276
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.526747
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.522512
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.501873
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.467005
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.449356
+            },
+            {
+              "keyword": "First derivative test",
+              "score": 0.448216
+            }
+          ]
+        },
+        {
+          "item_id": "BZxZ_eEuJBM",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:4e181dcc534093c9cc054ec29d4b30f0923541a2b4603e623866d764bb238123",
+          "gold_keywords": [
+            "Operations with complex numbers",
+            "Conjugate number",
+            "Imaginary part",
+            "Real part",
+            "Argand diagram"
+          ],
+          "top_keywords": [
+            "Modulus of a complex number",
+            "Area of a region between two or more curves",
+            "Equations involving complex numbers",
+            "Center of mass of a 1D object",
+            "Powers of complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.714753
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.635191
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.605471
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.595946
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.560581
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.520583
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.506047
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.486984
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.475359
+            },
+            {
+              "keyword": "Conjugate number",
+              "score": 0.453197
+            }
+          ]
+        },
+        {
+          "item_id": "kpywdu1afas",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:6ef23480fb22e6dfcf5d1172a3e5dfa9a7f969c3aba206acbe1bd4c33f4d40c0",
+          "gold_keywords": [
+            "Operations with complex numbers",
+            "Imaginary part",
+            "Complex plane",
+            "Rectangular form (Standard form)",
+            "Real part"
+          ],
+          "top_keywords": [
+            "Operations with complex numbers",
+            "Equations involving complex numbers",
+            "Powers of complex numbers",
+            "Modulus of a complex number",
+            "Area of a region between two or more curves"
+          ],
+          "ranking": [
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.660866
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.658486
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.607908
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.600976
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.555103
+            },
+            {
+              "keyword": "Trigonometric form",
+              "score": 0.479034
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.472177
+            },
+            {
+              "keyword": "Trigonometric functions",
+              "score": 0.439145
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.426537
+            },
+            {
+              "keyword": "Trigonometric rules",
+              "score": 0.415
+            }
+          ]
+        },
+        {
+          "item_id": "KeYfQ8Em9BU",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:9c30b703c73bfccbedbc3aa07b8c666acd0a4ecb1c0c2fb6465c819211217862",
+          "gold_keywords": [
+            "Regions in the complex plane",
+            "Complex plane",
+            "Imaginary part",
+            "Argand diagram",
+            "Real part"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Regions in the complex plane",
+            "Modulus of a complex number",
+            "Equations involving complex numbers",
+            "Powers of complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.650132
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.608538
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.565622
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.547972
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.542876
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.513498
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.511663
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.468339
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.457531
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.452773
+            }
+          ]
+        },
+        {
+          "item_id": "AqtgBbEI4wM",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.4,
+          "recall_at_5": 0.4,
+          "f1_at_5": 0.4,
+          "jaccard": 0.25,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:c98a36b4e1faf7b9c131ba12b1b68a282d7a1561b12c2f326124aa16fd1a7b47",
+          "gold_keywords": [
+            "Equations involving complex numbers",
+            "Regions in the complex plane",
+            "Modulus of a complex number",
+            "Argand diagram",
+            "Algebraic form"
+          ],
+          "top_keywords": [
+            "Modulus of a complex number",
+            "Center of mass of a 1D object",
+            "Area of a region between two or more curves",
+            "Equations involving complex numbers",
+            "Area of a planar region"
+          ],
+          "ranking": [
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.638479
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.631877
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.596737
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.528188
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.507446
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.50485
+            },
+            {
+              "keyword": "Trigonometric form",
+              "score": 0.492499
+            },
+            {
+              "keyword": "Algebraic form",
+              "score": 0.478133
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.469199
+            },
+            {
+              "keyword": "Mean Value Theorem for Integrals",
+              "score": 0.454818
+            }
+          ]
+        },
+        {
+          "item_id": "G8GAsYkZlpE",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:511152e5082729d3e0fe317248c4d27e7f4e857c4472af8246b38fd4b9b01d90",
+          "gold_keywords": [
+            "Second derivative test",
+            "Local maximum",
+            "Local minimum",
+            "Critical point",
+            "Concavity"
+          ],
+          "top_keywords": [
+            "Modulus of a complex number",
+            "Center of mass of a 1D object",
+            "Area of a region between two or more curves",
+            "First derivative test",
+            "Second derivative test"
+          ],
+          "ranking": [
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.625009
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.597845
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.58916
+            },
+            {
+              "keyword": "First derivative test",
+              "score": 0.555497
+            },
+            {
+              "keyword": "Second derivative test",
+              "score": 0.54845
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.506765
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.50433
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.477622
+            },
+            {
+              "keyword": "Increasing function",
+              "score": 0.457754
+            },
+            {
+              "keyword": "Right-endpoint approximation",
+              "score": 0.451296
+            }
+          ]
+        },
+        {
+          "item_id": "8mjcnxGMwFo",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:9525a804b04d32a633b7defab90daddd9e649a70e7dd19f213fdeec7784afee3",
+          "gold_keywords": [
+            "Lagrange multipliers",
+            "Constrained optimization",
+            "Optimization",
+            "Minimum",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Modulus of a complex number",
+            "Center of mass of a 1D object",
+            "Instantaneous rate of change",
+            "Area of a planar region"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.626037
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.607325
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.594084
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.555873
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.498973
+            },
+            {
+              "keyword": "Multi-objective optimization",
+              "score": 0.496338
+            },
+            {
+              "keyword": "Right-endpoint approximation",
+              "score": 0.490482
+            },
+            {
+              "keyword": "Increasing function",
+              "score": 0.480157
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.477834
+            },
+            {
+              "keyword": "Trigonometric form",
+              "score": 0.476798
+            }
+          ]
+        },
+        {
+          "item_id": "LVLuqNH5iWw",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:16f1bc41a7a688947c062a55438bc86ff698a4df2c1637150d4d57062246bef7",
+          "gold_keywords": [
+            "Local maximum",
+            "Second derivative test",
+            "Local minimum",
+            "Critical point",
+            "Saddle point"
+          ],
+          "top_keywords": [
+            "Modulus of a complex number",
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Volume of a solid of revolution",
+            "Instantaneous rate of change"
+          ],
+          "ranking": [
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.675004
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.649517
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.647266
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.580602
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.552099
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.539153
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.510479
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.498126
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.465186
+            },
+            {
+              "keyword": "First derivative test",
+              "score": 0.458334
+            }
+          ]
+        },
+        {
+          "item_id": "vwUV2IDLP8Q",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:dfeb2028f0e9767320d990092befc1848684cfcb73981516b5532fafe92b6a24",
+          "gold_keywords": [
+            "Constrained optimization",
+            "Optimization",
+            "Lagrange multipliers",
+            "Feasible set",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Modulus of a complex number",
+            "Multi-objective optimization",
+            "Center of mass of a 1D object",
+            "Unconstrained optimization"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.565596
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.543921
+            },
+            {
+              "keyword": "Multi-objective optimization",
+              "score": 0.543627
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.536174
+            },
+            {
+              "keyword": "Unconstrained optimization",
+              "score": 0.5311
+            },
+            {
+              "keyword": "Constrained optimization",
+              "score": 0.523364
+            },
+            {
+              "keyword": "Jacobian matrix",
+              "score": 0.489244
+            },
+            {
+              "keyword": "Right-endpoint approximation",
+              "score": 0.48653
+            },
+            {
+              "keyword": "Trigonometric functions",
+              "score": 0.481077
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.477035
+            }
+          ]
+        },
+        {
+          "item_id": "kv8pMEALdWo",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:e007df3da72ccd3064008e40404e9b8e2315181362358158a941fd1b2d2ab245",
+          "gold_keywords": [
+            "Constrained optimization",
+            "KKT conditions",
+            "Optimization",
+            "Optimal solution",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Modulus of a complex number",
+            "Center of mass of a 1D object",
+            "Powers of complex numbers",
+            "Equations involving complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.560291
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.545359
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.517687
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.461454
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.45624
+            },
+            {
+              "keyword": "Multi-objective optimization",
+              "score": 0.434325
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.432804
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.424726
+            },
+            {
+              "keyword": "KKT conditions",
+              "score": 0.41999
+            },
+            {
+              "keyword": "Unconstrained optimization",
+              "score": 0.413425
+            }
+          ]
+        },
+        {
+          "item_id": "QqAPCIIdx-E",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:8f9c479cfc4dd6585fb57d44939277453ad4118fb3a8cefdf917810d834db0b9",
+          "gold_keywords": [
+            "Chain rule",
+            "Product rule",
+            "Power rule",
+            "Trigonometric rules",
+            "Trigonometric functions"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Modulus of a complex number",
+            "Center of mass of a 1D object",
+            "Volume of a solid of revolution",
+            "Instantaneous rate of change"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.623375
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.597753
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.551111
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.507695
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.499136
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.488734
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.469108
+            },
+            {
+              "keyword": "First derivative test",
+              "score": 0.468831
+            },
+            {
+              "keyword": "Second derivative test",
+              "score": 0.45275
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.445404
+            }
+          ]
+        },
+        {
+          "item_id": "QhB481jPAa4",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:829a200dde44cc05eb3e31131fd71397994bd1da4129d866d4927e6310aa7bca",
+          "gold_keywords": [
+            "Trigonometric rules",
+            "Chain rule",
+            "Product rule",
+            "Power rule",
+            "Substitution"
+          ],
+          "top_keywords": [
+            "Modulus of a complex number",
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Equations involving complex numbers",
+            "Volume of a solid of revolution"
+          ],
+          "ranking": [
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.598713
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.572024
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.530319
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.499577
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.494618
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.478022
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.476813
+            },
+            {
+              "keyword": "Trigonometric rules",
+              "score": 0.466042
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.447823
+            },
+            {
+              "keyword": "Chain rule",
+              "score": 0.441365
+            }
+          ]
+        },
+        {
+          "item_id": "JTDa2uZS2gI",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:0f12b81706bbf544b87289fb760bc8f7919d40f99759e629949b319422ce88ab",
+          "gold_keywords": [
+            "Chain rule",
+            "Constant rule",
+            "Derivative definition",
+            "Trigonometric rules",
+            "Power rule"
+          ],
+          "top_keywords": [
+            "Trigonometric rules",
+            "Trigonometric functions",
+            "Modulus of a complex number",
+            "Right-endpoint approximation",
+            "Trigonometric form"
+          ],
+          "ranking": [
+            {
+              "keyword": "Trigonometric rules",
+              "score": 0.582984
+            },
+            {
+              "keyword": "Trigonometric functions",
+              "score": 0.549351
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.512991
+            },
+            {
+              "keyword": "Right-endpoint approximation",
+              "score": 0.509369
+            },
+            {
+              "keyword": "Trigonometric form",
+              "score": 0.498693
+            },
+            {
+              "keyword": "Mean Value Theorem for Integrals",
+              "score": 0.49809
+            },
+            {
+              "keyword": "Increasing function",
+              "score": 0.484532
+            },
+            {
+              "keyword": "Integrable function",
+              "score": 0.482027
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.479997
+            },
+            {
+              "keyword": "Multi-objective optimization",
+              "score": 0.477509
+            }
+          ]
+        },
+        {
+          "item_id": "TDHI-aieyfk",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:f4b8683b9413be150a02893c5281a70d79cdff571b31bdeb0380c4ed487a4eeb",
+          "gold_keywords": [
+            "Exponential rule",
+            "Trigonometric rules",
+            "Logarithmic rule",
+            "Tangent line",
+            "Slope"
+          ],
+          "top_keywords": [
+            "Modulus of a complex number",
+            "Center of mass of a 1D object",
+            "Area of a region between two or more curves",
+            "Instantaneous rate of change",
+            "Volume of a solid of revolution"
+          ],
+          "ranking": [
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.596905
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.554038
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.552497
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.543543
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.520646
+            },
+            {
+              "keyword": "Trigonometric functions",
+              "score": 0.510038
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.501978
+            },
+            {
+              "keyword": "Mean Value Theorem for Integrals",
+              "score": 0.498946
+            },
+            {
+              "keyword": "Trigonometric rules",
+              "score": 0.491554
+            },
+            {
+              "keyword": "Higher-order derivatives",
+              "score": 0.491404
+            }
+          ]
+        },
+        {
+          "item_id": "uKfcS7-O6UE",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:2893c4dc3a4b894db353eec3da291c099ade13a1b056dd1bd28142d7e9606d5c",
+          "gold_keywords": [
+            "Quotient rule",
+            "Power rule",
+            "Sum/Difference rule",
+            "Slope",
+            "Leibniz notation"
+          ],
+          "top_keywords": [
+            "Modulus of a complex number",
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Instantaneous rate of change",
+            "Volume of a solid of revolution"
+          ],
+          "ranking": [
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.594497
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.564086
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.548522
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.50966
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.492173
+            },
+            {
+              "keyword": "Quotient rule",
+              "score": 0.487879
+            },
+            {
+              "keyword": "Trigonometric rules",
+              "score": 0.477806
+            },
+            {
+              "keyword": "Increasing function",
+              "score": 0.474931
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.471586
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.465671
+            }
+          ]
+        }
+      ],
+      "failures": 0,
+      "elapsed_s": 0.0,
+      "coverage_summary": {
+        "model": "word2vec",
+        "query_coverage_mean": 1.0,
+        "keyword_coverage_mean": 0.9555,
+        "zero_vector_keywords": [
+          "Differentiability"
+        ],
+        "n_zero_vector_keywords": 1
+      }
+    },
+    {
+      "model": "glove",
+      "metric": "cosine",
+      "aggregate": {
+        "n_total": 15,
+        "n_graded": 15,
+        "precision_at_5_mean": 0.0667,
+        "recall_at_5_mean": 0.0667,
+        "f1_at_5_mean": 0.0667,
+        "jaccard_mean": 0.0389,
+        "topic_accuracy": 1.0,
+        "subtopic_accuracy": 1.0
+      },
+      "items": [
+        {
+          "item_id": "KTNcYYHuBTY",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:af46ec0e9754db6f0f70ab70094eef6c43499e4f6d4bf4eaee5a7871b528e640",
+          "gold_keywords": [
+            "Powers of i",
+            "Operations with complex numbers",
+            "Imaginary part",
+            "Nth root",
+            "Rectangular form (Standard form)"
+          ],
+          "top_keywords": [
+            "Powers of i",
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Powers of complex numbers",
+            "Real part"
+          ],
+          "ranking": [
+            {
+              "keyword": "Powers of i",
+              "score": 0.848792
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.809264
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.787032
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.771038
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.765857
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.76362
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.730986
+            },
+            {
+              "keyword": "Second order",
+              "score": 0.728055
+            },
+            {
+              "keyword": "Expected value (Mean)",
+              "score": 0.710415
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.704256
+            }
+          ]
+        },
+        {
+          "item_id": "BZxZ_eEuJBM",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:4e181dcc534093c9cc054ec29d4b30f0923541a2b4603e623866d764bb238123",
+          "gold_keywords": [
+            "Operations with complex numbers",
+            "Conjugate number",
+            "Imaginary part",
+            "Real part",
+            "Argand diagram"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Regions in the complex plane",
+            "Modulus of a complex number",
+            "Powers of complex numbers",
+            "Center of mass of a 1D object"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.850252
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.828253
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.818102
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.807539
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.799097
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.79639
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.771757
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.747019
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.731841
+            },
+            {
+              "keyword": "Second order",
+              "score": 0.706142
+            }
+          ]
+        },
+        {
+          "item_id": "kpywdu1afas",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:6ef23480fb22e6dfcf5d1172a3e5dfa9a7f969c3aba206acbe1bd4c33f4d40c0",
+          "gold_keywords": [
+            "Operations with complex numbers",
+            "Imaginary part",
+            "Complex plane",
+            "Rectangular form (Standard form)",
+            "Real part"
+          ],
+          "top_keywords": [
+            "Operations with complex numbers",
+            "Powers of complex numbers",
+            "Area of a region between two or more curves",
+            "Regions in the complex plane",
+            "Modulus of a complex number"
+          ],
+          "ranking": [
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.882634
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.831487
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.820522
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.777121
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.765658
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.746158
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.735285
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.71557
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.699332
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.690888
+            }
+          ]
+        },
+        {
+          "item_id": "KeYfQ8Em9BU",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.2,
+          "recall_at_5": 0.2,
+          "f1_at_5": 0.2,
+          "jaccard": 0.1111,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:9c30b703c73bfccbedbc3aa07b8c666acd0a4ecb1c0c2fb6465c819211217862",
+          "gold_keywords": [
+            "Regions in the complex plane",
+            "Complex plane",
+            "Imaginary part",
+            "Argand diagram",
+            "Real part"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Regions in the complex plane",
+            "Powers of complex numbers",
+            "Operations with complex numbers",
+            "Center of mass of a 1D object"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.881774
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.879345
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.796596
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.773904
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.763798
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.762069
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.748753
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.744495
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.74269
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.726556
+            }
+          ]
+        },
+        {
+          "item_id": "AqtgBbEI4wM",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.4,
+          "recall_at_5": 0.4,
+          "f1_at_5": 0.4,
+          "jaccard": 0.25,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:c98a36b4e1faf7b9c131ba12b1b68a282d7a1561b12c2f326124aa16fd1a7b47",
+          "gold_keywords": [
+            "Equations involving complex numbers",
+            "Regions in the complex plane",
+            "Modulus of a complex number",
+            "Argand diagram",
+            "Algebraic form"
+          ],
+          "top_keywords": [
+            "Center of mass of a 1D object",
+            "Area of a region between two or more curves",
+            "Modulus of a complex number",
+            "Powers of complex numbers",
+            "Regions in the complex plane"
+          ],
+          "ranking": [
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.814211
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.776163
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.752558
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.728915
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.722189
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.7194
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.706732
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.679413
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.676513
+            },
+            {
+              "keyword": "Second order",
+              "score": 0.66782
+            }
+          ]
+        },
+        {
+          "item_id": "G8GAsYkZlpE",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:511152e5082729d3e0fe317248c4d27e7f4e857c4472af8246b38fd4b9b01d90",
+          "gold_keywords": [
+            "Second derivative test",
+            "Local maximum",
+            "Local minimum",
+            "Critical point",
+            "Concavity"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Volume of a solid of revolution",
+            "Modulus of a complex number",
+            "Second order"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.816347
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.793203
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.763591
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.749985
+            },
+            {
+              "keyword": "Second order",
+              "score": 0.740846
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.725111
+            },
+            {
+              "keyword": "Expected value (Mean)",
+              "score": 0.712644
+            },
+            {
+              "keyword": "First derivative test",
+              "score": 0.706503
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.706193
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.704434
+            }
+          ]
+        },
+        {
+          "item_id": "8mjcnxGMwFo",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:9525a804b04d32a633b7defab90daddd9e649a70e7dd19f213fdeec7784afee3",
+          "gold_keywords": [
+            "Lagrange multipliers",
+            "Constrained optimization",
+            "Optimization",
+            "Minimum",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Modulus of a complex number",
+            "Volume of a solid of revolution",
+            "Area of a planar region"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.809456
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.782335
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.76476
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.749781
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.730889
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.728371
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.719054
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.699413
+            },
+            {
+              "keyword": "Second order",
+              "score": 0.677899
+            },
+            {
+              "keyword": "Expected value (Mean)",
+              "score": 0.676578
+            }
+          ]
+        },
+        {
+          "item_id": "LVLuqNH5iWw",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:16f1bc41a7a688947c062a55438bc86ff698a4df2c1637150d4d57062246bef7",
+          "gold_keywords": [
+            "Local maximum",
+            "Second derivative test",
+            "Local minimum",
+            "Critical point",
+            "Saddle point"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Volume of a solid of revolution",
+            "Regions in the complex plane",
+            "Powers of complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.851689
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.792375
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.779493
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.770688
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.758714
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.749945
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.744751
+            },
+            {
+              "keyword": "Second order",
+              "score": 0.728947
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.72498
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.718218
+            }
+          ]
+        },
+        {
+          "item_id": "vwUV2IDLP8Q",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:dfeb2028f0e9767320d990092befc1848684cfcb73981516b5532fafe92b6a24",
+          "gold_keywords": [
+            "Constrained optimization",
+            "Optimization",
+            "Lagrange multipliers",
+            "Feasible set",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Modulus of a complex number",
+            "Area of a planar region",
+            "Regions in the complex plane"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.786282
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.766461
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.730239
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.723925
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.695354
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.692773
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.665275
+            },
+            {
+              "keyword": "Increasing function",
+              "score": 0.665026
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.654774
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.650362
+            }
+          ]
+        },
+        {
+          "item_id": "kv8pMEALdWo",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:e007df3da72ccd3064008e40404e9b8e2315181362358158a941fd1b2d2ab245",
+          "gold_keywords": [
+            "Constrained optimization",
+            "KKT conditions",
+            "Optimization",
+            "Optimal solution",
+            "Maximum"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Volume of a solid of revolution",
+            "Real part",
+            "Regions in the complex plane"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.793886
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.744858
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.721384
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.710633
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.709763
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.700266
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.700119
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.69577
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.68838
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.681703
+            }
+          ]
+        },
+        {
+          "item_id": "QqAPCIIdx-E",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:8f9c479cfc4dd6585fb57d44939277453ad4118fb3a8cefdf917810d834db0b9",
+          "gold_keywords": [
+            "Chain rule",
+            "Product rule",
+            "Power rule",
+            "Trigonometric rules",
+            "Trigonometric functions"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Volume of a solid of revolution",
+            "Center of mass of a 1D object",
+            "Regions in the complex plane",
+            "Powers of complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.867507
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.790249
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.783456
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.780263
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.757458
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.753892
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.745929
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.745468
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.734664
+            },
+            {
+              "keyword": "Second order",
+              "score": 0.73319
+            }
+          ]
+        },
+        {
+          "item_id": "QhB481jPAa4",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:829a200dde44cc05eb3e31131fd71397994bd1da4129d866d4927e6310aa7bca",
+          "gold_keywords": [
+            "Trigonometric rules",
+            "Chain rule",
+            "Product rule",
+            "Power rule",
+            "Substitution"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Regions in the complex plane",
+            "Center of mass of a 1D object",
+            "Powers of complex numbers",
+            "Volume of a solid of revolution"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.823795
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.768027
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.76004
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.752491
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.749127
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.735358
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.730566
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.730282
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.729819
+            },
+            {
+              "keyword": "Product rule",
+              "score": 0.720663
+            }
+          ]
+        },
+        {
+          "item_id": "JTDa2uZS2gI",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:0f12b81706bbf544b87289fb760bc8f7919d40f99759e629949b319422ce88ab",
+          "gold_keywords": [
+            "Chain rule",
+            "Constant rule",
+            "Derivative definition",
+            "Trigonometric rules",
+            "Power rule"
+          ],
+          "top_keywords": [
+            "Increasing function",
+            "Higher-order derivatives",
+            "Powers of complex numbers",
+            "Area of a region between two or more curves",
+            "Mean Value Theorem for Integrals"
+          ],
+          "ranking": [
+            {
+              "keyword": "Increasing function",
+              "score": 0.706089
+            },
+            {
+              "keyword": "Higher-order derivatives",
+              "score": 0.695553
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.693622
+            },
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.683096
+            },
+            {
+              "keyword": "Mean Value Theorem for Integrals",
+              "score": 0.681648
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.676949
+            },
+            {
+              "keyword": "Expected value (Mean)",
+              "score": 0.671682
+            },
+            {
+              "keyword": "Equations involving complex numbers",
+              "score": 0.66602
+            },
+            {
+              "keyword": "Instantaneous rate of change",
+              "score": 0.658588
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.657806
+            }
+          ]
+        },
+        {
+          "item_id": "TDHI-aieyfk",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:f4b8683b9413be150a02893c5281a70d79cdff571b31bdeb0380c4ed487a4eeb",
+          "gold_keywords": [
+            "Exponential rule",
+            "Trigonometric rules",
+            "Logarithmic rule",
+            "Tangent line",
+            "Slope"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Powers of complex numbers",
+            "Center of mass of a 1D object",
+            "Regions in the complex plane",
+            "Volume of a solid of revolution"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.779773
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.76619
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.747458
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.733204
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.732121
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.727277
+            },
+            {
+              "keyword": "Operations with complex numbers",
+              "score": 0.722708
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.713283
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.700594
+            },
+            {
+              "keyword": "Increasing function",
+              "score": 0.683347
+            }
+          ]
+        },
+        {
+          "item_id": "uKfcS7-O6UE",
+          "n_pred": 5,
+          "n_gold": 5,
+          "precision_at_5": 0.0,
+          "recall_at_5": 0.0,
+          "f1_at_5": 0.0,
+          "jaccard": 0.0,
+          "topic_match": true,
+          "subtopic_match": true,
+          "notes": [],
+          "query_source": "query_text",
+          "query_hash": "sha256:2893c4dc3a4b894db353eec3da291c099ade13a1b056dd1bd28142d7e9606d5c",
+          "gold_keywords": [
+            "Quotient rule",
+            "Power rule",
+            "Sum/Difference rule",
+            "Slope",
+            "Leibniz notation"
+          ],
+          "top_keywords": [
+            "Area of a region between two or more curves",
+            "Center of mass of a 1D object",
+            "Volume of a solid of revolution",
+            "Regions in the complex plane",
+            "Powers of complex numbers"
+          ],
+          "ranking": [
+            {
+              "keyword": "Area of a region between two or more curves",
+              "score": 0.821464
+            },
+            {
+              "keyword": "Center of mass of a 1D object",
+              "score": 0.78499
+            },
+            {
+              "keyword": "Volume of a solid of revolution",
+              "score": 0.773634
+            },
+            {
+              "keyword": "Regions in the complex plane",
+              "score": 0.760871
+            },
+            {
+              "keyword": "Powers of complex numbers",
+              "score": 0.752649
+            },
+            {
+              "keyword": "Modulus of a complex number",
+              "score": 0.749551
+            },
+            {
+              "keyword": "Powers of i",
+              "score": 0.730536
+            },
+            {
+              "keyword": "Real part",
+              "score": 0.723443
+            },
+            {
+              "keyword": "Area of a planar region",
+              "score": 0.713832
+            },
+            {
+              "keyword": "Second order",
+              "score": 0.713712
+            }
+          ]
+        }
+      ],
+      "failures": 0,
+      "elapsed_s": 0.1,
+      "coverage_summary": {
+        "model": "glove",
+        "query_coverage_mean": 1.0,
+        "keyword_coverage_mean": 0.9799,
+        "zero_vector_keywords": [],
+        "n_zero_vector_keywords": 0
+      }
+    }
+  ]
+}

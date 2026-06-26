@@ -1,0 +1,422 @@
+[
+  {
+    "label": "Mode 1: PURE COSINE (Beatriz's proposal)",
+    "weights": {
+      "w_cos": 1.0,
+      "w_llm": 0.0,
+      "w_rule": 0.0
+    },
+    "aggregate": {
+      "n_total": 6,
+      "n_graded": 6,
+      "precision_at_5_mean": 0.4333,
+      "recall_at_5_mean": 0.6667,
+      "f1_at_5_mean": 0.5231,
+      "jaccard_mean": 0.3746,
+      "topic_accuracy": 1.0,
+      "subtopic_accuracy": 1.0
+    },
+    "items": [
+      {
+        "id": "7hCsQOKOYS8",
+        "top5": [
+          "Trigonometric substitution",
+          "Substitution",
+          "Integration by parts",
+          "Trigonometric functions",
+          "Fundamental theorem of Calculus"
+        ],
+        "item_id": "7hCsQOKOYS8",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.6,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.75,
+        "jaccard": 0.6,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "7R_DTzVHw5Y",
+        "top5": [
+          "Area of a region between two or more curves",
+          "Area of a planar region",
+          "Fundamental theorem of Calculus",
+          "Total area",
+          "Integration by parts"
+        ],
+        "item_id": "7R_DTzVHw5Y",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.2,
+        "recall_at_5": 0.3333,
+        "f1_at_5": 0.25,
+        "jaccard": 0.1429,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "OBZnEvoRuW0",
+        "top5": [
+          "Fundamental theorem of Calculus",
+          "Trigonometric substitution",
+          "Trigonometric functions",
+          "Integration by parts",
+          "Mean Value Theorem for Integrals"
+        ],
+        "item_id": "OBZnEvoRuW0",
+        "n_pred": 5,
+        "n_gold": 4,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.4444,
+        "jaccard": 0.2857,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "4ZiO_eaj9Ag",
+        "top5": [
+          "Area of a region between two or more curves",
+          "Area of a planar region",
+          "Total area",
+          "Volume of revolution",
+          "Volume of a solid of revolution"
+        ],
+        "item_id": "4ZiO_eaj9Ag",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.6667,
+        "f1_at_5": 0.5,
+        "jaccard": 0.3333,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "Sg24zkhG0Vw",
+        "top5": [
+          "Volume of a solid of revolution",
+          "Volume of revolution",
+          "Area of a planar region",
+          "Area of a region between two or more curves",
+          "Integration by parts"
+        ],
+        "item_id": "Sg24zkhG0Vw",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.6,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.75,
+        "jaccard": 0.6,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "JB961uV015E",
+        "top5": [
+          "Partial fractions decomposition",
+          "Integration by parts",
+          "Area of a region between two or more curves",
+          "Riemann sum",
+          "Substitution"
+        ],
+        "item_id": "JB961uV015E",
+        "n_pred": 5,
+        "n_gold": 4,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.4444,
+        "jaccard": 0.2857,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      }
+    ]
+  },
+  {
+    "label": "Mode 2: ALGORITHMIC (cosine + rule, no LLM)",
+    "weights": {
+      "w_cos": 0.8,
+      "w_llm": 0.0,
+      "w_rule": 0.2
+    },
+    "aggregate": {
+      "n_total": 6,
+      "n_graded": 6,
+      "precision_at_5_mean": 0.4333,
+      "recall_at_5_mean": 0.6667,
+      "f1_at_5_mean": 0.5231,
+      "jaccard_mean": 0.3746,
+      "topic_accuracy": 1.0,
+      "subtopic_accuracy": 1.0
+    },
+    "items": [
+      {
+        "id": "7hCsQOKOYS8",
+        "top5": [
+          "Trigonometric substitution",
+          "Substitution",
+          "Integration by parts",
+          "Trigonometric functions",
+          "Fundamental theorem of Calculus"
+        ],
+        "item_id": "7hCsQOKOYS8",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.6,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.75,
+        "jaccard": 0.6,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "7R_DTzVHw5Y",
+        "top5": [
+          "Area of a region between two or more curves",
+          "Area of a planar region",
+          "Fundamental theorem of Calculus",
+          "Total area",
+          "Integration by parts"
+        ],
+        "item_id": "7R_DTzVHw5Y",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.2,
+        "recall_at_5": 0.3333,
+        "f1_at_5": 0.25,
+        "jaccard": 0.1429,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "OBZnEvoRuW0",
+        "top5": [
+          "Fundamental theorem of Calculus",
+          "Trigonometric functions",
+          "Trigonometric substitution",
+          "Integration by parts",
+          "Mean Value Theorem for Integrals"
+        ],
+        "item_id": "OBZnEvoRuW0",
+        "n_pred": 5,
+        "n_gold": 4,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.4444,
+        "jaccard": 0.2857,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "4ZiO_eaj9Ag",
+        "top5": [
+          "Area of a region between two or more curves",
+          "Area of a planar region",
+          "Total area",
+          "Volume of revolution",
+          "Volume of a solid of revolution"
+        ],
+        "item_id": "4ZiO_eaj9Ag",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.6667,
+        "f1_at_5": 0.5,
+        "jaccard": 0.3333,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "Sg24zkhG0Vw",
+        "top5": [
+          "Volume of revolution",
+          "Volume of a solid of revolution",
+          "Area of a planar region",
+          "Area of a region between two or more curves",
+          "Integration by parts"
+        ],
+        "item_id": "Sg24zkhG0Vw",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.6,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.75,
+        "jaccard": 0.6,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "JB961uV015E",
+        "top5": [
+          "Partial fractions decomposition",
+          "Integration by parts",
+          "Area of a region between two or more curves",
+          "Riemann sum",
+          "Substitution"
+        ],
+        "item_id": "JB961uV015E",
+        "n_pred": 5,
+        "n_gold": 4,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.5,
+        "f1_at_5": 0.4444,
+        "jaccard": 0.2857,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      }
+    ]
+  },
+  {
+    "label": "Mode 3: FULL HYBRID (with LLM augmentation)",
+    "weights": {
+      "w_cos": 0.6,
+      "w_llm": 0.3,
+      "w_rule": 0.1
+    },
+    "aggregate": {
+      "n_total": 6,
+      "n_graded": 6,
+      "precision_at_5_mean": 0.6,
+      "recall_at_5_mean": 0.9028,
+      "f1_at_5_mean": 0.7176,
+      "jaccard_mean": 0.5722,
+      "topic_accuracy": 1.0,
+      "subtopic_accuracy": 1.0
+    },
+    "items": [
+      {
+        "id": "7hCsQOKOYS8",
+        "top5": [
+          "Substitution",
+          "Trigonometric substitution",
+          "Trigonometric functions",
+          "Fundamental theorem of Calculus",
+          "Direct integrals"
+        ],
+        "item_id": "7hCsQOKOYS8",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.6,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.75,
+        "jaccard": 0.6,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "7R_DTzVHw5Y",
+        "top5": [
+          "Area of a planar region",
+          "Region decomposition",
+          "Area of a region between two or more curves",
+          "Direct integrals",
+          "Riemann sum"
+        ],
+        "item_id": "7R_DTzVHw5Y",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.4,
+        "recall_at_5": 0.6667,
+        "f1_at_5": 0.5,
+        "jaccard": 0.3333,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "OBZnEvoRuW0",
+        "top5": [
+          "Fundamental theorem of Calculus",
+          "Trigonometric functions",
+          "Substitution",
+          "Direct integrals",
+          "Trigonometric substitution"
+        ],
+        "item_id": "OBZnEvoRuW0",
+        "n_pred": 5,
+        "n_gold": 4,
+        "precision_at_5": 0.8,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.8889,
+        "jaccard": 0.8,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "4ZiO_eaj9Ag",
+        "top5": [
+          "Area of a region between two or more curves",
+          "Area of a planar region",
+          "Total area",
+          "Direct integrals",
+          "Fundamental theorem of Calculus"
+        ],
+        "item_id": "4ZiO_eaj9Ag",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.6,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.75,
+        "jaccard": 0.6,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "Sg24zkhG0Vw",
+        "top5": [
+          "Volume of revolution",
+          "Volume of a solid of revolution",
+          "Area of a planar region",
+          "Area of a region between two or more curves",
+          "Direct integrals"
+        ],
+        "item_id": "Sg24zkhG0Vw",
+        "n_pred": 5,
+        "n_gold": 3,
+        "precision_at_5": 0.6,
+        "recall_at_5": 1.0,
+        "f1_at_5": 0.75,
+        "jaccard": 0.6,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      },
+      {
+        "id": "JB961uV015E",
+        "top5": [
+          "Partial fractions decomposition",
+          "Fundamental theorem of Calculus",
+          "Direct integrals",
+          "Area of a planar region",
+          "Integration by parts"
+        ],
+        "item_id": "JB961uV015E",
+        "n_pred": 5,
+        "n_gold": 4,
+        "precision_at_5": 0.6,
+        "recall_at_5": 0.75,
+        "f1_at_5": 0.6667,
+        "jaccard": 0.5,
+        "topic_match": true,
+        "subtopic_match": true,
+        "notes": []
+      }
+    ]
+  }
+]

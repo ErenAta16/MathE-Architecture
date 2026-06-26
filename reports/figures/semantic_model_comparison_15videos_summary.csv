@@ -1,0 +1,4 @@
+model,metric,precision_at_5,recall_at_5,f1_at_5,jaccard,n_graded,elapsed_s,query_coverage_mean,keyword_coverage_mean,n_zero_vector_keywords
+bert,cosine,0.56,0.56,0.56,0.4034,15,12.3,,,
+word2vec,cosine,0.12,0.12,0.12,0.0685,15,0.1,0.9987,0.9555,1
+glove,cosine,0.0933,0.0933,0.0933,0.0537,15,0.1,0.9987,0.9799,0
